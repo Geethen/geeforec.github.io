@@ -7,16 +7,7 @@ bio: "Joseph White is a Postdoctoral Researcher at the University of the Witwate
   and conservation insights. \n"
 avatar: "/images/jw.jpg"
 social:
-- title: github
-  url: https://github.com
-- title: github
-  url: https://github.com
-- title: github
-  url: https://github.com
-- title: github
-  url: https://github.com
-- title: github
-  url: https://github.com
+- title: ''
 featured: true
 
 ---
