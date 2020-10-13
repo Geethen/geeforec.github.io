@@ -75,6 +75,7 @@ There are multiple ways to go about calculating the area of each of the three cl
 
 The first option is a more brute force approach whereby we create a separate layer for each of the classes (loss, gain and no forest change ) and calculate their corresponding area. We can use the code snippet below for all three of the layers by simply manipulating the first argument of the first function i.e., each number (-1 ,0 ,1) correspond to a single class in the coverChange raster. More specifically, loss, gain and no forest change respectively.
 
+```js
 **var noChange =** coverChange.eq(0).selfMask();
 
 **var areaImage =** noChange.multiply(ee.Image.pixelArea())
@@ -96,17 +97,12 @@ maxPixels: 1e10
 area.get('tree_canopy_cover')).divide(1e6).round()
 
 **print(noChangeAreaSqKm**)
-
-| --- | --- |
-| ee.Image.pixelArea | Creates a raster with pixel values equivalent to the area of the pixel |
-| .reduceRegion | Returns a dictionary of the specified reducers outputs |
-| .geometry | In this case, dissolves the features within a feature collection |
-| .round | Rounds of to the nearest integer |
-|  |  |
+```
 
 **Option 2**
 
 The second option to calculate area for each of the three classes requires \~ a third of the amount of code used in the first option by using the group function.
+```js
 
 **var areaImage =** ee.Image.pixelArea().addBands(coverChange);
 
@@ -147,10 +143,7 @@ return ee.List(\[classNumber, area\]);
 **var result =** ee.Dictionary(classAreaLists.flatten());
 
 **print(result**);
-
-| --- | --- |
-| .group | A reducer is applied for each unique value of the raster. |
-|  |  |
+```
 
 **Option 3: Calculating and plotting the areas of each class**
 
