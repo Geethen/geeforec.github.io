@@ -10,7 +10,7 @@ title = "Practical 1"
 +++
 **Practical 1: Importing, exploring and visualising datasets**
 
-Access the completed practical scripts (1) [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e) and (2) [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e) 
+Access the completed practical scripts (1) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FExploring_images) and (2) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FVisualising_images) 
 
 **Learning Objectives**
 
@@ -19,9 +19,15 @@ By the end of this practical you should be able to:
 1. Import Google Earth Engine datasets into the code editor.
 2. Inspect the dataset.
 3. Visualize images in the interactive map explorer.
-4. Use some simple functions. 
+4. Use simple functions. 
+
+**Access your code editor**
+
+The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/). Alternatively, you can access it directly at [https://code.earthengine.google.com/] (https://code.earthengine.google.com/)
 
 **Importing datasets**
+
+There are two ways to import datasets into the GEE code editor. We will run through both of these in this practical. The first method is to 
 
 Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
 
