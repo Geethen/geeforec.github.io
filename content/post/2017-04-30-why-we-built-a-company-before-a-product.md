@@ -91,35 +91,19 @@ sensitive to water.
 
 **Detecting water**
 
-There are numerous methods available to detect surface water and this
-area of research is still an active one. In this course you will be
-introduced to two of these general approaches i.e. supervised
-classification and thresholding. For this practical, you will use a very
-simple thresholding-based approach that employs the computed NDVI and
-NDWI spectral indices.
+There are numerous methods available to detect surface water and this area of research is still an active one. In this course you will be introduced to two of these general approaches i.e. supervised classification and thresholding. For this practical, you will use a very simple thresholding-based approach that employs the computed NDVI and NDWI spectral indices.
 
     Map.addLayer(NDWI.gt(NDVI),{},'water_1c');
 
-In the above code snippet, the function gt() returns a 1 if the first
-value is greater than the second, creating a binary raster i.e. a value
-of 1 is returned when NDWI values are greater than those of the
-corresponding NDVI pixel. This inequality can largely be useful to
-detect open surface water. However, upon inspection you will come across
-inevitable omission and commission errors.
+In the above code snippet, the function gt() returns a 1 if the first value is greater than the second, creating a binary raster i.e. a value of 1 is returned when NDWI values are greater than those of the corresponding NDVI pixel. This inequality can largely be useful to detect open surface water. However, upon inspection, you will come across inevitable omission and commission errors.
+
+***
 
 **_The influence of atmospheric effects on water detection._**
 
-![](media/image13.png){width="3.4166666666666665in"
-height="4.114583333333333in"}Recently, there has been a drive towards
-Analysis Ready Data (ARD) i.e. in part, this includes data that has
-already been corrected for atmospheric interferences, however, there is
-a considerable amount of uncertainty and variance associated with the
-results of different atmospheric correction algorithms. This, together
-with the fact that atmospherically corrected Sentinel-2 data is not
-available for areas outside of Europe from 2015 (the start of the
-archive) to 2018 i.e. level 1C (atmospherically uncorrected) data is
-only available. It is therefore important to understand the effects of
-atmospheric interference on water detection.
+Recently, there has been a drive towards Analysis Ready Data (ARD) i.e. in part, this includes data that has already been corrected for atmospheric interferences, however, there is a considerable amount of uncertainty and variance associated with the results of different atmospheric correction algorithms. This, together with the fact that atmospherically corrected Sentinel-2 data is not available for areas outside of Europe from 2015 (the start of the archive) to 2018 i.e. level 1C (atmospherically uncorrected) data is only available. It is therefore important to understand the effects of atmospheric interference on water detection.
+
+![](/images/prac2_f3.png)
 
 **Figure 3:** The influence of atmospheric interference on the detection
 of water. Water detected from atmospherically corrected Sentinel-2,
