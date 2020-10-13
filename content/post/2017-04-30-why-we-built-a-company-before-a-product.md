@@ -41,13 +41,12 @@ At this point you have converted an image collection to a single median
 image. Next, we will compute the NDVI and NDWI spectral indices. GEE has
 a dedicated function for this.
 
+```js
 **var NDVI =** filtered.normalizedDifference(\['B8','B4'\]);
 
 **var NDWI =** filtered.normalizedDifference(\['B3','B8'\]);
-
-  .normalizedDifference   Computes (band 1- band 2) / (band 1+ band 2); band 1 is the band specified first in the list and band 2 is the second.
-  ----------------------- ------------------------------------------------------------------------------------------------------------------------
-                          
+```
+---------------------------------------------------------------------------------------------                          
 
 ***Visualisation***
 
@@ -57,6 +56,7 @@ can use hex colour codes. The NDVI and NDWI spectral indices both range
 from -1 to 1. However, for NDVI we specify a minimum of zero to improve
 the visualisation of NDVI. This may not always be necessary.
 
+```js
 **var vis =** \['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163',
 '99B718',
 
@@ -67,7 +67,7 @@ the visualisation of NDVI. This may not always be necessary.
 **Map.addLayer(**NDVI,{min: 0, max: 1, palette: vis},'NDVI'**);**
 
 **Map.addLayer(**NDWI,{min: -1, max: 1, palette: vis},'NDWI'**);**
-
+```
 ![](media/image7.png){width="4.0625in"
 height="3.96875in"}***Interpreting spectral indices***
 
