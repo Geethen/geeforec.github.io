@@ -122,17 +122,23 @@ Map.centerObject(aoi, 13);
 Map.addLayer(s2, {bands:['B4','B3','B2']}, 'No defined vis parameters');
 ```
 
+![](/images/practical_1_no_vis.png)
+
 Without specifying the minimum and maximum values, the image does not display correctly. Go to layers box and select the wheel icon and manually define the vis parameters. Use the custom drop-down menu and stretch the minimum and maximum values to 100% and click apply. We can also do this by selecting the min and max values within the visualization parameters. 
 
 ```js
 Map.addLayer(s2, {bands:['B4','B3','B2'], min:0, max: 3000}, 'True-colour');
 ```
 
+![](/images/practical_1_true.png)
+
 We can use different bands to highlight specific properties that we may be interested in. Using the near infra-red band (B8 for Sentinel-2), we can highlight the high reflectance that healthy vegetation has in this band. 
 
 ```js
 Map.addLayer(s2, {bands:['B8','B4','B3'], min:0, max: 3000}, 'False-colour');
 ```
+
+![](/images/practical_1_false.png)
 
 As a last step, save the script.
 
@@ -144,4 +150,6 @@ Repeat this practical but use the Landsat-8 dataset. Produce a false colour imag
 ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
 ```
 
-Send your completed script to **email**
+To share your script, click on Get Link and then copy script path. Send your completed script to **email**
+
+![](/images/practical_1_script_path.png)
