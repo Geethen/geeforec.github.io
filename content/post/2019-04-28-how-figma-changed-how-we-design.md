@@ -138,7 +138,7 @@ var classified = composite.classify(trainedClassifier);
 
 **Model evaluation**
 
-The training accuracy largely overestimates model accuracy since this data has been used to train the model. We therefore use a test set (data unseen by the model) to get a more reliable estimate of model accuracy.
+The training accuracy largely overestimates model accuracy since this data has been used to train the model. We, therefore, use a test set (data unseen by the model) to get a more reliable estimate of model accuracy.
 
 ```js
 var trainAccuracy = trainedClassifier.confusionMatrix().accuracy();
@@ -208,8 +208,8 @@ By the end of this practical you should be able to:
 
 **Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogenous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
 
-Reference
+> The area of applicability concept is based on an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
 
->The area of applicability concept is based is an experimental concept still under review >and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
+Reference
 
 Meyer, H. and Pebesma, E., 2020. Predicting into unknown space? Estimating the area of applicability of spatial prediction models. arXiv preprint arXiv:2005.07939.
