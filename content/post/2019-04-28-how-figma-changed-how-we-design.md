@@ -43,28 +43,21 @@ In the scenario that you are creating your own reference data points, you can us
 
 Create a Landsat-8 surface reflectance composite that covers the AOI (shown by the provided geometry) for the period of 1 June 2016 to 30th September 2016, add ndvi and mndwi bands. Lastly, compute the median image, taking into consideration the GEE scaling factor and clipping to the extent of geometry.
 
-**var filtered =** l8sr
-
+```js
+var filtered = l8sr
 .filterBounds(geometry)
-
 .filterDate(startDate, endDate)
-
 .map(function(image){
-
-var ndvi = image.normalizedDifference(\['B5', 'B4'\]).rename(\['ndvi'\]);
-
-var mndwi = image.normalizedDifference(\['B3', 'B7'\]).rename(\['mndwi'\]);
-
-return image.select('B.*').addBands(\[ndvi,mndwi\]);
-
+var ndvi = image.normalizedDifference(['B5', 'B4']).rename(['ndvi']);
+var mndwi = image.normalizedDifference(['B3', 'B7']).rename(['mndwi']);
+return image.select('B.*').addBands([ndvi,mndwi]);
 }).median()
-
 .divide(10000)
-
 .clip(geometry);
-
+```
 Similarly, filter the Sentinel-1 data to the AOI for the period of June to September 2016 as above. In addition, filter the s1 image collection to those images that have captured in Interferometric Wide (IW) mode and contain Vertical Transmit and Vertical Receive (VV) and Vertical Transmit and Horizontal Receive polarised bands. Lastly, for each image, select all bands that start with a V and reduce the resulting images to the mean image.
 
+```js
 **var s1 =** s1.filterBounds(geometry)
 
 .filterDate(startDate, endDate)
@@ -78,139 +71,101 @@ Similarly, filter the Sentinel-1 data to the AOI for the period of June to Septe
 .select("V.")
 
 .mean();
+```
 
 Create a final composite image with the bands of both the Landsat-8 composite and Sentinel-1 composite.
 
-**var composite =** filtered.addBands(s1).aside(print).clip(geometry);
+```js
+var composite = filtered.addBands(s1).aside(print).clip(geometry);
+```
 
-| --- | --- |
-| .aside(print) | Allows you to print the output to the console. Beneficial during debugging and for sanity checks. |
-|  |  |
-
-**Preparing the train and test datasets**
+Preparing the train and test datasets
 
 The next step is to split this data into a training and testing partition. The training partition is used to fit the model whilst the test data is used to evaluate the accuracy of the model. Here, we use a split of 80% train and 20% test. We set the seed to ensure we end up with roughly the same train and test partition in the case of re-running the model.
 
-**var new_table =** new_table.randomColumn({seed: 1});
-
-**var training =** new_table.filter(ee.Filter.lt('random', 0.80)).aside(print);
-
-**var test =** new_table.filter(ee.Filter.gte('random', 0.80)).aside(print);
-
-**Extracting the spectral signatures**
+```js
+var new_table = new_table.randomColumn({seed: 1});
+var training = new_table.filter(ee.Filter.lt('random', 0.80)).aside(print);
+var test = new_table.filter(ee.Filter.gte('random', 0.80)).aside(print);
+```
+Extracting the spectral signatures
 
 At this point, we have our response and explanatory variables prepared and we can move on to extracting the spectral signatures for each of the points. The ‘tileScale’ argument may be useful when working with large computations that fail due to computation errors.
 
-**var Features =** composite.sampleRegions({
-
+```js
+var Features = composite.sampleRegions({
 collection: training,
-
-properties: \['label'\],
-
+properties: ['label'],
 scale: 30,
-
 tileScale:16
-
 });
+```
 
 **Model fitting**
 
+```js
 **var trainedClassifier =** ee.Classifier.randomForest(100)
-
 .train({
-
 features: Features,
-
 classProperty: 'label',
-
 inputProperties: composite.bandNames()
-
 });
+```
 
 **Inference for entire AOI**
 
-**var classified =** composite.classify(trainedClassifier);
+```js
+var classified = composite.classify(trainedClassifier);
+```
 
 **Model evaluation**
 
 The training accuracy largely overestimates model accuracy since this data has been used to train the model. We therefore use a test set (data unseen by the model) to get a more reliable estimate of model accuracy.
 
-**var trainAccuracy =** trainedClassifier.confusionMatrix().accuracy();
-
-**print(**'Train Accuracy', trainAccuracy**);**
-
-**Test accuracy**
-
-**var test =** composite.sampleRegions({
-
+```js
+var trainAccuracy = trainedClassifier.confusionMatrix().accuracy();
+print('Train Accuracy', trainAccuracy);
+Test accuracy
+var test = composite.sampleRegions({
 collection: test,
-
 properties: \['label'\],
-
 scale: 30,
-
 tileScale: 16
-
 });
+var Test = test.classify(trainedClassifier);
+print('ConfusionMatrix', Test.errorMatrix('label', 'classification'));
+print('TestAccuracy', Test.errorMatrix('label', 'classification').accuracy());
+print('Kappa Coefficient', Test.errorMatrix('label', 'classification').kappa());
+print('Producers Accuracy', Test.errorMatrix('label', 'classification').producersAccuracy());
+print('Users Accuracy', Test.errorMatrix('label', 'classification').consumersAccuracy());
+```
 
-**var Test =** test.classify(trainedClassifier);
-
-**print(**'ConfusionMatrix', Test.errorMatrix('label', 'classification')**);**
-
-**print(**'TestAccuracy', Test.errorMatrix('label', 'classification').accuracy()**);**
-
-**print(**'Kappa Coefficient', Test.errorMatrix('label', 'classification').kappa()**);**
-
-**print(**'Producers Accuracy', Test.errorMatrix('label', 'classification').producersAccuracy()**);**
-
-**print(**'Users Accuracy', Test.errorMatrix('label', 'classification').consumersAccuracy()**);**
-
-**Visualisation**
-
+Visualisation
 Visualising the RGB image, reference points and classified image
 
-**Map.centerObject(**points.geometry().bounds(), 13**);**
-
-**Map.addLayer(**composite,rgb_vp, 'Landsat-8 RGB'**);**
-
-**showTrainingData();**
-
-**function showTrainingData(){**
-
-var colours = ee.List(\["darkblue","darkgreen","yellow", "orange"\]);
-
-var lc_type = ee.List(\["water", "tree cover","built-up","other"\]);
-
-var lc_label = ee.List(\[0, 1, 2, 3\]);
-
+```js
+Map.centerObject(points.geometry().bounds(), 13);
+Map.addLayer(composite,rgb_vp, 'Landsat-8 RGB');
+```
+```js
+showTrainingData();
+function showTrainingData(){
+var colours = ee.List(["darkblue","darkgreen","yellow", "orange"]);
+var lc_type = ee.List(["water", "tree cover","built-up","other"]);
+var lc_label = ee.List([0, 1, 2, 3]);
 var lc_points = ee.FeatureCollection(
-
 lc_type.map(function(lc){
-
 var colour = colours.get(lc_type.indexOf(lc));
-
 return points.filterMetadata("label", "equals", lc_type.indexOf(lc).add(1))
-
 .map(function(point){
-
 return point.set('style', {color: colour, pointShape: "diamond", pointSize: 3, width: 2, fillColor: "00000000"});
-
 });
+})).flatten();
 
-})**).flatten();**
-
-**Map.addLayer(**classified, {min: 0, max: 3, palette: \["darkblue","darkgreen","yellow", "orange"\]}, 'Classified image', false**);**
-
-**Map.addLayer(**lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', false**);**
-
-**}**
-
-| --- | --- |
-| ee.List | Creates a server-side list object |
-| .get | Returns the element at a specified index |
-| .indexOf | Returns the position of the first case of target |
-| .flatten | Collapses a list of lists into a list |
-|  |  |
+Map.addLayer(**classified, {min: 0, max: 3, palette: ["darkblue","darkgreen","yellow", "orange"]}, 'Classified image', false);
+Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', false);
+}
+```
 
 **Practical 9, part 2: Supervised learning 2: Improving land cover classification.**
 
@@ -220,11 +175,11 @@ Access the completed practical, part 2 script [here](https://code.earthengine.go
 
 By the end of this practical you should be able to:
 
-1\. Understand the role and importance of high-quality training data.
+1. Understand the role and importance of high-quality training data.
 
-2\. Use an objective approach (experimental) to improve the selection of training data.
+2. Use an objective approach (experimental) to improve the selection of training data.
 
-**3.** Determine the area of applicability for a model.
+3. Determine the area of applicability for a model.
 
 **The end product**
 
