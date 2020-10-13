@@ -43,9 +43,9 @@ image. Next, we will compute the NDVI and NDWI spectral indices. GEE has
 a dedicated function for this.
 
 ```js
-var NDVI = filtered.normalizedDifference(\['B8','B4'\]);
+var NDVI = filtered.normalizedDifference(['B8','B4']);
 
-var NDWI = filtered.normalizedDifference(\['B3','B8'\]);
+var NDWI = filtered.normalizedDifference(['B3','B8']);
 ```
 
 ***
@@ -59,12 +59,12 @@ from -1 to 1. However, for NDVI we specify a minimum of zero to improve
 the visualisation of NDVI. This may not always be necessary.
 
 ```js
-var vis = \['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163',
+var vis = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163',
 '99B718',
 
 '74A901', '66A000', '529400', '3E8601', '207401', '056201',
 
-'004C00', '023B01', '012E01', '011D01', '011301'\];
+'004C00', '023B01', '012E01', '011D01', '011301'];
 
 Map.addLayer(NDVI,{min: 0, max: 1, palette: vis},'NDVI');
 
@@ -75,7 +75,7 @@ Map.addLayer(NDWI,{min: -1, max: 1, palette: vis},'NDWI');
 
 **_Interpreting spectral indices_**
 
-![](/images/prac2_f2.png)
+![](/images/prac2_f2.png){width="3.4166666666666665in"height="4.114583333333333in"}
 
 **Figure 2:** Spectral indices take advantage of the spectral properties
 of land cover. For instance, as highlighted in the theory lecture,
@@ -93,7 +93,9 @@ sensitive to water.
 
 There are numerous methods available to detect surface water and this area of research is still an active one. In this course you will be introduced to two of these general approaches i.e. supervised classification and thresholding. For this practical, you will use a very simple thresholding-based approach that employs the computed NDVI and NDWI spectral indices.
 
+```js
     Map.addLayer(NDWI.gt(NDVI),{},'water_1c');
+```
 
 In the above code snippet, the function gt() returns a 1 if the first value is greater than the second, creating a binary raster i.e. a value of 1 is returned when NDWI values are greater than those of the corresponding NDVI pixel. This inequality can largely be useful to detect open surface water. However, upon inspection, you will come across inevitable omission and commission errors.
 
