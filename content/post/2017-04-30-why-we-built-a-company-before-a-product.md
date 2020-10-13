@@ -24,13 +24,13 @@ By the end of this practical you should be able to:
 **Importing and Filtering**
 
 Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
+
 ```js
-**var filtered =** s21c.filterBounds(Theewaterskloof)
-
+var filtered = s21c.filterBounds(Theewaterskloof)
 .filterDate('2019-05-01','2019-08-14')
-
 .median();
 ```
+
 ```js
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
