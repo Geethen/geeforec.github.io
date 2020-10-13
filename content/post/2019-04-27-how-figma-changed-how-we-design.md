@@ -23,6 +23,8 @@ By the end of this practical you should be able to:
 
 **The end product**
 
+![](/images/prac_7_f1.png)
+
 **Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 **Importing and pre-processing**
