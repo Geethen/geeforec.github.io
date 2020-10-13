@@ -162,7 +162,7 @@ return point.set('style', {color: colour, pointShape: "diamond", pointSize: 3, w
 });
 })).flatten();
 
-Map.addLayer(**classified, {min: 0, max: 3, palette: ["darkblue","darkgreen","yellow", "orange"]}, 'Classified image', false);
+Map.addLayer(classified, {min: 0, max: 3, palette: ["darkblue","darkgreen","yellow", "orange"]}, 'Classified image', false);
 Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', false);
 }
 ```
