@@ -17,23 +17,23 @@ Access the completed practical, part 1 script [here](https://code.earthengine.go
 By the end of this practical you should be able to:
 
 1. Describe the workflow for a typical supervised classification workflow.
-
 2. Create reference data for classes of interest.
-
 3. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover and other (neither of the three classes).
-
 4. Evaluate model accuracy and improve model accuracy
 
-  
 **The end product**
 
 ![](/images/prac9_f1.png)
 
 **Figure 1:** The distribution of water, built-up areas, tree-cover and other (neither of the three classes) pixels at a 30 m resolution for a heterogenous coastal area in the Western cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
 
-**Importing**
+***
+
+**Import data**
 
 For this practical, you will be required to import Landsat-8 surface reflectance and Sentinel-1 Ground Range Detected imagery (GRD) data. Rename these as l8sr and s1 respectively. You have been provided with a reference points dataset (four feature collections within the imports section). However, you have the functionality within GEE to create your own reference points for each of the four classes of interest i.e. water, built-up areas, tree-cover and other.
+
+***
 
 **Creating custom reference points**
 
@@ -42,6 +42,8 @@ In the scenario that you are creating your own reference data points, you can us
 ![](/images/prac9_f2.png)
 
 **Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero indexed.
+
+***
 
 **Filtering**
 
@@ -84,7 +86,9 @@ Create a final composite image with the bands of both the Landsat-8 composite an
 var composite = filtered.addBands(s1).aside(print).clip(geometry);
 ```
 
-Preparing the train and test datasets
+***
+
+**Preparing the train and test datasets**
 
 The next step is to split this data into a training and testing partition. The training partition is used to fit the model whilst the test data is used to evaluate the accuracy of the model. Here, we use a split of 80% train and 20% test. We set the seed to ensure we end up with roughly the same train and test partition in the case of re-running the model.
 
@@ -94,7 +98,9 @@ var training = new_table.filter(ee.Filter.lt('random', 0.80)).aside(print);
 var test = new_table.filter(ee.Filter.gte('random', 0.80)).aside(print);
 ```
 
-Extracting the spectral signatures
+***
+
+**Extracting the spectral signatures**
 
 At this point, we have our response and explanatory variables prepared and we can move on to extracting the spectral signatures for each of the points. The ‘tileScale’ argument may be useful when working with large computations that fail due to computation errors.
 
@@ -107,6 +113,8 @@ tileScale:16
 });
 ```
 
+***
+
 **Model fitting**
 
 ```js
@@ -118,11 +126,15 @@ inputProperties: composite.bandNames()
 });
 ```
 
+***
+
 **Inference for entire AOI**
 
 ```js
 var classified = composite.classify(trainedClassifier);
 ```
+
+***
 
 **Model evaluation**
 
@@ -146,7 +158,9 @@ print('Producers Accuracy', Test.errorMatrix('label', 'classification').producer
 print('Users Accuracy', Test.errorMatrix('label', 'classification').consumersAccuracy());
 ```
 
-Visualisation
+***
+
+**Visualisation**
 Visualising the RGB image, reference points and classified image
 
 ```js
@@ -174,6 +188,8 @@ Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', fa
 }
 ```
 
+***
+
 **Practical 9, part 2: Supervised learning 2: Improving land cover classification.**
 
 Access the completed practical, part 2 script [here](https://code.earthengine.google.com/017a363f7e3766b60ba17bc0a3ebc62c)
@@ -194,6 +210,6 @@ By the end of this practical you should be able to:
 
 Reference
 
-The area of applicability concept is based is an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
+>The area of applicability concept is based is an experimental concept still under review >and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
 
 Meyer, H. and Pebesma, E., 2020. Predicting into unknown space? Estimating the area of applicability of spatial prediction models. arXiv preprint arXiv:2005.07939.
