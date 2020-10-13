@@ -27,6 +27,7 @@ By the end of this practical you should be able to:
 There are three datasets that you require for this practical. First you will add the Global Forest Cover Change (GFCC) dataset and rename this ‘treeCover’. Next, you will import your first two vector datasets. The first is a feature collection that stores country boundaries and the second is a collection of global protected area boundaries. You can find the first country boundary dataset by searching ‘Boundary’ and selecting the LSIB detailed layer version. Rename this layer ‘countries’. You can find the second table by searching World database of Protected Areas (WDPA) polygons and renaming this layer as ‘PAs’ in your imports section.
 
 To easily select Costa Rica from its feature collection using the added marker, you will use filterBounds. This is the same function you previously used to filter an image collection.
+'''js
 
 **var country =** countries.filterBounds(geometry).union();
 
@@ -43,6 +44,7 @@ To easily select Costa Rica from its feature collection using the added marker, 
 .gt(30)
 
 .clip(country);
+'''
 
 A threshold of 30% tree canopy cover was selected since this threshold was used in the seminal paper that introduced the GFCC dataset i.e. this is a suggested threshold that separates Forest from non-Forest cover (Kim et al., 2014). These same functions can be applied to the 2005 tree cover layer. To be able to carry out a change detection for a binary layer (forest and non-forest), we will need to limit the change detection analysis to the forest areas from the two epochs. We are not concerned with non-forest areas that remained as non-forest. Rather we are interested in detecting forest losses, forest gains and forest cover that remained forest cover from the year 2000 to the year 2005. From a coding perspective, this requires us to create a mask that combines the forest cover from both epochs. This will allow our analysis to be limited to forest areas. Thereafter, to determine forest change we can use a simple subtraction.
 
