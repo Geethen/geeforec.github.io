@@ -29,6 +29,7 @@ var filtered = s21c.filterBounds(Theewaterskloof)
 .filterDate('2019-05-01','2019-08-14')
 .median();
 ```
+
 Here we compute a median image as opposed to selecting the first image
 (in the first practical). A median image is preferable when you reduce
 an entire image collection since a cloud-free and shadow-free image will
@@ -42,13 +43,14 @@ image. Next, we will compute the NDVI and NDWI spectral indices. GEE has
 a dedicated function for this.
 
 ```js
-**var NDVI =** filtered.normalizedDifference(\['B8','B4'\]);
+var NDVI = filtered.normalizedDifference(\['B8','B4'\]);
 
-**var NDWI =** filtered.normalizedDifference(\['B3','B8'\]);
+var NDWI = filtered.normalizedDifference(\['B3','B8'\]);
 ```
----------------------------------------------------------------------------------------------                          
 
-***Visualisation***
+***
+
+**_Visualisation_**
 
 We first specify a palette to be used when visualising the indices. We
 can create a colour palette using strings (e.g., ‘green’, ‘red’) or we
@@ -68,8 +70,9 @@ the visualisation of NDVI. This may not always be necessary.
 
 **Map.addLayer(**NDWI,{min: -1, max: 1, palette: vis},'NDWI'**);**
 ```
+
 ![](media/image7.png){width="4.0625in"
-height="3.96875in"}***Interpreting spectral indices***
+height="3.96875in"}**_Interpreting spectral indices_**
 
 **Figure 2:** Spectral indices take advantage of the spectral properties
 of land cover. For instance, as highlighted in the theory lecture,
@@ -90,11 +93,11 @@ classification and thresholding. For this practical, you will use a very
 simple thresholding-based approach that employs the computed NDVI and
 NDWI spectral indices.
 
-**Map.addLayer(**NDWI.gt(NDVI),{},'water\_1c'**);**
+**Map.addLayer(NDWI.gt(NDVI),{},'water_1c'**);
 
-  .gt   Returns a binary raster, with values of 1 when the inequality is satisfied and a 0 if it is not. Belongs to a family of inequalities, such as (gte, lte, lt, eq, neq)
-  ----- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        
+.gt   Returns a binary raster, with values of 1 when the inequality is satisfied and a 0 if it is not. Belongs to a family of inequalities, such as (gte, lte, lt, eq, neq)
+
+***
 
 In the above code snippet, the function gt() returns a 1 if the first
 value is greater than the second, creating a binary raster i.e. a value
@@ -103,7 +106,7 @@ corresponding NDVI pixel. This inequality can largely be useful to
 detect open surface water. However, upon inspection you will come across
 inevitable omission and commission errors.
 
-***The influence of atmospheric effects on water detection.***
+**_The influence of atmospheric effects on water detection._**
 
 ![](media/image13.png){width="3.4166666666666665in"
 height="4.114583333333333in"}Recently, there has been a drive towards
@@ -124,12 +127,13 @@ water from Landsat-8 made available through the Global Surface Water
 product (centre), water detected from atmospherically uncorrected
 Sentinel-2, level 1C data (bottom).
 
-***Practical 2 Exercise***
+**_Practical 2 Exercise_**
 
 Repeat the steps in this practical for the level 2A data that you
 imported and renamed as s22a at the beginning of this practical.
 Thereafter, compare the water detection results and patterns with the
 s21c image results. Submit your final script.
+
 ```js
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
