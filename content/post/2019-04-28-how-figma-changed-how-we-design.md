@@ -24,8 +24,10 @@ By the end of this practical you should be able to:
 
 4\. Evaluate model accuracy and improve model accuracy
 
-![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png =316x528)  
- **The end product**
+  
+**The end product**
+
+![](/images/prac9_f1.png)
 
 **Figure 1:** The distribution of water, built-up areas, tree-cover and other (neither of the three classes) pixels at a 30 m resolution for a heterogenous coastal area in the Western cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
 
@@ -37,7 +39,9 @@ For this practical, you will be required to import Landsat-8 surface reflectance
 
 In the scenario that you are creating your own reference data points, you can use the following steps. Click on the add Markers button. Thereafter, hover over the geometry imports section and click on the cog wheel besides the geometry and setup the various options by changing the ‘Name’ to the class of interest, changing the ‘import as’ option to a feature collection and adding a property called label with a unique integer for each class. Once set, click ok and go to the map area and add reference points for the applicable class in appropriate locations. ‘Appropriate locations’ is dependent on the spatial resolution of your imagery to be classified and the time period of interest. For instance, when working with Landsat-8, 30 m imagery, it is ideal if you add markers for areas that are dominated by the class of interest. A higher resolution base map together with a RGB or FCI can be highly useful for guiding your reference point selection. Note, use a base map that overlaps with the period of concern.
 
-![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png =298x209)**Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero indexed.
+![](/images/prac9_f2.png)
+
+**Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero indexed.
 
 **Filtering**
 
@@ -55,10 +59,11 @@ return image.select('B.*').addBands([ndvi,mndwi]);
 .divide(10000)
 .clip(geometry);
 ```
+
 Similarly, filter the Sentinel-1 data to the AOI for the period of June to September 2016 as above. In addition, filter the s1 image collection to those images that have captured in Interferometric Wide (IW) mode and contain Vertical Transmit and Vertical Receive (VV) and Vertical Transmit and Horizontal Receive polarised bands. Lastly, for each image, select all bands that start with a V and reduce the resulting images to the mean image.
 
 ```js
-**var s1 =** s1.filterBounds(geometry)
+var s1 = s1.filterBounds(geometry)
 
 .filterDate(startDate, endDate)
 
@@ -88,6 +93,7 @@ var new_table = new_table.randomColumn({seed: 1});
 var training = new_table.filter(ee.Filter.lt('random', 0.80)).aside(print);
 var test = new_table.filter(ee.Filter.gte('random', 0.80)).aside(print);
 ```
+
 Extracting the spectral signatures
 
 At this point, we have our response and explanatory variables prepared and we can move on to extracting the spectral signatures for each of the points. The ‘tileScale’ argument may be useful when working with large computations that fail due to computation errors.
@@ -147,6 +153,7 @@ Visualising the RGB image, reference points and classified image
 Map.centerObject(points.geometry().bounds(), 13);
 Map.addLayer(composite,rgb_vp, 'Landsat-8 RGB');
 ```
+
 ```js
 showTrainingData();
 function showTrainingData(){
@@ -176,14 +183,12 @@ Access the completed practical, part 2 script [here](https://code.earthengine.go
 By the end of this practical you should be able to:
 
 1. Understand the role and importance of high-quality training data.
-
 2. Use an objective approach (experimental) to improve the selection of training data.
-
 3. Determine the area of applicability for a model.
 
 **The end product**
 
-![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png =600x694)
+![](/images/prac9_f3.png)
 
 **Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogenous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
 
