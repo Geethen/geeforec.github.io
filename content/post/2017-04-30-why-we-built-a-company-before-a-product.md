@@ -71,8 +71,11 @@ Map.addLayer(NDVI,{min: 0, max: 1, palette: vis},'NDVI');
 Map.addLayer(NDWI,{min: -1, max: 1, palette: vis},'NDWI');
 ```
 
-![](media/image7.png){width="4.0625in"
-height="3.96875in"}**_Interpreting spectral indices_**
+***
+
+**_Interpreting spectral indices_**
+
+![](/images/prac2_f2.png)
 
 **Figure 2:** Spectral indices take advantage of the spectral properties
 of land cover. For instance, as highlighted in the theory lecture,
@@ -84,6 +87,8 @@ be correlated to various vegetation parameters such as vegetation
 health, nutrient levels and plant phenophase. Similarly, NDWI is mainly
 sensitive to water.
 
+***
+
 **Detecting water**
 
 There are numerous methods available to detect surface water and this
@@ -93,11 +98,7 @@ classification and thresholding. For this practical, you will use a very
 simple thresholding-based approach that employs the computed NDVI and
 NDWI spectral indices.
 
-**Map.addLayer(NDWI.gt(NDVI),{},'water_1c'**);
-
-.gt   Returns a binary raster, with values of 1 when the inequality is satisfied and a 0 if it is not. Belongs to a family of inequalities, such as (gte, lte, lt, eq, neq)
-
-***
+    Map.addLayer(NDWI.gt(NDVI),{},'water_1c');
 
 In the above code snippet, the function gt() returns a 1 if the first
 value is greater than the second, creating a binary raster i.e. a value
