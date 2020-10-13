@@ -148,16 +148,17 @@ return ee.List(\[classNumber, area\]);
 **Option 3: Calculating and plotting the areas of each class**
 
 Unlike the previous two options, this option computes the areas for each class and presents the results in a pie chart.
+```js
 
-**var labels =** \[ 'Gain','no change','loss' \];
+var labels =[ 'Gain','no change','loss' ];
 
-**var areaClass =** coverChange.eq(\[1, 0, -1\]).rename(labels);
+var areaClass = coverChange.eq([1, 0, -1]).rename(labels);
 
-**var palette =** \['green','red','grey'\];
+var palette = ['green','red','grey'];
 
-**var areaEstimate =** areaClass.multiply(ee.Image.pixelArea()).divide(1e6);
+var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(1e6);
 
-**var chart =** ui.Chart.image
+var chart = ui.Chart.image
 
 .regions({
 
@@ -185,7 +186,8 @@ colors: palette,
 
 });
 
-**print(chart**);
+print(chart);
+```
 
 The ‘best’ option to use is often case-specific and is dependent on your goal, it is likely that you prefer to create plots within R owing to the powerful and flexible visualisation libraries such as ggplot2. In that case, the first option is more ideal since I found it to be the most computationally efficient of the three options. More specifically, I used a lower scale value of 100 m for the last two options whilst I used the native 30 m scale value for the first option. Note: different scale values result in different final area estimates owing to the influences of spatial resolution. More specifically, when using the 100 m scale value, there was an inflated area value reported for the majority no-change class, and an underestimation in the area values for the two minority classes. This may largely be attributed to the different area to perimeter ratios associated with the different scale values.
 
