@@ -1,8 +1,8 @@
 +++
-avatar = ""
+avatar = "/images/jw.jpg"
 bio = ""
 draft = true
-featured = false
+featured = true
 social = []
 title = "Joseph White"
 
