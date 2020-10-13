@@ -27,13 +27,13 @@ By the end of this practical you should be able to:
 
 **Figure 1:** The distribution of water, built-up areas, tree-cover and other (neither of the three classes) pixels at a 30 m resolution for a heterogenous coastal area in the Western cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
 
-----------------------------------------------------------------------------------------
+***
 
 **Import data**
 
 For this practical, you will be required to import Landsat-8 surface reflectance and Sentinel-1 Ground Range Detected imagery (GRD) data. Rename these as l8sr and s1 respectively. You have been provided with a reference points dataset (four feature collections within the imports section). However, you have the functionality within GEE to create your own reference points for each of the four classes of interest i.e. water, built-up areas, tree-cover and other.
 
---------------------------------------------------------------------------------------
+***
 
 **Creating custom reference points**
 
@@ -66,17 +66,11 @@ Similarly, filter the Sentinel-1 data to the AOI for the period of June to Septe
 
 ```js
 var s1 = s1.filterBounds(geometry)
-
 .filterDate(startDate, endDate)
-
 .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
-
 .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
-
 .filter(ee.Filter.eq('instrumentMode', 'IW'))
-
 .select("V.")
-
 .mean();
 ```
 
@@ -118,7 +112,7 @@ tileScale:16
 **Model fitting**
 
 ```js
-**var trainedClassifier =** ee.Classifier.randomForest(100)
+var trainedClassifier = ee.Classifier.randomForest(100)
 .train({
 features: Features,
 classProperty: 'label',
@@ -146,7 +140,7 @@ print('Train Accuracy', trainAccuracy);
 Test accuracy
 var test = composite.sampleRegions({
 collection: test,
-properties: \['label'\],
+properties: ['label'],
 scale: 30,
 tileScale: 16
 });
