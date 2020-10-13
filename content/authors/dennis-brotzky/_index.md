@@ -8,7 +8,7 @@ bio: 'Sandra MacFadyen is a landscape ecologist interested in macroscale ecosyst
   understanding of ecosystem dynamics in large protected areas.
 
 '
-avatar: "/images/dennis-brotzky.jpg"
+avatar: "/images/smf.jpg"
 featured: true
 social:
 - title: unsplash
