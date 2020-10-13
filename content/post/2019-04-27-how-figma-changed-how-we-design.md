@@ -7,6 +7,10 @@ timeToRead: 8
 authors: []
 
 ---
+**Practical 7: Binary change detection, computing area and charting**
+
+Access the completed practical script [here](https://code.earthengine.google.com/fae000aed0572d8d6a6b9f0ca8192517)
+
 **Learning Objectives**
 
 By the end of this practical you should be able to:
@@ -26,6 +30,7 @@ By the end of this practical you should be able to:
 There are three datasets that you require for this practical. First you will add the Global Forest Cover Change (GFCC) dataset and rename this ‘treeCover’. Next, you will import your first two vector datasets. The first is a feature collection that stores country boundaries and the second is a collection of global protected area boundaries. You can find the first country boundary dataset by searching ‘Boundary’ and selecting the LSIB detailed layer version. Rename this layer ‘countries’. You can find the second table by searching World database of Protected Areas (WDPA) polygons and renaming this layer as ‘PAs’ in your imports section.
 
 To easily select Costa Rica from its feature collection using the added marker, you will use filterBounds. This is the same function you previously used to filter an image collection.
+
 ```js
 
 **var country =** countries.filterBounds(geometry).union();
@@ -46,6 +51,7 @@ To easily select Costa Rica from its feature collection using the added marker, 
 ```
 
 A threshold of 30% tree canopy cover was selected since this threshold was used in the seminal paper that introduced the GFCC dataset i.e. this is a suggested threshold that separates Forest from non-Forest cover (Kim et al., 2014). These same functions can be applied to the 2005 tree cover layer. To be able to carry out a change detection for a binary layer (forest and non-forest), we will need to limit the change detection analysis to the forest areas from the two epochs. We are not concerned with non-forest areas that remained as non-forest. Rather we are interested in detecting forest losses, forest gains and forest cover that remained forest cover from the year 2000 to the year 2005. From a coding perspective, this requires us to create a mask that combines the forest cover from both epochs. This will allow our analysis to be limited to forest areas. Thereafter, to determine forest change we can use a simple subtraction.
+
 ```js
 
 var mask = treeCov2000.firstNonZero(treeCov2005).selfMask()
@@ -54,6 +60,7 @@ var coverChange = treeCov2005.subtract(treeCov2000).updateMask(mask);
 ```
 
 **Visualisation**
+
 ```js
 
 Map.addLayer(treeCov2000,{},'Forest Cover 2000',false);
@@ -102,6 +109,7 @@ area.get('tree_canopy_cover')).divide(1e6).round()
 **Option 2**
 
 The second option to calculate area for each of the three classes requires \~ a third of the amount of code used in the first option by using the group function.
+
 ```js
 
 **var areaImage =** ee.Image.pixelArea().addBands(coverChange);
@@ -148,6 +156,7 @@ return ee.List(\[classNumber, area\]);
 **Option 3: Calculating and plotting the areas of each class**
 
 Unlike the previous two options, this option computes the areas for each class and presents the results in a pie chart.
+
 ```js
 
 var labels =[ 'Gain','no change','loss' ];
