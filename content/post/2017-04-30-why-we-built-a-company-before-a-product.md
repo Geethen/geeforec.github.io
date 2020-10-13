@@ -20,11 +20,7 @@ By the end of this practical you should be able to:
 3. Use these two spectral indices to detect water.
 4. Understand the influence of atmospheric interference on reflectance and detecting water.
 
-   **The end product**
-
-   !\[\](/images/prac_2_f1.png){width="3.625in" height="4.520833333333333in"}**The
-
-   end product**
+   **The end product![](/images/prac_2_f1.png)**
 
 **Importing and Filtering**
 
