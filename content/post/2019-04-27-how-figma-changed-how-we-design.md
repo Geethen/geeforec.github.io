@@ -26,6 +26,7 @@ By the end of this practical you should be able to:
 There are three datasets that you require for this practical. First you will add the Global Forest Cover Change (GFCC) dataset and rename this ‘treeCover’. Next, you will import your first two vector datasets. The first is a feature collection that stores country boundaries and the second is a collection of global protected area boundaries. You can find the first country boundary dataset by searching ‘Boundary’ and selecting the LSIB detailed layer version. Rename this layer ‘countries’. You can find the second table by searching World database of Protected Areas (WDPA) polygons and renaming this layer as ‘PAs’ in your imports section.
 
 To easily select Costa Rica from its feature collection using the added marker, you will use filterBounds. This is the same function you previously used to filter an image collection.
+```js
 
 **var country =** countries.filterBounds(geometry).union();
 
@@ -42,29 +43,27 @@ To easily select Costa Rica from its feature collection using the added marker, 
 .gt(30)
 
 .clip(country); 
+```
 
 A threshold of 30% tree canopy cover was selected since this threshold was used in the seminal paper that introduced the GFCC dataset i.e. this is a suggested threshold that separates Forest from non-Forest cover (Kim et al., 2014). These same functions can be applied to the 2005 tree cover layer. To be able to carry out a change detection for a binary layer (forest and non-forest), we will need to limit the change detection analysis to the forest areas from the two epochs. We are not concerned with non-forest areas that remained as non-forest. Rather we are interested in detecting forest losses, forest gains and forest cover that remained forest cover from the year 2000 to the year 2005. From a coding perspective, this requires us to create a mask that combines the forest cover from both epochs. This will allow our analysis to be limited to forest areas. Thereafter, to determine forest change we can use a simple subtraction.
+```js
 
-**var mask =** treeCov2000.firstNonZero(treeCov2005).selfMask()
+var mask = treeCov2000.firstNonZero(treeCov2005).selfMask()
 
-**var coverChange =** treeCov2005.subtract(treeCov2000).updateMask(mask);
-
-| --- | --- |
-| ee.ImageCollection.fromImages | Combines images to create an image collection |
-| selfMask | Removes/Masks out zero values |
-| .firstNonZero | Combines two images, returning unique forest cover pixels |
-| .updateMask | Clips a raster by a raster |
-|  |  |
+var coverChange = treeCov2005.subtract(treeCov2000).updateMask(mask);
+```
 
 **Visualisation**
+```js
 
-**Map.addLayer(treeCov2000,{},'Forest Cover 2000',false**);
+Map.addLayer(treeCov2000,{},'Forest Cover 2000',false);
 
-**Map.addLayer(treeCov2005,{},'Forest Cover 2005',false**);
+Map.addLayer(treeCov2005,{},'Forest Cover 2005',false);
 
-**var palette =** \['red','grey','green'\];
+var palette =['red','grey','green'];
 
-**Map.addLayer(coverChange,{palette:palette},'Forest Cover Change 2000-2005',false**);
+Map.addLayer(coverChange,{palette:palette},'Forest Cover Change 2000-2005',false);
+```
 
 Note, we use the false argument to prevent the layers from loading (the default action) when the script is run. This may be useful when you do not want to view all the layers at once. Also, a palette can be specified by directly providing a colour name, as opposed to hex colour codes.
 
