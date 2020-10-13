@@ -10,9 +10,9 @@ authors: []
 **Practical 2: Spectral indices, atmospheric interference and water detection**
 
 Access the completed practical script [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e)
+
 ---
 **Learning Objectives**
-
 By the end of this practical you should be able to:
 
 1. Compute the Normalised Difference Vegetation Index (NDVI) and Normalised Difference Water Index (NDWI).
@@ -21,15 +21,12 @@ By the end of this practical you should be able to:
 4. Understand the influence of atmospheric interference on reflectance and detecting water.
 ---
 **Importing and Filtering**
-
 Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
-
 ```js
 var filtered = s21c.filterBounds(Theewaterskloof)
 .filterDate('2019-05-01','2019-08-14')
 .median();
 ```
-
 Here we compute a median image as opposed to selecting the first image
 (in the first practical). A median image is preferable when you reduce
 an entire image collection since a cloud-free and shadow-free image will
@@ -41,7 +38,6 @@ prior to any analysis.
 At this point you have converted an image collection to a single median
 image. Next, we will compute the NDVI and NDWI spectral indices. GEE has
 a dedicated function for this.
-
 ```js
 var NDVI = filtered.normalizedDifference(['B8','B4']);
 var NDWI = filtered.normalizedDifference(['B3','B8']);
@@ -54,7 +50,6 @@ can create a colour palette using strings (e.g., ‘green’, ‘red’) or we
 can use hex colour codes. The NDVI and NDWI spectral indices both range
 from -1 to 1. However, for NDVI we specify a minimum of zero to improve
 the visualisation of NDVI. This may not always be necessary.
-
 ```js
 var vis = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163','99B718',
 '74A901', '66A000', '529400', '3E8601', '207401', '056201',
@@ -69,11 +64,9 @@ Map.addLayer(NDWI,{min: -1, max: 1, palette: vis},'NDWI');
 ![](/images/prac2_f2.png)
 
 ## **Figure 2:** Spectral indices take advantage of the spectral properties of land cover. For instance, as highlighted in the theory lecture, vegetation has a high reflectance in the Near-Infrared (NIR) region while having a low reflectance in the red portion of the electromagnetic (EM) spectrum. As a result of using these bands to compute the NDVI, the index corresponds to the greenness of vegetation and has been shown to be correlated to various vegetation parameters such as vegetation health, nutrient levels, and plant phenophase. Similarly, NDWI is mainly sensitive to water.
-
+---
 **Detecting water**
-
 There are numerous methods available to detect surface water and this area of research is still an active one. In this course, you will be introduced to two of these general approaches i.e. supervised classification and thresholding. For this practical, you will use a very simple thresholding-based approach that employs the computed NDVI and NDWI spectral indices.
-
 ```js
     Map.addLayer(NDWI.gt(NDVI),{},'water_1c');
 ```
