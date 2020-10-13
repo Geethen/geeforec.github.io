@@ -44,7 +44,6 @@ a dedicated function for this.
 
 ```js
 var NDVI = filtered.normalizedDifference(['B8','B4']);
-
 var NDWI = filtered.normalizedDifference(['B3','B8']);
 ```
 
@@ -59,15 +58,11 @@ from -1 to 1. However, for NDVI we specify a minimum of zero to improve
 the visualisation of NDVI. This may not always be necessary.
 
 ```js
-var vis = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163',
-'99B718',
-
+var vis = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163','99B718',
 '74A901', '66A000', '529400', '3E8601', '207401', '056201',
-
 '004C00', '023B01', '012E01', '011D01', '011301'];
 
 Map.addLayer(NDVI,{min: 0, max: 1, palette: vis},'NDVI');
-
 Map.addLayer(NDWI,{min: -1, max: 1, palette: vis},'NDWI');
 ```
 ---
