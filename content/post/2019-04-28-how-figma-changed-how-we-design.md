@@ -4,8 +4,7 @@ date: 2019-04-28
 hero: "/images/prac9_f1.png"
 excerpt: 'Supervised learning 2: Land cover classification.'
 timeToRead: 8
-authors:
-- Thiago Costa
+authors: []
 
 ---
 **Practical 9, part 1: Supervised learning 2: Land cover classification.**
