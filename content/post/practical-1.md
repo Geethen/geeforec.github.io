@@ -33,16 +33,19 @@ There are two ways to import datasets into the GEE code editor. We will run thro
 
 Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'.
 
-An alternative and a more reproducible method is to call the dataset directly into your code editor. For this dataset, which has no temporal component, we use the function ee.Image(), insert the dataset string between the brackets and save the image as an object using: “var srtm = “.
+An alternative and a more reproducible method is to call the dataset directly into your code editor. For this dataset, which has no temporal component, we use the function ee.Image(), insert the dataset string between the brackets and save the image as an object using: “var srtm = “. We can then print the image to the console to explore the details of the data using the print() function.
 
 ```js
 var srtm = ee.Image("USGS/SRTMGL1_003");
+
+print(srtm);
 ```
 
-We can then print the image to the console to explore the details of the data and add the SRTM data to the map.
+**Visualization**
+
+We now want to add the SRTM data to the map. We do this using the Map.addLayer() function.
 
 ```js
-print(srtm);
 
 Map.addLayer(srtm);
 ```
