@@ -2,24 +2,24 @@
 authors = []
 date = 2020-10-19T22:00:00Z
 draft = true
-excerpt = "Spectral indices, atmospheric interference and water detection"
-hero = "/images/prac_2_f1.png"
+excerpt = "Importing, exploring and visualising datasets"
+hero = "/images/practical_1_hero_image.png"
 timeToRead = 3
 title = "Practical 1"
 
 +++
-**Practical 2: Spectral indices, atmospheric interference and water detection**
+**Practical 1: Importing, exploring and visualising datasets**
 
-Access the completed practical script [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e)
+Access the completed practical scripts (1) [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e) and (2) [here](https://code.earthengine.google.com/69f9fe758e00f7caba12f4f88352b49e) 
 
 **Learning Objectives**
 
 By the end of this practical you should be able to:
 
-1. Compute the Normalised Difference Vegetation Index (NDVI) and Normalised Difference Water Index (NDWI).
-2. Interpret both the NDVI and NDWI layer.
-3. Use these two spectral indices to detect water.
-4. Understand the influence of atmospheric interference on reflectance and detecting water.
+1. Import Google Earth Engine datasets into the code editor.
+2. Inspect the dataset.
+3. Visualize images in the interactive map explorer.
+4. Use some simple functions. 
 
 **Importing and Filtering**
 
