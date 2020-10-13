@@ -32,43 +32,29 @@ There are three datasets that you require for this practical. First you will add
 To easily select Costa Rica from its feature collection using the added marker, you will use filterBounds. This is the same function you previously used to filter an image collection.
 
 ```js
-
 var country = countries.filterBounds(geometry).union();
-
 var treeCov2000 = treeCover
-
 .filterBounds(country)
-
 .filter(ee.Filter.eq('year',2000))
-
 .mosaic()
-
 .select('tree_canopy_cover')
-
 .gt(30)
-
 .clip(country); 
 ```
 
 A threshold of 30% tree canopy cover was selected since this threshold was used in the seminal paper that introduced the GFCC dataset i.e. this is a suggested threshold that separates Forest from non-Forest cover (Kim et al., 2014). These same functions can be applied to the 2005 tree cover layer. To be able to carry out a change detection for a binary layer (forest and non-forest), we will need to limit the change detection analysis to the forest areas from the two epochs. We are not concerned with non-forest areas that remained as non-forest. Rather we are interested in detecting forest losses, forest gains and forest cover that remained forest cover from the year 2000 to the year 2005. From a coding perspective, this requires us to create a mask that combines the forest cover from both epochs. This will allow our analysis to be limited to forest areas. Thereafter, to determine forest change we can use a simple subtraction.
 
 ```js
-
 var mask = treeCov2000.firstNonZero(treeCov2005).selfMask()
-
 var coverChange = treeCov2005.subtract(treeCov2000).updateMask(mask);
 ```
 
 **Visualisation**
 
 ```js
-
 Map.addLayer(treeCov2000,{},'Forest Cover 2000',false);
-
 Map.addLayer(treeCov2005,{},'Forest Cover 2005',false);
-
 var palette =['red','grey','green'];
-
 Map.addLayer(coverChange,{palette:palette},'Forest Cover Change 2000-2005',false);
 ```
 
@@ -84,25 +70,15 @@ The first option is a more brute force approach whereby we create a separate lay
 
 ```js
 var noChange = coverChange.eq(0).selfMask();
-
 var areaImage = noChange.multiply(ee.Image.pixelArea())
-
 var area = areaImage.reduceRegion({
-
 reducer: ee.Reducer.sum(),
-
 geometry: country.geometry(),
-
 scale: 30,
-
 maxPixels: 1e10
-
 })
-
 var noChangeAreaSqKm = ee.Number(
-
 area.get('tree_canopy_cover')).divide(1e6).round()
-
 print(noChangeAreaSqKm)
 ```
 
@@ -111,45 +87,25 @@ print(noChangeAreaSqKm)
 The second option to calculate area for each of the three classes requires \~ a third of the amount of code used in the first option by using the group function.
 
 ```js
-
 var areaImage = ee.Image.pixelArea().addBands(coverChange);
-
 var areas = areaImage.reduceRegion({
-
 reducer: ee.Reducer.sum().group({
-
 groupField: 1,
-
 groupName: 'class',
-
 }),
-
 geometry: country.geometry(),
-
 scale: 30,
-
 maxPixels: 1e10
-
 });
-
 var classAreas = ee.List(areas.get('groups'));
-
 var classAreaLists = classAreas.map(function(item) {
-
 var areaDict = ee.Dictionary(item);
-
 var classNumber = ee.Number(areaDict.get('class')).format();
-
 var area = ee.Number(
-
 areaDict.get('sum')).divide(1e6).round();
-
 return ee.List(\[classNumber, area\]);
-
 });
-
 var result = ee.Dictionary(classAreaLists.flatten());
-
 print(result);
 ```
 
@@ -158,43 +114,24 @@ print(result);
 Unlike the previous two options, this option computes the areas for each class and presents the results in a pie chart.
 
 ```js
-
 var labels =[ 'Gain','no change','loss' ];
-
 var areaClass = coverChange.eq([1, 0, -1]).rename(labels);
-
 var palette = ['green','red','grey'];
-
 var areaEstimate = areaClass.multiply(ee.Image.pixelArea()).divide(1e6);
-
 var chart = ui.Chart.image
-
 .regions({
-
 image: areaEstimate,
-
 regions: country,
-
 reducer: ee.Reducer.sum(),
-
 scale: 100,
-
 })
-
 .setChartType('PieChart').setOptions({
-
 width: 250,
-
 height: 350,
-
 title: 'Area by class (sqkm)',
-
 is3D: true,
-
 colors: palette,
-
 });
-
 print(chart);
 ```
 
