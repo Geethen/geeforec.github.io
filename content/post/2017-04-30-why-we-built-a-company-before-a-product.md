@@ -22,7 +22,7 @@ By the end of this practical you should be able to:
 
    **The end product**
 
-   !\[\](media/image1.png){width="3.625in" height="4.520833333333333in"}**The
+   !\[\](/images/prac_2_f1.png){width="3.625in" height="4.520833333333333in"}**The
 
    end product**
 
