@@ -22,13 +22,15 @@ By the end of this practical you should be able to:
 
 **Access your code editor**
 
-The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/). Alternatively, you can access it directly at https://code.earthengine.google.com/
+The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/) by going to platform --> code editor. Alternatively, you can access it directly at https://code.earthengine.google.com/
 
 **Importing datasets**
 
+![](/images/practical_1_importing_image.png)
+
 There are two ways to import datasets into the GEE code editor. We will run through both of these in this practical. The first method is to use the search bar. We will be using the NASA SRTM Digital Elevation Data 30m in the first half of this practical. In the search bar, type in elevation and select the SRTM dataset. This will also bring up the metadata for the chosen dataset. Take a look at the information provided regarding the processing of the data, dataset time periods, resolution of the bands, scaling factors (which are unique to Google's ingestion of the data) and reference to the data source or journal article. 
 
-![](/images/Practical_1_importing_image.png)
+![](/images/practical_1_importing_image2.png)
 
 Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'.
 
@@ -45,7 +47,6 @@ print(srtm);
 We now want to add the SRTM data to the map. We do this using the Map.addLayer() function.
 
 ```js
-
 Map.addLayer(srtm);
 ```
 
