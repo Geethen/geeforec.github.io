@@ -75,23 +75,15 @@ Map.addLayer(NDWI,{min: -1, max: 1, palette: vis},'NDWI');
 
 **_Interpreting spectral indices_**
 
-![](/images/prac2_f2.png){width="3.4166666666666665in"height="4.114583333333333in"}
+![](/images/prac2_f2.png)
 
-**Figure 2:** Spectral indices take advantage of the spectral properties
-of land cover. For instance, as highlighted in the theory lecture,
-vegetation has a high reflectance in the Near-Infrared (NIR) region
-while having a low reflectance in the red portion of the electromagnetic
-(EM) spectrum. As a result of using these bands to compute the NDVI, the
-index corresponds to the greenness of vegetation and has been shown to
-be correlated to various vegetation parameters such as vegetation
-health, nutrient levels and plant phenophase. Similarly, NDWI is mainly
-sensitive to water.
+**Figure 2:** Spectral indices take advantage of the spectral properties of land cover. For instance, as highlighted in the theory lecture, vegetation has a high reflectance in the Near-Infrared (NIR) region while having a low reflectance in the red portion of the electromagnetic (EM) spectrum. As a result of using these bands to compute the NDVI, the index corresponds to the greenness of vegetation and has been shown to be correlated to various vegetation parameters such as vegetation health, nutrient levels, and plant phenophase. Similarly, NDWI is mainly sensitive to water.
 
 ***
 
 **Detecting water**
 
-There are numerous methods available to detect surface water and this area of research is still an active one. In this course you will be introduced to two of these general approaches i.e. supervised classification and thresholding. For this practical, you will use a very simple thresholding-based approach that employs the computed NDVI and NDWI spectral indices.
+There are numerous methods available to detect surface water and this area of research is still an active one. In this course, you will be introduced to two of these general approaches i.e. supervised classification and thresholding. For this practical, you will use a very simple thresholding-based approach that employs the computed NDVI and NDWI spectral indices.
 
 ```js
     Map.addLayer(NDWI.gt(NDVI),{},'water_1c');
