@@ -54,7 +54,7 @@ Map.addLayer(srtm);
 
 You should notice two things: 1) the visualization shows very little detail and 2) we have output the image for the full global dataset.
 
-First, let’s center the interactive map on chosen point. We can use two approaches here a) we can find the latitude/longitude coordinates using the Inspector tool and then copy and paste these values into the Map.setCenter() function, together with the zoom level. 
+First, let’s center the interactive map on a chosen point. We can use two approaches here a) we can find the latitude/longitude coordinates using the Inspector tool and then copy and paste these values into the Map.setCenter() function, together with the zoom level. 
 
 ```js
 Map.setCenter(-84.006204, 10.431206, 10);
@@ -143,3 +143,5 @@ Repeat this practical but use the Landsat-8 dataset. Produce a false colour imag
 ```js
 ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
 ```
+
+Send your completed script to **email**
