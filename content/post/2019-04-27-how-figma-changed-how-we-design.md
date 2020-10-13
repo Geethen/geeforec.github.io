@@ -17,11 +17,6 @@ By the end of this practical you should be able to:
 
 3\. Plot the computed area coverage using a pie chart.
 
-| --- | --- | --- | --- |
-|  |  |  |  |
-|  |  |  |  |
-|  |
-
   
 **The end product**
 
