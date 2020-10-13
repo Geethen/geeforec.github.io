@@ -20,6 +20,12 @@ By the end of this practical you should be able to:
 3. Use these two spectral indices to detect water.
 4. Understand the influence of atmospheric interference on reflectance and detecting water.
 
+   **The end product**
+
+   !\[\](media/image1.png){width="3.625in" height="4.520833333333333in"}**The
+
+   end product**
+
 **Importing and Filtering**
 
 Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
