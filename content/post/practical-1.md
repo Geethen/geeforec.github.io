@@ -27,9 +27,11 @@ The first step is to access the GEE code editor. This can be done from the earth
 
 **Importing datasets**
 
-There are two ways to import datasets into the GEE code editor. We will run through both of these in this practical. The first method is to 
+There are two ways to import datasets into the GEE code editor. We will run through both of these in this practical. The first method is to use the search bar. We will be using the NASA SRTM Digital Elevation Data 30m in the first half of this practical. In the search bar, type in elevation and select the SRTM dataset. This will also bring up the metadata for the chosen dataset. Take a look at the information provided regarding the processing of the data, dataset time periods, resolution of the bands, scaling factors (which are unique to Google's ingestion of the data) and reference to the data source or journal article. 
 
-Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
+![](/images/Practical_1_importing_image.png)
+
+Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'. An alternative method to 
 
 ```js
 var filtered = s21c.filterBounds(Theewaterskloof)
