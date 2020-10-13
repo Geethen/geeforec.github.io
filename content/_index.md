@@ -1,6 +1,6 @@
 ---
 hero:
-  heading: Google Earth Engine applications in Conservation and Ecology
+  heading: Google Earth Engine applications in Ecology and Conservation
   maxWidthPX: "652"
 seo:
   image: "/images/hero-2.jpg"
