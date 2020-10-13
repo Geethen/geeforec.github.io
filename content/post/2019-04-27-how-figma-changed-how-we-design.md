@@ -141,9 +141,8 @@ The ‘best’ option to use is often case-specific and is dependent on your goa
 
 **Practical 4 Exercise**
 
-· Try to understand the influence of varying scale values on the reported area values for each of the classes and their potential influence on conservation efforts. We will discuss your thoughts in our first discussion session.
-
-· Using the protected area table that you imported at the beginning of this practical, investigate the afforestation/deforestation patterns within some of these protected areas.
+* Try to understand the influence of varying scale values on the reported area values for each of the classes and their potential influence on conservation efforts. We will discuss your thoughts in our first discussion session.
+* Using the protected area table that you imported at the beginning of this practical, investigate the afforestation/deforestation patterns within some of these protected areas.
 
 **References**
 
