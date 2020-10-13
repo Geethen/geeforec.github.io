@@ -1,7 +1,7 @@
 ---
 title: Practical 2
 date: 2020-10-19T22:00:00+00:00
-hero: "/images/hero-6.jpg"
+hero: "/images/prac_2_f1.png"
 excerpt: Spectral indices, atmospheric interference and water detection
 timeToRead: 3
 authors: []
