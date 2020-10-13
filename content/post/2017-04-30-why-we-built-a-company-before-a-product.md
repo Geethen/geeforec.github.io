@@ -20,7 +20,8 @@ By the end of this practical you should be able to:
 3. Use these two spectral indices to detect water.
 4. Understand the influence of atmospheric interference on reflectance and detecting water.
 
-   **The end product![](/images/prac_2_f1.png "Figure 1: Sentinel-2 RGB image (top), derived NDWI (centre) and detected surface water (bottom).")**
+**The end product  
+![](/images/prac_2_f1.png "Figure 1: Sentinel-2 RGB image (top), derived NDWI (centre) and detected surface water (bottom).")**
 
 **Importing and Filtering**
 
