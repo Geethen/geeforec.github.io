@@ -31,13 +31,30 @@ There are two ways to import datasets into the GEE code editor. We will run thro
 
 ![](/images/Practical_1_importing_image.png)
 
-Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'. An alternative method to 
+Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'.
+
+An alternative and a more reproducible method is to call the dataset directly into your code editor. For this dataset, which has no temporal component, we use the function ee.Image(), insert the dataset string between the brackets and save the image as an object using: “var srtm = “.
 
 ```js
-var filtered = s21c.filterBounds(Theewaterskloof)
-.filterDate('2019-05-01','2019-08-14')
-.median();
+var srtm = ee.Image("USGS/SRTMGL1_003");
 ```
+
+We can then print the image to the console to explore the details of the data and add the SRTM data to the map.
+
+```js
+print(srtm);
+
+Map.addLayer(srtm);
+```
+
+You should notice two things: 1) the visualization shows very little detail and 2) we have output the image for the full global dataset.
+
+First, let’s center the interactive map on chosen point. We can use two approaches here a) we can find the latitude/longitude coordinates using the Inspector tool and then copy and paste these values into the Map.setCenter() function, together with the zoom level. 
+
+```js
+Map.setCenter(-84.006204, 10.431206, 10);
+```
+
 
 Here we compute a median image as opposed to selecting the first image
 (in the first practical). A median image is preferable when you reduce
