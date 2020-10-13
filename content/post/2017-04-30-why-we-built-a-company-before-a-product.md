@@ -1,9 +1,8 @@
 ---
-title: Why we built a company before building a product and why it worked
+title: Practical 2
 date: 2020-10-19T22:00:00+00:00
 hero: "/images/hero-6.jpg"
-excerpt: Creating a new website for Hopper, one of the top 4 most downloaded travel
-  apps in the U.S, along with Uber, Lyft.
+excerpt: Spectral indices, atmospheric interference and water detection
 timeToRead: 3
 authors: []
 
