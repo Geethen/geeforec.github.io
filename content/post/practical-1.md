@@ -23,7 +23,7 @@ By the end of this practical you should be able to:
 
 **Access your code editor**
 
-The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/). Alternatively, you can access it directly at [https://code.earthengine.google.com/] (https://code.earthengine.google.com/)
+The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/). Alternatively, you can access it directly at https://code.earthengine.google.com/
 
 **Importing datasets**
 
