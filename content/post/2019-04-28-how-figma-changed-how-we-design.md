@@ -1,249 +1,239 @@
 ---
-title: How Figma changed the way we designed Novela
+title: Practical 9
 date: 2019-04-28
-hero: /images/hero-5.jpg
-excerpt: To understand why Figma is the best design tool for our company, you have to understand what we do. As a designer.
+hero: "/images/hero-5.jpg"
+excerpt: 'Supervised learning 2: Land cover classification.'
 timeToRead: 8
 authors:
-  - Thiago Costa
+- Thiago Costa
 
 ---
+**Practical 9, part 1: Supervised learning 2: Land cover classification.**
 
-To understand why Figma is the best design tool for our company, you have to understand what we do. As a designer, I’ve been crafting digital experiences for the past ten years, having contributed to the growth of companies such as Hopper, Lightspeed, and Breather, among others. Throughout this journey, I’ve had the opportunity to meet the most talented designers, engineers, growth marketers, and build a world-class team to develop startups worldwide. We call this team Narative.
+Access the completed practical, part 1 script [here](https://code.earthengine.google.com/63bf79381841c0d81c3afaea76d08040)
 
-Narative is a studio based in 3 different cities around the world; so right off the bat we’re already facing a challenge; geography.
+**Learning Objectives**
 
-We came across Figma a few weeks before engaging in our first project. It’s worth noting that, I’ve been using Sketch for several years before Narative, and getting out of your comfort zone can be scary.
+By the end of this practical you should be able to:
 
-Just thinking about re-learning a new tool, transferring past designs, plugins and projects I’ve been working on for years, started to give me anxiety.
-Luckily, the transition was more than natural. Working on Figma was second-nature and, two weeks in, it became my daily driver. In three weeks, I became a fan, and today I am probably an advocate. Here are eight reasons why.
+1\. Describe the workflow for a typical supervised classification workflow.
 
-## Easy migration
+2\. Create reference data for classes of interest.
 
-Not much to say here. You literally just have to copy your art-boards — or as they call it, frames — then paste them into Figma. Simple as that. The platform is very forgiving and prepared for transitions.
+3\. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover and other (neither of the three classes).
 
-## Zero file management
+4\. Evaluate model accuracy and improve model accuracy
 
-What does that mean? Sketch, Framer, Adobe XD or even Photoshop are native apps where you inherently need to save your work. Some tools have auto-save, of course, but you still end up with hundreds of megabytes and even gigabytes on your drive. And yes, if you lose your disk, break your computer somehow, or have your dog eat your SSD, you will lose your files completely.
+![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png =316x528)  
+ **The end product**
 
-Not with Figma. Not having to command+s is a big deal. Figma is a web-based software, meaning you never need to upload, download, or worry about versions again. Imagine a Google Docs for design, keeping all my projects organized in one app, in the cloud. One single source of truth for design files.
+**Figure 1:** The distribution of water, built-up areas, tree-cover and other (neither of the three classes) pixels at a 30 m resolution for a heterogenous coastal area in the Western cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
 
-I probably saved more than 30GB of disk space by migrating my projects to Figma, and now I can access them from anywhere.
+**Importing**
 
-## Figma is platform-agnostic
+For this practical, you will be required to import Landsat-8 surface reflectance and Sentinel-1 Ground Range Detected imagery (GRD) data. Rename these as l8sr and s1 respectively. You have been provided with a reference points dataset (four feature collections within the imports section). However, you have the functionality within GEE to create your own reference points for each of the four classes of interest i.e. water, built-up areas, tree-cover and other.
 
-One of the best features of a web-based software is the fact you’re no longer stuck with an operating system. You can run it right from the browser or from their native app, that’s essentially a wrapper. I’m able to seamlessly start a project on my iMac Pro at my home office, and continue on my Surface Book 2 on the go. That’s huge.
+**Creating custom reference points**
 
-Additionally, you’ll always have the latest version, with no need to download painful software updates. The “cloud” is finally making sense in 2018.
+In the scenario that you are creating your own reference data points, you can use the following steps. Click on the add Markers button. Thereafter, hover over the geometry imports section and click on the cog wheel besides the geometry and setup the various options by changing the ‘Name’ to the class of interest, changing the ‘import as’ option to a feature collection and adding a property called label with a unique integer for each class. Once set, click ok and go to the map area and add reference points for the applicable class in appropriate locations. ‘Appropriate locations’ is dependent on the spatial resolution of your imagery to be classified and the time period of interest. For instance, when working with Landsat-8, 30 m imagery, it is ideal if you add markers for areas that are dominated by the class of interest. A higher resolution base map together with a RGB or FCI can be highly useful for guiding your reference point selection. Note, use a base map that overlaps with the period of concern.
 
-## Performance
+![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png =298x209)**Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero indexed.
 
-You may be thinking that running a full-fledged design app from the web has huge performance drawbacks. I thought the same, but was I ever wrong.
+**Filtering**
 
-I’ve always had full-spec computers running Sketch, still, ever so often I’d run into performance hiccups or memory drainage. That’s never happened with Figma, which is pretty magical.
+Create a Landsat-8 surface reflectance composite that covers the AOI (shown by the provided geometry) for the period of 1 June 2016 to 30th September 2016, add ndvi and mndwi bands. Lastly, compute the median image, taking into consideration the GEE scaling factor and clipping to the extent of geometry.
 
-I continually forget that I’m running a huge project in a “webpage”, and as soon as I remember, it always blows my mind because of how fast it is.
-Components and styles
-This is a feature that most product design tools have, but for some reason, it’s slightly more polished on Figma.
+**var filtered =** l8sr
 
-At Narative, as we constantly change projects, styles and teams, one of the best ways for us to keep in sync is by publishing components. Even in different projects, or “files”, we can load components and libraries from previous projects, allowing us to be extremely efficient and consistent.
+.filterBounds(geometry)
 
-Building components such as buttons, modals, and form fields is awesome. Say you build 30 pages using one single library of components, and if you ever decide to update the style of a button from this library, for example, you simply update the master and, voilà — all 30 pages will have the brand new and updated button.
+.filterDate(startDate, endDate)
 
-## Our engineers love it
+.map(function(image){
 
-From an engineering perspective, it’s extremely efficient having our projects centralized in one platform. In the past, every time I updated a project, I had to manually sync my designs through a plugin into a third-party “inspection” platform where engineers would have access to. Although this method works, it’s not ideal in a fast-paced project development.
+var ndvi = image.normalizedDifference(\['B5', 'B4'\]).rename(\['ndvi'\]);
 
-With Figma, engineers see changes in real time, allowing them to participate in every step of the project, from wireframes to design.
+var mndwi = image.normalizedDifference(\['B3', 'B7'\]).rename(\['mndwi'\]);
 
-Design Programmatically is key for us, so our engineers can simultaneously work on developing components while us, designers, progress with the design creation and copywriters progress with content. We essentially have all of the tools we need to create dynamic, digital products in one place.
+return image.select('B.*').addBands(\[ndvi,mndwi\]);
 
-## Tabs!
+}).median()
 
-One of my favourite features, and probably something I took for granted in the past is the ability to open projects in tabs.
+.divide(10000)
 
-And damn. It's fast.
-And damn. It's fast.
-Like a browser, the Figma app allows you to have several tabs open so you can jump back and forth between pages rather than having multiple windows messing up your desktop. I probably increased my efficiency by 50% or more being able to have several projects open, without eating my RAM alive.
+.clip(geometry);
 
-## Power to our team
+Similarly, filter the Sentinel-1 data to the AOI for the period of June to September 2016 as above. In addition, filter the s1 image collection to those images that have captured in Interferometric Wide (IW) mode and contain Vertical Transmit and Vertical Receive (VV) and Vertical Transmit and Horizontal Receive polarised bands. Lastly, for each image, select all bands that start with a V and reduce the resulting images to the mean image.
 
-Back to my initial point, collaboration is key for a company like Narative. Especially with a team overseas. Working on Figma, however, regardless of where you are in the world, it’s like working right next to each other.
+**var s1 =** s1.filterBounds(geometry)
 
-It’s tough to express just how efficient we’ve become, with everyone having access to one single file, at the same time.
-I design simultaneously with our copywriter, while our developer watches our progress, providing relevant comments. Again, it’s magical. Exporting images, SVGs, colors, and even CSS styles, is as simple as right-clicking and copying.
+.filterDate(startDate, endDate)
 
-## Conclusion
+.filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
 
-Figma is not only a full-fledged design tool but the best I’ve used in years. It speaks volumes regarding just how much its creators considered the future.
+.filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
 
-Witnessing forward-thinking products is not only refreshing but extremely inspirational to know there are teams working hard to support companies such as Narative to succeed. From drafting our first ideas to real prototypes, all while reducing the friction of turning visual concepts into code.
+.filter(ee.Filter.eq('instrumentMode', 'IW'))
 
-If you're still not sure, you should definitely try it out. It's free.
+.select("V.")
 
-```js
-import React from "react";
-import { graphql, useStaticQuery } from "gatsby";
-import styled from "@emotion/styled";
+.mean();
 
-import * as SocialIcons from "../../icons/social";
-import mediaqueries from "@styles/media";
+Create a final composite image with the bands of both the Landsat-8 composite and Sentinel-1 composite.
 
-const icons = {
-  dribbble: SocialIcons.DribbbleIcon,
-  linkedin: SocialIcons.LinkedinIcon,
-  twitter: SocialIcons.TwitterIcon,
-  facebook: SocialIcons.FacebookIcon,
-  instagram: SocialIcons.InstagramIcon,
-  github: SocialIcons.GithubIcon,
-};
+**var composite =** filtered.addBands(s1).aside(print).clip(geometry);
 
-const socialQuery = graphql`
-  {
-    allSite {
-      edges {
-        node {
-          siteMetadata {
-            social {
-              name
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+| --- | --- |
+| .aside(print) | Allows you to print the output to the console. Beneficial during debugging and for sanity checks. |
+|  |  |
 
-function SocialLinks({ fill = "#73737D" }: { fill: string }) {
-  const result = useStaticQuery(socialQuery);
-  const socialOptions = result.allSite.edges[0].node.siteMetadata.social;
+**Preparing the train and test datasets**
 
-  return (
-    <>
-      {socialOptions.map(option => {
-        const Icon = icons[option.name];
+The next step is to split this data into a training and testing partition. The training partition is used to fit the model whilst the test data is used to evaluate the accuracy of the model. Here, we use a split of 80% train and 20% test. We set the seed to ensure we end up with roughly the same train and test partition in the case of re-running the model.
 
-        return (
-          <SocialIconContainer
-            key={option.name}
-            target="_blank"
-            rel="noopener"
-            data-a11y="false"
-            aria-label={`Link to ${option.name}`}
-            href={option.url}
-          >
-            <Icon fill={fill} />
-          </SocialIconContainer>
-        );
-      })}
-    </>
-  );
-}
-```
+**var new_table =** new_table.randomColumn({seed: 1});
 
-This is another paragraph after the code block.
+**var training =** new_table.filter(ee.Filter.lt('random', 0.80)).aside(print);
 
-## This is a secondary heading
+**var test =** new_table.filter(ee.Filter.gte('random', 0.80)).aside(print);
 
-```jsx
-import React from "react";
-import { ThemeProvider } from "theme-ui";
-import theme from "./theme";
+**Extracting the spectral signatures**
 
-export default props => (
-  <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
-);
-```
+At this point, we have our response and explanatory variables prepared and we can move on to extracting the spectral signatures for each of the points. The ‘tileScale’ argument may be useful when working with large computations that fail due to computation errors.
 
-At Narative, we’ve been fans of Gatsby from day one, using it to build performant and flexible products for both clients and ourselves. With the growing community interest in Gatsby, we hope to create more resources that make it easier for anyone to grasp the power of this incredible tool.
+**var Features =** composite.sampleRegions({
 
-In this article I’ll explain how Gatsby’s lifecycle works and what the Gatsby specific files are for.
+collection: training,
 
-One of the challenges I had when learning Gatsby was trying to understand the Gatsby lifecycle. React introduced me to the concept of a Component Lifecycle, but when I started learning Gatsby I felt at a loss again. I remember looking through example repositories and seeing Gatsby specific files in every project and thinking to myself, “What are these files for? Why are gatsby-node.js, gatsby-browser.js, and gatsby-ssr.js generated in the default starter kit? Can I really delete these files?”
+properties: \['label'\],
 
-In this article I’ll explain the how Gatsby’s lifecycle works and what the Gatsby specific files are for.
+scale: 30,
 
-## How does Gatsby work?
+tileScale:16
 
-To understand what these files are for, we must first understand how Gatsby works. Gatsby is a static site generator that pulls data from sources you provide and generates a website/app for you.
+});
 
-Gatsby requires Node to be installed to run the Bootstrap and Build sequences. Under the hood, Gatsby uses Webpack to build and start a development server amongst other things.
+**Model fitting**
 
-### Step 1
+**var trainedClassifier =** ee.Classifier.randomForest(100)
 
-During the Bootstrap sequence, which occurs every time you run \$ gatsby develop, there are about 20 events that fire ranging from validating your gatsby-config.js to building the data schemas and pages for your site. For example, the Bootstrap sequence is where Gatsby will create pages. If you want an in depth look of all 20 Bootstrap steps Swyx shared a fantastic Gist that goes into more detail.
+.train({
 
-### Step 2
+features: Features,
 
-The Build sequence is very similar to the Bootstrap sequence, except it’s run with production optimizations and will output static files ready for deployment. Think of it as building your React application in production mode vs development.
+classProperty: 'label',
 
-### Step 3
+inputProperties: composite.bandNames()
 
-And finally, once the generated files are deployed, Gatsby lives in the browser. Gatsby cleverly generates a static website that turns into a web app after initial load, which extends the lifecycle to the browser.
+});
 
-What’s important to remember is that Gatsby’s lifecycle can be aggregated into 3 main sequences:
+**Inference for entire AOI**
 
-- Bootstrap
-- Build
-- Browser
-- These three sequences makeup the Gatsby lifecycle.
+**var classified =** composite.classify(trainedClassifier);
 
-Parts of the lifecycle are visible when running $ gatsby develop
-A peak into the Gatsby lifecycle when running $ gatsby develop
-A peak into the Gatsby lifecycle when running \$ gatsby develop
-If you’re familiar with React and the component lifecycle, Gatsby’s lifecycle is almost the same concept. Just like React’s lifecycle, Gatsby exposes hooks for developers to build on top of. Those lifecycle hooks are accessed through Gatsby specific files such as gatsby-node.js, gatsby-browser.js and gatsby-ssr.js.
+**Model evaluation**
 
-What are the Gatsby specific files for?
-gatsby-config.js
-A place to put all your site configurations such as plugins, metadata, and polyfills. This file is the blueprint of your application and is where Gatsby really shines with its plugin system. When you run $ gatsby develop or $ gatsby build gatsby-config.js is the first file to be read and validated.
+The training accuracy largely overestimates model accuracy since this data has been used to train the model. We therefore use a test set (data unseen by the model) to get a more reliable estimate of model accuracy.
 
-Most of your time spent in gatsby-config.js will likely revolve around source plugins, image plugins, offline support, styling options, and site metadata.
+**var trainAccuracy =** trainedClassifier.confusionMatrix().accuracy();
 
-gatsby-node.js
-Gatsby runs a Node process when you develop or build your website and uses Webpack under the hood to spin up a development server with hot reloading. During the Node process Gatsby will load plugins, check the cache, bootstrap the website, build the data schema, create pages, and deal with some configuration and data management.
+**print(**'Train Accuracy', trainAccuracy**);**
 
-Everything that occurs during the Bootstrap and Build sequences occurs in gatsby-node.js. This means it’s the perfect place to create pages dynamically based off data from a source plugin or modify Gatsby’s Webpack or Babel configs.
+**Test accuracy**
 
-For example, if you want to move some files manually, such as a Netlify \_redirects file, a good place to do it is in your gatsby-node.js file at the onPostBuild lifecycle hook.
+**var test =** composite.sampleRegions({
 
-From experience, most of my time has revolved around handling data and building pages in gatsby-node.js. This file quickly becomes the piping of your entire website.
+collection: test,
 
-## Examples of gatsby-node.js hooks:
+properties: \['label'\],
 
-- createPages
-- onCreateBabelConfig
-- onCreateWebpackConfig
-- onPostBuild
-- gatsby-ssr.js
+scale: 30,
 
-When you think Server Side Rendering you think of a server that takes in requests and dynamically builds pages and sends it to the client. Gatsby doesn’t do that, but it does server side render — it generates all the pages during build time.
+tileScale: 16
 
-Naturally, gatsby-ssr.js allows developers to hook into that lifecycle. In my experience, most use cases revolve around injecting CSS, HTML, or Redux state information into the generated output. For example, if you need to insert third party scripts such as Analytics Tracking or a Pixel it can be done on the onRenderBody gatsby-ssr.js hook.
+});
 
-## Examples of gatsby-ssr.js hooks:
+**var Test =** test.classify(trainedClassifier);
 
-- onPreRenderHTML
-- onRenderBody
-- replaceRenderer
-- gatsby-browser.js
+**print(**'ConfusionMatrix', Test.errorMatrix('label', 'classification')**);**
 
-Gatsby is a static site that loads a dynamic application after initial load, which means you get the benefits of a static site in a web application. gatsby-browser.js provides convenient hooks to deal with app loading, route updates, service worker updates, scroll positioning, and more.
+**print(**'TestAccuracy', Test.errorMatrix('label', 'classification').accuracy()**);**
 
-Everything that occurs after your static site has loaded can be hooked in gatsby-browser.js. For apps that I’ve built, gatsby-browser.js was mostly used for keeping track of routes, scroll positioning, and sending analytics events.
+**print(**'Kappa Coefficient', Test.errorMatrix('label', 'classification').kappa()**);**
 
-## Examples of gatsby-browser.js hooks:
+**print(**'Producers Accuracy', Test.errorMatrix('label', 'classification').producersAccuracy()**);**
 
-- onClientEntry
-- onRouteUpdate
-- onServiceWorkerInstalled
-- registerServiceWorker
-- shouldUpdateScroll
+**print(**'Users Accuracy', Test.errorMatrix('label', 'classification').consumersAccuracy()**);**
 
-## Conclusion
+**Visualisation**
 
-Gatsby is built with React at its core and shares a common API pattern, the lifecycle. This lifecycle gives developers access to key moments in their website’s process through specific hooks. For example, adding analytics can be achieved through the Browser lifecycle hook onClientEntry. Gatsby reserves specific filenames as an entry point to access every lifecycle; these files are named gatsby-node.js, gatsby-ssr.js and gatsby-browser.js.
+Visualising the RGB image, reference points and classified image
 
-Without the Gatsby lifecycle, it would be impossible to customize and modify your project beyond the base configuration, leaving developers with a rigid and poor developer experience. This power and flexibility has helped us build amazing web projects for clients like Hopper!
+**Map.centerObject(**points.geometry().bounds(), 13**);**
 
-Gatsby is a staple within our engineering process at Narative, helping us help our clients build the products they’ve always dreamed of, and the ones they’re yet to dream up.
+**Map.addLayer(**composite,rgb_vp, 'Landsat-8 RGB'**);**
+
+**showTrainingData();**
+
+**function showTrainingData(){**
+
+var colours = ee.List(\["darkblue","darkgreen","yellow", "orange"\]);
+
+var lc_type = ee.List(\["water", "tree cover","built-up","other"\]);
+
+var lc_label = ee.List(\[0, 1, 2, 3\]);
+
+var lc_points = ee.FeatureCollection(
+
+lc_type.map(function(lc){
+
+var colour = colours.get(lc_type.indexOf(lc));
+
+return points.filterMetadata("label", "equals", lc_type.indexOf(lc).add(1))
+
+.map(function(point){
+
+return point.set('style', {color: colour, pointShape: "diamond", pointSize: 3, width: 2, fillColor: "00000000"});
+
+});
+
+})**).flatten();**
+
+**Map.addLayer(**classified, {min: 0, max: 3, palette: \["darkblue","darkgreen","yellow", "orange"\]}, 'Classified image', false**);**
+
+**Map.addLayer(**lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', false**);**
+
+**}**
+
+| --- | --- |
+| ee.List | Creates a server-side list object |
+| .get | Returns the element at a specified index |
+| .indexOf | Returns the position of the first case of target |
+| .flatten | Collapses a list of lists into a list |
+|  |  |
+
+**Practical 9, part 2: Supervised learning 2: Improving land cover classification.**
+
+Access the completed practical, part 2 script [here](https://code.earthengine.google.com/017a363f7e3766b60ba17bc0a3ebc62c)
+
+**Learning Objectives**
+
+By the end of this practical you should be able to:
+
+1\. Understand the role and importance of high-quality training data.
+
+2\. Use an objective approach (experimental) to improve the selection of training data.
+
+**3.** Determine the area of applicability for a model.
+
+**The end product**
+
+![](file:///C:/Users/G10/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png =600x694)
+
+**Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogenous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
+
+Reference
+
+The area of applicability concept is based is an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
+
+Meyer, H. and Pebesma, E., 2020. Predicting into unknown space? Estimating the area of applicability of spatial prediction models. arXiv preprint arXiv:2005.07939.
