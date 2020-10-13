@@ -89,7 +89,7 @@ While we could process data for a large region and over a long time period, this
 
 Using the Sentinel-2 dataset, let’s filter the dataset temporally and spatially, using filterDate() and filterBounds().
 
-The first step is to load the full Sentinel 2 dataset, using ee.ImageCollection() and provide an area of interest using ee.Geometry.Point()
+The first step is to load the full Sentinel-2 dataset, using ee.ImageCollection() and provide an area of interest using ee.Geometry.Point()
 
 ```js
 var s2_coll = ee.ImageCollection("COPERNICUS/S2");
@@ -104,7 +104,6 @@ var s2 = ee.Image(s2_coll
 .filterDate("2018-01-01","2019-12-31")
 .filterBounds(aoi)
 .sort("CLOUD_COVERAGE_ASSESSMENT")
-
 .first()
 // Alternatively, you can calculate a median value for all pixels over the time period
 // .median()
@@ -113,11 +112,34 @@ var s2 = ee.Image(s2_coll
 print(s2, 'Sentinel 2 image');
 ```
 
+We have now reduced the ImageCollection (several images together) into a single Image. Now add the Image to the map. We will first center the map on our area of interest and then add the Sentinel-2 image to the map, selecting the red, green and blue bands in the visualisation parameters options to make a true colour composite image.
 
+In the Sentinel-2 metadata the red, green and blue bands are represented by B4, B3 and B2, respectively. We will need to add these into the correct channels.
+
+```js
+Map.centerObject(aoi, 13);
+
+Map.addLayer(s2, {bands:['B4','B3','B2']}, 'No defined vis parameters');
+```
+
+Without specifying the minimum and maximum values, the image does not display correctly. Go to layers box and select the wheel icon and manually define the vis parameters. Use the custom drop-down menu and stretch the minimum and maximum values to 100% and click apply. We can also do this by selecting the min and max values within the visualization parameters. 
+
+```js
+Map.addLayer(s2, {bands:['B4','B3','B2'], min:0, max: 3000}, 'True-colour');
+```
+
+We can use different bands to highlight specific properties that we may be interested in. Using the near infra-red band (B8 for Sentinel-2), we can highlight the high reflectance that healthy vegetation has in this band. 
+
+```js
+Map.addLayer(s2, {bands:['B8','B4','B3'], min:0, max: 3000}, 'False-colour');
+```
+
+As a last step, save the script.
 
 **Practical 1 Exercise**
 
-Repeat the steps in this practical for the level 2A data that you
-imported and renamed as s22a at the beginning of this practical.
-Thereafter, compare the water detection results and patterns with the
-s21c image results. Submit your final script.
+Repeat this practical but use the Landsat-8 dataset. Produce a false colour image using the near infra-red band for a region in your country. Hint: the band names for Landsat-8 and Sentinel-2 satellites are different. Explore the dataset metadata to find the correct band names.
+
+```js
+ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
+```
