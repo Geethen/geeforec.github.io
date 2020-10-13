@@ -33,9 +33,9 @@ To easily select Costa Rica from its feature collection using the added marker, 
 
 ```js
 
-**var country =** countries.filterBounds(geometry).union();
+var country = countries.filterBounds(geometry).union();
 
-**var treeCov2000 =** treeCover
+var treeCov2000 = treeCover
 
 .filterBounds(country)
 
@@ -83,11 +83,11 @@ There are multiple ways to go about calculating the area of each of the three cl
 The first option is a more brute force approach whereby we create a separate layer for each of the classes (loss, gain and no forest change ) and calculate their corresponding area. We can use the code snippet below for all three of the layers by simply manipulating the first argument of the first function i.e., each number (-1 ,0 ,1) correspond to a single class in the coverChange raster. More specifically, loss, gain and no forest change respectively.
 
 ```js
-**var noChange =** coverChange.eq(0).selfMask();
+var noChange = coverChange.eq(0).selfMask();
 
-**var areaImage =** noChange.multiply(ee.Image.pixelArea())
+var areaImage = noChange.multiply(ee.Image.pixelArea())
 
-**var area** = areaImage.reduceRegion({
+var area = areaImage.reduceRegion({
 
 reducer: ee.Reducer.sum(),
 
@@ -99,11 +99,11 @@ maxPixels: 1e10
 
 })
 
-**var noChangeAreaSqKm =** ee.Number(
+var noChangeAreaSqKm = ee.Number(
 
 area.get('tree_canopy_cover')).divide(1e6).round()
 
-**print(noChangeAreaSqKm**)
+print(noChangeAreaSqKm)
 ```
 
 **Option 2**
@@ -112,9 +112,9 @@ The second option to calculate area for each of the three classes requires \~ a 
 
 ```js
 
-**var areaImage =** ee.Image.pixelArea().addBands(coverChange);
+var areaImage = ee.Image.pixelArea().addBands(coverChange);
 
-**var areas =** areaImage.reduceRegion({
+var areas = areaImage.reduceRegion({
 
 reducer: ee.Reducer.sum().group({
 
@@ -132,9 +132,9 @@ maxPixels: 1e10
 
 });
 
-**var classAreas =** ee.List(areas.get('groups'));
+var classAreas = ee.List(areas.get('groups'));
 
-**var classAreaLists =** classAreas.map(function(item) {
+var classAreaLists = classAreas.map(function(item) {
 
 var areaDict = ee.Dictionary(item);
 
@@ -148,9 +148,9 @@ return ee.List(\[classNumber, area\]);
 
 });
 
-**var result =** ee.Dictionary(classAreaLists.flatten());
+var result = ee.Dictionary(classAreaLists.flatten());
 
-**print(result**);
+print(result);
 ```
 
 **Option 3: Calculating and plotting the areas of each class**
