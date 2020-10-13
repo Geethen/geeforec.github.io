@@ -44,11 +44,6 @@ To easily select Costa Rica from its feature collection using the added marker, 
 
 .clip(country);
 
-| --- | --- |
-| .union | Combines multiple features into a single feature. This is useful if there are multiple/multipart features that overlap the added marker. |
-| .mosaic | This merges multiple images (that make up an image collection) distributed across an area of interest into a single image. |
-|  |  |
-
 A threshold of 30% tree canopy cover was selected since this threshold was used in the seminal paper that introduced the GFCC dataset i.e. this is a suggested threshold that separates Forest from non-Forest cover (Kim et al., 2014). These same functions can be applied to the 2005 tree cover layer. To be able to carry out a change detection for a binary layer (forest and non-forest), we will need to limit the change detection analysis to the forest areas from the two epochs. We are not concerned with non-forest areas that remained as non-forest. Rather we are interested in detecting forest losses, forest gains and forest cover that remained forest cover from the year 2000 to the year 2005. From a coding perspective, this requires us to create a mask that combines the forest cover from both epochs. This will allow our analysis to be limited to forest areas. Thereafter, to determine forest change we can use a simple subtraction.
 
 **var mask =** treeCov2000.firstNonZero(treeCov2005).selfMask()
