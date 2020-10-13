@@ -5,7 +5,7 @@ bio: "Joseph White is a Postdoctoral Researcher at the University of the Witwate
   in response to global change using occupancy models and remotely sensed products.
   He is interested in spatial ecology and using earth observation to provide ecological
   and conservation insights. \n"
-avatar: "/images/mack-mansouri.jpg"
+avatar: "/images/jw.jpg"
 social:
 - title: github
   url: https://github.com
