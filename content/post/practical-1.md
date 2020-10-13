@@ -21,7 +21,7 @@ By the end of this practical you should be able to:
 3. Visualize images in the interactive map explorer.
 4. Use some simple functions. 
 
-**Importing and Filtering**
+**Importing datasets**
 
 Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
 
