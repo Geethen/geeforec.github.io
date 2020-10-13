@@ -16,13 +16,13 @@ Access the completed practical, part 1 script [here](https://code.earthengine.go
 
 By the end of this practical you should be able to:
 
-1\. Describe the workflow for a typical supervised classification workflow.
+1. Describe the workflow for a typical supervised classification workflow.
 
-2\. Create reference data for classes of interest.
+2. Create reference data for classes of interest.
 
-3\. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover and other (neither of the three classes).
+3. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover and other (neither of the three classes).
 
-4\. Evaluate model accuracy and improve model accuracy
+4. Evaluate model accuracy and improve model accuracy
 
   
 **The end product**
