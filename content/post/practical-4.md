@@ -36,7 +36,7 @@ var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
 
-The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term EVI data from Modis respectively. Below we describe how to import a dataset available locally into GEE .
+The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term MODIS EVI data respectively. Below we describe how to import a dataset available locally into GEE.
 
 ## ![](/images/prac4_f1.png)
 
@@ -44,7 +44,7 @@ The first four datasets imported correspond to those already available within GE
 
 **Filtering data**
 
-We first define variables for the temporal window of interest. we will use these variables for filtering the long-term data.
+We first define variables for the temporal window of interest. We will use these variables for filtering the long-term data.
 
 ```js
 var startYear = 2000;
@@ -75,7 +75,7 @@ var myBraulio_geo = myBraulio.geometry();
 
 **Processing**
 
-We first calculate the sum of rainfall on an annual basis within Costa Rica
+We first calculate the sum of rainfall on an annual basis within Costa Rica.
 
 ```js
 var annualPrecip = ee.ImageCollection.fromImages(
@@ -95,11 +95,13 @@ Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annua
 ```js
 var rainMean = rainMeanMY.mean().clip(costaRica);
 var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+
 var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
 .max().multiply(0.0001).rename('evi');
 var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
+
 var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
-return img.addBands(\[evi_year, time\]).set('year', y).set('month', 1)
+return img.addBands([evi_year, time]).set('year', y).set('month', 1)
 .set('date', ee.Date.fromYMD(y,1,1))
 .set('system:time_start', ee.Date.fromYMD(y,1,1));
 }).flatten());
