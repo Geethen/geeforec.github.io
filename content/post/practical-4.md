@@ -165,7 +165,7 @@ var rainViz = {
   palette: 'ffffff, 67d9f1, 1036cb'};
 ```
 
-Center the map to Costa Rica and zoomed to preliminary scale. All other layers will align to this parent map.Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay.Enable zooming on the top-left map. Add title to the map
+Center the map to Costa Rica and zoomed to a preliminary scale. All other layers will align to this parent map. Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay. Enable zooming on the top-left map. Add a title to the map
 
 ```js
 Map.centerObject(costaRica, 8);
@@ -190,7 +190,8 @@ From charts you can just maximise chart and click to export to csv, svg or png f
 
 1	Console panel > Max chart view	2	Export table or figure
 
-OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year
+OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year. Export the new feature as a .csv table with date and mean rainfall value
+```js
 var csv_annualPrecip = annualPrecip.map(function(image){
 var year = image.get('year');
 var month = image.get('month');
@@ -203,23 +204,23 @@ return ee.Feature(null, {'mean': mean.get('rain'),
 'year': year})
 });
 
-Export the new feature as a .csv table with date and mean rainfall value
 Export.table.toDrive({
 collection: csv_annualPrecip,
 description: 'annualRain',
 folder: 'testOTS',
 fileFormat: 'CSV'
 });
-
+```
 OR save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo
-First create a list of band names for your rasterStack output
+First create a list of band names for your rasterStack output. 
+Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
+```js
 var band_names = annualPrecip.map(function(image) {
 return ee.Feature(null, {'date': ee.Date(image.get('date'))
 .format('YYYY_MM')})})
 .aggregate_array('date')
 print('Band Names', band_names);
 
-Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
 var stack_RainEVI = annualPrecip.toBands().rename(band_names);
 
 Export a cloud-optimized GeoTIFF.
@@ -235,3 +236,4 @@ formatOptions: {
 cloudOptimized: true
 }
 });
+```
