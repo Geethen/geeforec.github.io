@@ -97,6 +97,19 @@ var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
 
+We can now sum the values to create a visualization of pixels over the full time period where forest loss has occurred. 
+
+```js
+var loss_stack_clip = loss_stack.sum().clip(regions);
+Map.addLayer(loss_stack_clip, {palette: 'yellow'},"loss_stack");
+```
+
+
+
+
+
+
+
 **Write and map a function**
 
 We will now write our first function. This function creates a mask cloud based on the metadata within each image of the collection. Look up the band information in the Sentinel-2 metadata. We create a variable name for the function as maskcloud. We then apply a set of functions for each image in the ImageCollection. Make sure the new variables within your function are consistent. First, we clip the image by our area of interest. Then we select the cloud mask band and lastly, return an image that has the mask applied to it.
