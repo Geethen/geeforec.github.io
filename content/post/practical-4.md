@@ -143,52 +143,37 @@ print(rain_ndvi_chart);
 ---
 **VISUALISATION**
 
-Setup map elements to visualise results
-Create a map title
+Setup map elements to visualise results. Create a map title. Legend parameters (start with this but change later using the visual parameters pop-up).
+
+```js
 var title = ui.Label('Costa Rica: Mean Annual Rainfall 2000 to 2018', {
   stretch: 'horizontal',
   textAlign: 'center',
   fontWeight: 'bold',
   fontSize: '20px'});
 
-Legend parameters (start with this but change later using the visual parameters pop-up)
 var rainViz = {
   min: 175, max: 317, 
   palette: 'ffffff, 67d9f1, 1036cb'};
-
-Center the map to Costa Rica and zoomed to preliminary scale
-All other layers will align to this parent map
+```
+Center the map to Costa Rica and zoomed to preliminary scale. All other layers will align to this parent map.Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay.Enable zooming on the top-left map.
+```js
 Map.centerObject(costaRica, 8);
-
-Add long-term mean rainfall
 Map.addLayer(rainMean, rainViz, 'Mean Annual Rainfall'); 
-
-Add Braulio Carrillo boundary last, to overlay
 Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
-
-Enable zooming on the top-left map
 Map.setControlVisibility({zoomControl: true});
-
+```
 Add title to the map
 Map.add(title);
 To save this map online as a GEE app, follow steps below
-1]	Click the 'Apps' button above
-2]	Select 'NEW APP'
-3]	Give the App a Name
-4]	Leave everything else default
-5]	Click 'PUBLISH'
-6]	URL will appear - Click this to see your first online interactive map
+Click the 'Apps' button above
+Select 'NEW APP'
+Give the App a Name
+Leave everything else default
+Click 'PUBLISH'
+URL will appear - Click this to see your first online interactive map
 * If you see a 'Not ready' page, give it a few minutes and try again
 
-1	Apps 	2	> NEW APP
-	 		 
-3	> App Name > PUBLISH	4	SEE URL
-	 		 
-		5	GIVE IT A FEW SECONDS TO UPLOAD
-			 
-6	YOUR FIRST GEE APP / INTERACTIVE MAP
-	 
-EXPORT DATA TO USE OUTSIDE OF GEE (e.g. R)
 
 Prepare data (outcome) for export
 From charts you can just maximise chart and click to export to csv, svg or png formats
