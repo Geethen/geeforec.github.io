@@ -21,6 +21,12 @@ By the end of this practical you should be able to:
 3. Predict the distribution of a chosen species.
 4. Consider variable importance & understand need for model evaluation. 
 
+Species Distribution Models are a valuable tool in ecology and conservation, providing us with insights into...
+
+However, they need to be used carefully and with full understanding of the models used and outputs provided.
+
+SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. 
+
 **Importing data**
 
 For this dataset we will need two core datasets. Our species localities or presences and our environmental predictor variables. In addition to this we will need a chosen area of interest. 
