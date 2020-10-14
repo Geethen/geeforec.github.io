@@ -111,7 +111,7 @@ return img.addBands([evi_year, time]).set('year', y).set('month', 1)
 
 **Charting** 
 
-Create a time-series line chart of annual rainfall sum for Braulio Carrillo 2000 to 2018 First create chart parameters (e.g. Title, axis labels). Now create the line chart using the processed summaries
+We will now chart the annual sum of rainfall for Braulio Carrillo 2000 to 2018. Here, we first define chart parameters (e.g. title and axis labels). Thereafter, we create the line chart that incorporates these pre-defined chart parameters.
 
 ```js
 var opt_chart_annualPrecip = {
@@ -127,12 +127,11 @@ var chart_annualPrecip = ui.Chart.image.seriesByRegion({
   xProperty: 'date',
   seriesProperty: 'band'
 }).setOptions(opt_chart_annualPrecip)
-  .setChartType('LineChart');//'ColumnChart
+  .setChartType('LineChart');
 print(chart_annualPrecip);
 ```
 
-Create comparative line chart of rainfall and EVI summaries for Braulio Carrillo
-First create chart parameters (e.g. Title, axis labels). Now create the line chart with 2 y-axises using the processed summaries
+It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
 
 ```js
 var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI): Braulio Carrillo", pointSize: 3,
