@@ -1,14 +1,14 @@
 +++
 authors = []
-date = 2020-10-19T22:00:00Z
+date = 2020-10-21T22:00:00Z
 draft = true
-excerpt = "Importing, exploring and visualising datasets"
-hero = "/images/practical_1_hero_image.png"
+excerpt = "NDVI time-series over a single region"
+hero = "/images/prac3_hero_both.png"
 timeToRead = 3
 title = "Practical 3"
 
 +++
-**Practical 1: Importing, exploring and visualising datasets**
+**Practical 3: NDVI time-series over a single region**
 
 Access the completed practical scripts (1) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FExploring_images) and (2) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FVisualising_images)
 
