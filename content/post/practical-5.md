@@ -20,20 +20,46 @@ By the end of this practical you should be able to:
 2. Manipulate a dataset.
 3. Plot a time-series over multiple regions.
 4. Create a table and export data as a csv.
+5. Export a video of forest change
+
+In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over a Protected Area and a neighbouring region outside of these Protected Areas. 
 
 **Importing data**
 
-We start by creating a polygon. This can be done using the polygon tool or by specifying the coordinates for each point of the polygon as shown below. We then filter the ImageCollection by time and space.
+We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name. Then add the selected protected areas to the map.
 
 ```js
-var geometry = ee.Geometry.Polygon([
-[116.44967929649718,-33.98379973082278],[117.14593784141906,-33.98379973082278],
-[117.14593784141906,-33.62548866260113],[116.44967929649718,-33.62548866260113],
-[116.44967929649718,-33.98379973082278]]);
+var WDPA = ee.FeatureCollection("WCMC/WDPA/current/polygons");
+// Map.addLayer(WDPA, {},"WDPA");
 
-var s2 = ee.ImageCollection('COPERNICUS/S2')
-.filterDate('2019-01-01', '2019-12-31')
-.filterBounds(geometry);
+// select specific PA by name 
+var PAs = WDPA.filter(ee.Filter.or(
+  ee.Filter.eq("NAME", "WaiWai")
+  ));
+print(PAs);
+
+Map.centerObject(PAs);
+Map.addLayer(PAs, {},'Protected areas');
+```
+
+We will then create a polygon that neighbours the WaiWai protected area to give us an indication of whether protected areas have done a good job at protecting forests. To do this we can draw a polygon using the geometry tools or create our own list with the specified coordinates for the polygons. Once we have created this our new polygons outside of protected areas, we can merge the two FeatureCollections together. Make sure you use the same label for each Feature, in this case 'NAME'.
+
+```js
+// Make a list of Features.
+var features = [
+  ee.Feature(ee.Geometry.Polygon([[-55.17386487348057,-12.331976326908427],[-54.04776624066807,-12.331976326908427],
+  [-54.04776624066807,-10.393297266136067],[-55.17386487348057,-10.393297266136067],[-55.17386487348057,-12.331976326908427]]),
+  {NAME: 'Kayapó_out'}), 
+  ee.Feature(ee.Geometry.Polygon([[-50.499069721998964,-7.395583188876438],[-51.564743550123964,-8.79865424425475],
+  [-50.010178120436464,-8.907208666247044],[-48.796188862623964,-7.346553269876245],[-50.499069721998964,-7.395583188876438]]),
+  {NAME: 'Xingu_out'}) 
+];
+
+// Create a FeatureCollection from the list and print it.
+var out_FC = ee.FeatureCollection(features);
+print(out_FC, "Out FeatureCollection");
+
+var regions = PAs.merge(out_FC);
 ```
 
 **Write and map a function**
