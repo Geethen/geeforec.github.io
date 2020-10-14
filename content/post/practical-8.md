@@ -25,7 +25,7 @@ Species Distribution Models are a valuable tool in ecology and conservation, pro
 
 However, they need to be used carefully and with full understanding of the models used and outputs provided.
 
-SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. 
+SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly. 
 
 **Importing data**
 
@@ -190,6 +190,7 @@ print(chart);
 **Model classification/prediction**
 
 **Ensemble methods**
+
 
 
 Save your script.
