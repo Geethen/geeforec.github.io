@@ -163,11 +163,28 @@ var model = ee.Classifier.smileRandomForest({numberOfTrees: 1000})
 print(model, "model output")
 ```
 
-We will then extract the variable importance data and add it to a chart
+We will then extract the variable importance data and add it to a chart. To pull the information from the RandomForest model, we use explain() and then get() to pull the specific information we are interested in.
+
+We then add this to a chart for visualization. The RandomForest in GEE uses the Gini index for variable importance measures.
 
 ```js
 var importance = model.explain().get('importance');
 print(importance, "variable importance");
+
+// Convert the importance values into a feature for plotting
+var importance_plot = ee.Feature(null, ee.Dictionary(importance));
+
+// Plot the resulting variable importance in a bar chart
+var chart =
+ui.Chart.feature.byProperty(importance_plot)
+.setChartType('ColumnChart')
+.setOptions({
+title: 'Random Forest Variable Importance',
+legend: {position: 'none'},
+hAxis: {title: 'Bands'},
+vAxis: {title: 'Importance'}
+});
+print(chart);
 ```
 
 Save your script.
