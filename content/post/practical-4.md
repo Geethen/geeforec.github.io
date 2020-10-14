@@ -183,6 +183,8 @@ Map.add(title);
 4.  Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
 5. If you see a 'Not ready' page, give it a few minutes and try again
 
+![](/images/prac4_f2.png)
+
 Prepare data (outcome) for export
 From charts you can just maximise chart and click to export to csv, svg or png formats
 
