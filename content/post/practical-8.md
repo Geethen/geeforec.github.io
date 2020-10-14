@@ -29,7 +29,7 @@ SDMs are not a feature commonly used in GEE and therefore the documentation does
 
 **Importing data**
 
-For this dataset we will need two core datasets. Our geo-referenced species localities or presences and our geographic layers of environmental predictor variables. In addition to this we will need a chosen area of interest.
+For this practical we will need two core datasets. Our geo-referenced species localities or presences and our geographic layers of environmental predictor variables. In addition to this we will need a chosen area of interest.
 
 Our first step is to load the presence data for our species of interest - _Bradypus variegatus_ - a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available.
 
