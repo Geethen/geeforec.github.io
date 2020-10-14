@@ -134,7 +134,30 @@ var points = Presence.merge(pAbsencePoints);
 print('Check the total no. of points', points.size());
 ```
 
-The last step in the data processing is to 
+The last step in the data processing is to extract the values of each band of our predictor variables for each point in our dataset. We do this using the sampleRegions() function. 
+
+```js
+var sampleData = vars.sampleRegions({
+  collection: points,
+  properties: ['Presence'],
+  scale: 1000
+});
+```
+
+**Fit our classifier using Random Forest**
+
+There are several different options for classifiers in GEE, which can be viewed in the Docs tab by typing ee.Classifier. We will be using the smileRandomForest() function as it allows for variable importance values to be extracted (which is currently not available for MaxEnt models in GEE). There are several options one can add to fine-tune the model to your own specifications. For this function, the only argument that is required is the number of decision trees to use. 
+
+```js
+var label = 'Presence';
+
+var model = ee.Classifier.smileRandomForest({numberOfTrees: 1000})
+                            .setOutputMode('PROBABILITY')
+                            .train(sampleData, label, bands);
+print(model, "model output")
+```
+
+We will then extract the variable importance data and add it to a chart
 
 
 
