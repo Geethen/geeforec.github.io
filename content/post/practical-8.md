@@ -3,7 +3,7 @@ authors = []
 date = 2020-10-28T22:00:00Z
 draft = true
 excerpt = "Species distribution modeling (classification)"
-hero = "/images/prac3_hero_both.png"
+hero = "/images/prac8_hero.png"
 timeToRead = 3
 title = "Practical 8"
 
@@ -31,7 +31,7 @@ Our first step is to load the presence data for our species of interest - _Brady
 var presences = ee.FeatureCollection("users/jdmwhite/bradypus");
 ```
 
-Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map. 
+Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map, together with the presence data. 
 
 ```js
 var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
@@ -48,6 +48,7 @@ var countries_clip = countries.filterBounds(polygon).map(function(f) {
 
 var countries_clip = countries_clip.union();
 Map.addLayer(countries_clip, {},"Area of interest");
+Map.addLayer(presences, {color: 'red'},'Bradypus variegatus localities');
 ```
 
 We then load in the bioclimatic variables from the WorldClim dataset.
@@ -57,7 +58,54 @@ var worldclim = ee.Image("WORLDCLIM/V1/BIO").clip(countries_clip);
 print(worldclim);
 ```
 
+A crucial step in many classification approaches to make sure that your predictor variables are uncorrelated. Here is a piece of code that provides this by producing a correlation matrix of pearson correlation coefficient, though we will not run it in this practical, as it is rather slow. Can you work out why this code may be slow? (Hint: client vs. server side functions).
 
+```js
+// // Correlation matrix
+// var BandsBioClim=['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17'];
+// var ClimList=ee.List(BandsBioClim).getInfo(); //Needs .getInfo() >>takes longer
+
+// var numBand= 8; 
+// var CorThresh =0.8; //Set correlation threshold
+// var Matrix = ee.List([]); 
+
+// function GenerateMatrix (InMatrix) {
+//   for (var i = 0; i < numBand; i++) {
+//     var getBandA = ClimList[i];
+//     for (var k = 0; k < numBand; k++) {
+//       if (k!==i){
+//         var getBandB = ClimList[k];
+//         var pearson2 = (ee.Image(worldclim)).select([getBandA, getBandB])
+//           .reduceRegion({
+//             reducer: ee.Reducer.pearsonsCorrelation(),
+//               geometry: geometry,
+//               scale: 3000
+//               });
+//         var Cor = pearson2.get('correlation');
+//         var CorVal= Cor.getInfo();
+//         if (CorVal > CorThresh) {
+//         // print(getBandA, getBandB, CorVal); //WANT INFO ON
+//           var Row=ee.List([[getBandA, getBandB, CorVal]]);
+//           //print("Row is:",Row),
+//           InMatrix=InMatrix.add(Row);
+//           //print("Matrix Inside:",InMatrix);
+//         }// Ends IF (k not i)
+//     } //ENDS IF (correlated more than 80%)
+//   }  // ENDS k-loop
+//   } // ENDS i-loop
+// return InMatrix;
+// } // End GenerateMatrix
+
+// print("Matrix Outside",GenerateMatrix(Matrix));
+```
+
+Based on the **R dismo** tutorials, these are the bioclim variables typically used for Bradypus SDMs. 
+
+```js
+var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17'])
+```
+
+![](/images/prac8_hero-1.png)
 
 
 
