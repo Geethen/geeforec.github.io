@@ -61,6 +61,8 @@ return image.addBands(image.normalizedDifference(['B8', 'B4']).rename('NDVI'))
 print(s2_ndvi, 's2 with NDVI');
 ```
 
+![](/images/prac3_ndvi_band.png)
+
 **Visualization**
 
 Next we will create a time-series plot over the NDVI band of the ImageCollection. This is done using the ui.Chart series of functions. The function you chose depends on the type of data you are using. In this case, we are running an image series over a single region, so we will use ui.Chart.image.series(). The primary inputs here are: the ImageCollection, area of interest (geometry), a reducer, the band of interest, the scale and the x-axis property (which defaults to 'system:time_start'). In GEE, calculations that summarise your data are called reducers and can be called using the ee.Reducer series of functions. Here we will use ee.Reducer.mean() to calculate the mean NDVI values across our area of interest. 
@@ -78,6 +80,8 @@ var plotNDVI = ui.Chart.image.series(s2_ndvi, geometry, ee.Reducer.mean(), // we
 
 print(plotNDVI);
 ```
+
+![](/images/prac3_ndvi_chart.png)
 
 It is useful to visualize this data, to see a representation of your variable of interest. Let's take a look at the seasonal lows and highs for NDVI. First, extract the NDVI band and create a new ImageCollection. Next, filter the NDVI collection for January and August and then reduce this to a single image by calculating the median value for each pixel over each month. 
 
@@ -104,6 +108,8 @@ Map.addLayer(NDVI_jan, {min:0, max:1, palette: ndvi_pal}, 'NDVI Jan');
 Map.addLayer(NDVI_aug, {min:0, max:1, palette: ndvi_pal}, 'NDVI Aug');
 ```
 
+![](/images/prac3_ndvi_vis.png)
+
 **Exporting data**
 
 The last step is to export the values of the time-series into a csv. The easiest way to do this is to open the plot in another window, using the pop out button. You have options to download the values of the time series as a csv or alternatively export the plot itsefl as an svg or png.
@@ -117,6 +123,8 @@ Export.image.toDrive({
   scale: 100 // this can go down to 10, to match S2 original resolution
 });
 ```
+
+![](/images/prac3_ndvi_tasks.png)
 
 Save your script. 
 
