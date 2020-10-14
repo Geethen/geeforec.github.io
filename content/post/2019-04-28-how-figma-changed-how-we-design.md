@@ -105,7 +105,9 @@ scale: 30,
 tileScale:16
 });
 ```
----
+
+***
+
 **Model fitting**
 
 ```js
@@ -124,7 +126,9 @@ inputProperties: composite.bandNames()
 ```js
 var classified = composite.classify(trainedClassifier);
 ```
----
+
+***
+
 **Model evaluation**
 
 The training accuracy largely overestimates model accuracy since this data has been used to train the model. We, therefore, use a test set (data unseen by the model) to get a more reliable estimate of model accuracy.
