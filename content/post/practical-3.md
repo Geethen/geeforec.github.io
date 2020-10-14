@@ -117,7 +117,6 @@ Export.image.toDrive({
   description: 'NDVI Aug example',
   scale: 100 // this can go down to 10, to match S2 original resolution
 });
-
 ```
 
 Save your script. 
