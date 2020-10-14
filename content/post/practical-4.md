@@ -27,23 +27,24 @@ By the end of this practical you should be able to:
 
 **Data import**
 
-The datasets that will be required in this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a a local dataset into GEE.
+The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
 
 ```js
-
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons');
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
 
-The first four datasets imported correspond to those already available within GEE and are the Country boundaries, Protected area boundaries, long-term rainfall data, and the long-term EVI data from Modis respectively. Below we describe how to import a local dataset.
+The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term EVI data from Modis respectively. Below we describe how to import a dataset available locally into GEE .
 
 ## ![](/images/prac4_f1.png)
 
+***
+
 **Filtering data**
 
-We first define variables for the temporal window of interest. we will use these variables for the filtering of the long-term data.
+We first define variables for the temporal window of interest. we will use these variables for filtering the long-term data.
 
 ```js
 var startYear = 2000;
@@ -54,7 +55,7 @@ var years = ee.List.sequence(startYear, endYear);
 var months = ee.List.sequence(1, 12);
 
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
-.filter(ee.Filter.inList('COUNTRY_NA', \['Costa Rica'\]));
+.filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 .filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
 
@@ -104,9 +105,11 @@ return img.addBands(\[evi_year, time\]).set('year', y).set('month', 1)
 }).flatten());
 ```
 
-**Charting**
-Create time-series line chart of annual rainfall sum for Braulio Carrillo 2000 to 2018
-First create chart parameters (e.g. Title, axis labels). Now create the line chart using the processed summaries
+***
+
+**Charting** 
+
+Create a time-series line chart of annual rainfall sum for Braulio Carrillo 2000 to 2018 First create chart parameters (e.g. Title, axis labels). Now create the line chart using the processed summaries
 
 ```js
 var opt_chart_annualPrecip = {
