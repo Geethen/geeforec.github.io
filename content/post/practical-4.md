@@ -169,7 +169,7 @@ var rainViz = {
   palette: 'ffffff, 67d9f1, 1036cb'};
 ```
 
-Center the map to Costa Rica and zoomed to a preliminary scale. All other layers will align to this parent map. Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay. Enable zooming on the top-left map. Add a title to the map
+Next, we center the map to Costa Rica. All other layers will align with this parent map and add the data of interest. Specifically, we add the long-term mean rainfall raster and the Braulio Carrillo boundary. To conclude, we will add a zoom control button and the previously defined title.
 
 ```js
 Map.centerObject(costaRica, 8);
@@ -179,7 +179,7 @@ Map.setControlVisibility({zoomControl: true});
 Map.add(title);
 ```
 
-To save this map online as a GEE app, follow steps below:
+To save this map online as a GEE app, follow the steps below:
 
 1. Click the 'Apps' button above Select 'NEW APP'
 2. Give the App a Name
@@ -189,10 +189,11 @@ To save this map online as a GEE app, follow steps below:
 
 ![](/images/prac4_f2.png)
 
-Prepare data (outcome) for export
-From charts you can just maximise chart and click to export to csv, svg or png formats
+***
 
-OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year. Export the new feature as a .csv table with date and mean rainfall value.
+**Data Export**
+
+To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
 
 ![](/images/prac4_f3.png)
 
@@ -217,9 +218,7 @@ fileFormat: 'CSV'
 });
 ```
 
-OR save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo
-First create a list of band names for your rasterStack output.
-Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
+In addition, to the export options presented above and in practical 3. save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo First create a list of band names for your rasterStack output. Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
 
 ```js
 var band_names = annualPrecip.map(function(image) {
