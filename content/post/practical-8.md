@@ -228,6 +228,12 @@ Save your script.
 
 **Practical 8 Exercise**
 
-Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
+For this excercise, use an alternative dataset of species localities. This time *Solanum acuale*, a plant species known as Wild potato from South America. Produce a distribution map using the same WorldClim data as in the practical above. 
+
+Load in the dataset to a new script using the below asset id:
+
+```js
+ee.FeatureCollection('users/jdmwhite/solanum_acuale')
+```
 
 To share your script, click on Get Link and then copy script path. Send your completed script to **email**
