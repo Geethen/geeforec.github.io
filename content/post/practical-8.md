@@ -167,7 +167,7 @@ print(model, "model output")
 
 We will then extract the variable importance data and add it to a chart. To pull the information from the RandomForest model, we use explain() and then get() to pull the specific information we are interested in.
 
-We then add this to a chart for visualization. The RandomForest in GEE uses the Gini index for variable importance measures.
+We then add this to a chart for visualization. The RandomForest in GEE uses the Gini index for variable importance measures. Reference the WorldClim dataset to see the names of each bioclim variable. 
 
 ```js
 var importance = model.explain().get('importance');
