@@ -23,7 +23,47 @@ By the end of this practical you should be able to:
 
 **Importing data**
 
-We start by creating a polygon. This can be done using the polygon tool or by specifying the coordinates for each point of the polygon as shown below. We then filter the ImageCollection by time and space.
+For this dataset we will need two core datasets. Our species localities or presences and our environmental predictor variables. In addition to this we will need a chosen area of interest. 
+
+Our first step is to load the presence data for our species of interest - _Bradypus variegatus_ - a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available. 
+
+```js
+var presences = ee.FeatureCollection("users/jdmwhite/bradypus");
+```
+
+Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map. 
+
+```js
+var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+
+// Create a polygon.
+var polygon = ee.Geometry.Polygon([
+[-87.14743379727207,-34.736435036461145],[-32.12790254727207,-34.736435036461145],[-32.12790254727207,16.642228542503663],
+[-87.14743379727207,16.642228542503663],[-87.14743379727207,-34.736435036461145]
+]);
+
+var countries_clip = countries.filterBounds(polygon).map(function(f) {
+  return f.intersection(polygon, 1);//1 refers to the maxError argument
+});
+
+var countries_clip = countries_clip.union();
+Map.addLayer(countries_clip, {},"Area of interest");
+```
+
+We then load in the bioclimatic variables from the WorldClim dataset.
+
+```js
+var worldclim = ee.Image("WORLDCLIM/V1/BIO").clip(countries_clip);
+print(worldclim);
+```
+
+
+
+
+
+
+
+
 
 ```js
 var geometry = ee.Geometry.Polygon([
