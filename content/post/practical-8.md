@@ -189,7 +189,7 @@ print(chart);
 
 **Model classification/prediction**
 
-
+**Ensemble methods**
 
 
 Save your script.
