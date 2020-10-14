@@ -1,9 +1,8 @@
 +++
 authors = []
 date = 2020-10-21T22:00:00Z
-draft = true
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
-hero = ""
+hero = "/images/prac4_f4.png"
 timeToRead = 0
 title = "Practical 4"
 
