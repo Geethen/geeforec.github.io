@@ -210,7 +210,9 @@ Map.addLayer(prediction, {palette: palette},'Probability of occurence');
 
 **Ensemble methods**
 
-In many cases, you will not rely on a single model and it may be preferable to use many models and find an average over several models. A short example of how to do this, is to produce a new model - this time using MaxEnt - and finding the mean over our two predicted classifications. 
+In many cases, you will not rely on a single model and it may be preferable to use many models and find an average over several models. A short example of how to do this, is to produce a new model - this time using MaxEnt - and finding the mean over our two predicted classifications.
+
+First we classify the MaxEnt model. We then create a new ImageCollection of the two SDM models, before finding the mean of the two bands and then adding the ensemble prediction to the map.
 
 ```js
 var model2 = ee.Classifier.gmoMaxEnt()
@@ -218,6 +220,15 @@ var model2 = ee.Classifier.gmoMaxEnt()
                             .train(sampleData, label, bands);
 
 var prediction2 = vars.classify(model2);
+
+var collectionFromImages = ee.ImageCollection.fromImages(
+  [ee.Image(prediction), ee.Image(prediction2)]);
+print('collectionFromImages: ', collectionFromImages);
+
+var ensemble_prediction = collectionFromImages.mean()
+
+Map.addLayer(ensemble_prediction, {palette: palette},'Probability of occurence (ensemble)');
+
 ```
 
 **Model evaluation**
