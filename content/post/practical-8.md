@@ -205,7 +205,7 @@ First we will load in a custom palette for the visualization. Next step is to ad
 var palettes = require('users/gena/packages:palettes');
 var palette = palettes.matplotlib.magma[7];
 
-Map.addLayer(prediction, {palette: palette},'Probability of occurence');
+Map.addLayer(prediction, {palette: palette},'Probability of occurence (RF)');
 ```
 
 **Ensemble methods**
@@ -220,6 +220,7 @@ var model2 = ee.Classifier.gmoMaxEnt()
                             .train(sampleData, label, bands);
 
 var prediction2 = vars.classify(model2);
+Map.addLayer(prediction2, {palette: palette},'Probability of occurence (MaxEnt)');
 
 var collectionFromImages = ee.ImageCollection.fromImages(
   [ee.Image(prediction), ee.Image(prediction2)]);
@@ -228,7 +229,6 @@ print('collectionFromImages: ', collectionFromImages);
 var ensemble_prediction = collectionFromImages.mean()
 
 Map.addLayer(ensemble_prediction, {palette: palette},'Probability of occurence (ensemble)');
-
 ```
 
 **Model evaluation**
