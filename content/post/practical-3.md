@@ -10,16 +10,16 @@ title = "Practical 3"
 +++
 **Practical 3: NDVI time-series over a single region**
 
-Access the completed practical scripts (1) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FExploring_images) and (2) [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_1%2FVisualising_images)
+Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_3%2FNDVI_timeseries_single)
 
 **Learning Objectives**
 
 By the end of this practical you should be able to:
 
-1. Import Google Earth Engine datasets into the code editor.
-2. Inspect the dataset.
-3. Visualize images in the interactive map explorer.
-4. Use simple functions.
+1. Write a custom function.
+2. Map (loop) it over a collection.
+3. Plot a time-series.
+4. Export data as a csv and image.
 
 **Access your code editor**
 
