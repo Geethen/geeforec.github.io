@@ -20,13 +20,13 @@ By the end of this practical you should be able to:
 2. Manipulate a dataset.
 3. Plot a time-series over multiple regions.
 4. Create a table and export data as a csv.
-5. Export a video of forest change
+5. Export a video of forest change using Landsat 8
 
-In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over a Protected Area and a neighbouring region outside of these Protected Areas. 
+In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over a Protected Area and a neighbouring region outside of the Protected Area.
 
 **Importing data**
 
-We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name. 
+We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name.
 
 ```js
 var WDPA = ee.FeatureCollection("WCMC/WDPA/current/polygons");
@@ -39,7 +39,7 @@ var PAs = WDPA.filter(ee.Filter.or(
 print(PAs);
 ```
 
-We will then create a polygon that neighbours the WaiWai protected area to give us an indication of whether protected areas have done a good job at protecting forests. To do this we can draw a polygon using the geometry tools or create our own list with the specified coordinates for the polygons. Once we have created our new polygon outside of the protected area, we can merge the two FeatureCollections together. Make sure you use the same label for each Feature, in this case 'NAME'. We can then add the two regions to our map. 
+We will then create a polygon that neighbours the WaiWai protected area to give us an indication of whether protected areas have done a good job at protecting forests. To do this we can draw a polygon using the geometry tools or create our own list with the specified coordinates for the polygons. Once we have created our new polygon outside of the protected area, we can merge the two FeatureCollections together. Make sure you use the same label for each Feature, in this case 'NAME'. We can then add the two regions to our map.
 
 ```js
 var features = [
