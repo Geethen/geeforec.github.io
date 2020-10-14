@@ -32,7 +32,7 @@ By the end of this practical you should be able to:
 
 **Data import**
 
-The datasets that will be required in this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a a local dataset into GEE. 
+The datasets that will be required in this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a a local dataset into GEE.
 
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
 
@@ -63,3 +63,79 @@ var endDate = ee.Date.fromYMD(endYear + 1, 12, 31);
 var years = ee.List.sequence(startYear, endYear);
 
 var months = ee.List.sequence(1, 12);
+
+var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
+
+.filter(ee.Filter.inList('COUNTRY_NA', \['Costa Rica'\]));
+
+var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
+
+.filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
+
+var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
+
+.select('precipitation')
+
+.filterBounds(costaRica_geo);
+
+var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
+
+.select('EVI')
+
+.filterBounds(costaRica_geo);
+
+var costaRica_geo = costaRica.geometry();
+
+var braulio_geo = braulio.geometry();
+
+var myBraulio_geo = myBraulio.geometry();
+
+***
+
+**Processing**
+
+We first calculate the sum of rainfall on an annual basis within Costa Rica
+
+var annualPrecip = ee.ImageCollection.fromImages(
+
+years.map(function (year) {
+
+var annual = rainAll
+
+.filter(ee.Filter.calendarRange(year, year, 'year'))
+
+.sum().rename('rain');
+
+return annual
+
+.clip(costaRica_geo)
+
+.set('year', year).set('date', ee.Date.fromYMD(year, 1, 1))
+
+.set('system:time_start', ee.Date.fromYMD(year, 1, 1));
+
+}));
+
+Calculate long-term annual mean rainfall, clipped to Costa Rica
+
+var rainMean = rainMeanMY.mean().clip(costaRica);
+
+Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park
+
+var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+
+var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+
+.max().multiply(0.0001).rename('evi');
+
+var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
+
+var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
+
+return img.addBands(\[evi_year, time\]).set('year', y).set('month', 1)
+
+.set('date', ee.Date.fromYMD(y,1,1))
+
+.set('system:time_start', ee.Date.fromYMD(y,1,1));
+
+}).flatten());
