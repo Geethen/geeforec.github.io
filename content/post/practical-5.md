@@ -68,11 +68,33 @@ print(Hansen, "Hansen");
 var cover_2000 = Hansen.select(['treecover2000']);
 ```
 
+**Manipulating data**
+
 We want to select pixels for where tree cover in 2000 was 50% or over. Using the gte() (greater than or equal to) function, we will convert all numbers to a binary output, so that any value above 50% is converted to a 1 and anything below 0. We will then add it to our map.
 
 ```js
 var trees_2000 = cover_2000.gte(50);
 Map.addLayer(trees_2000_clip, {min: 0, max: 1, palette: ['white','#1e8f1d']}, "trees_2000");
+```
+
+Next step is select the loss year band from the Hansen data, create a mask where tree cover was lower than 50% or where there was no tree loss. We then apply this mask to our loss_year image. 
+
+```js
+var mask = loss_year.neq(0).and(trees_2000.eq(1));
+var loss_year_null = loss_year.mask(mask);
+```
+
+To create a loss layer for each year, we first make a sequence of years and then map this over masked loss_year_null object. Next we convert the list of images into an ImageCollection.
+
+```js
+var years = ee.List.sequence(1,19);
+
+var loss_by_year = years.map(function(year) {
+    return loss_year_null.eq(ee.Image.constant(year)).set('year', year);
+});
+
+var loss_stack = ee.ImageCollection(loss_by_year);
+print(loss_stack, "loss_stack");
 ```
 
 **Write and map a function**
