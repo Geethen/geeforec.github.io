@@ -146,9 +146,7 @@ var rain_ndvi_chart = ui.Chart.image.series({
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
-
-***
-
+---
 **VISUALISATION**
 
 Setup map elements to visualise results. Create a map title. Legend parameters (start with this but change later using the visual parameters pop-up).
@@ -188,7 +186,7 @@ Map.add(title);
 Prepare data (outcome) for export
 From charts you can just maximise chart and click to export to csv, svg or png formats
 
-1	Console panel > Max chart view	2	Export table or figure
+
 
 OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year. Export the new feature as a .csv table with date and mean rainfall value
 ```js
