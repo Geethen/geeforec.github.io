@@ -19,25 +19,25 @@ By the end of this practical you should be able to:
 1. Have a basic understanding of classifications and their value to Species Distribution Models (SDMs).
 2. Fit a random forest model on bioclimatic variables.
 3. Predict the distribution of a chosen species.
-4. Consider variable importance & understand need for model evaluation. 
+4. Consider variable importance & understand need for model evaluation.
 
-Species Distribution Models are a valuable tool in ecology and conservation, providing us with insights into...
+Species Distribution Models are a valuable tool in ecology and conservation, providing us with insights into global change impacts, allowing us to project potential future range shifts in species. Using geo-referenced species localities and environmental predictors we can determine the important environmental conditions for species at their known sites.
 
-However, they need to be used carefully and with full understanding of the models used and outputs provided.
+However, they need to be used carefully and with full understanding of the models used and outputs provided. For example, we may not have a full sample of species localities or not have all of the relevant environmental variables. This means we need to have a strong understanding of the species sampling, biogeography and potentially biotic interactions to accurately predict their distributions. 
 
-SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly. 
+SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly.
 
 **Importing data**
 
-For this dataset we will need two core datasets. Our species localities or presences and our environmental predictor variables. In addition to this we will need a chosen area of interest. 
+For this dataset we will need two core datasets. Our geo-referenced species localities or presences and our geographic layers of environmental predictor variables. In addition to this we will need a chosen area of interest.
 
-Our first step is to load the presence data for our species of interest - _Bradypus variegatus_ - a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available. 
+Our first step is to load the presence data for our species of interest - _Bradypus variegatus_ - a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available.
 
 ```js
 var presences = ee.FeatureCollection("users/jdmwhite/bradypus");
 ```
 
-Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map, together with the presence data. 
+Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map, together with the presence data.
 
 ```js
 var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
@@ -105,14 +105,14 @@ A crucial step in many classification approaches to make sure that your predicto
 // print("Matrix Outside",GenerateMatrix(Matrix));
 ```
 
-If we wanted to add more predictor variables that we thought may be important in predicting *Bradypus* distributions, we can call another ImageCollection. In this example, which we won't use, we call the TerraClimate dataset, find the mean value for all bands over the full time period, select the variables we are interested in and clip it to our area of interest. We would then merge this together with the WorldClim data using addBands(). 
+If we wanted to add more predictor variables that we thought may be important in predicting _Bradypus_ distributions, we can call another ImageCollection. In this example, which we won't use, we call the TerraClimate dataset, find the mean value for all bands over the full time period, select the variables we are interested in and clip it to our area of interest. We would then merge this together with the WorldClim data using addBands().
 
 ```js
 // var terraclim = ee.Image(ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE").mean()).select(['aet','def','pdsi','pet','soil']).clip(countries_clip);
 // var vars = worldclim.addBands(terraclim);
 ```
 
-Based on the **R dismo** tutorials, these are the bioclim variables typically used for *Bradypus* SDMs. 
+Based on the **R dismo** tutorials, these are the bioclim variables typically used for _Bradypus_ SDMs.
 
 ```js
 var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17'])
@@ -120,7 +120,7 @@ var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bi
 
 **Processing data**
 
-We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Lastly, we merge the datasets together to give a single FeatureCollection of all points. 
+We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Lastly, we merge the datasets together to give a single FeatureCollection of all points.
 
 ```js
 var filtered_locs = presences.filterBounds(countries_clip);
@@ -140,7 +140,7 @@ var points = Presence.merge(pAbsencePoints);
 print('Check the total no. of points', points.size());
 ```
 
-The last step in the data processing is to extract the values of each band of our predictor variables for each point in our dataset. We do this using the sampleRegions() function. 
+The last step in the data processing is to extract the values of each band of our predictor variables for each point in our dataset. We do this using the sampleRegions() function.
 
 ```js
 var sampleData = vars.sampleRegions({
@@ -152,7 +152,7 @@ var sampleData = vars.sampleRegions({
 
 **Fit our classifier using Random Forest**
 
-There are several different options for classifiers in GEE, which can be viewed in the Docs tab by typing ee.Classifier. We will be using the smileRandomForest() function as it allows for variable importance values to be extracted (which is currently not available for MaxEnt models in GEE). There are several options one can add to fine-tune the model to your own specifications. For this function, the only argument that is required is the number of decision trees to use. 
+There are several different options for classifiers in GEE, which can be viewed in the Docs tab by typing ee.Classifier. We will be using the smileRandomForest() function as it allows for variable importance values to be extracted (which is currently not available for MaxEnt models in GEE). There are several options one can add to fine-tune the model to your own specifications. For this function, the only argument that is required is the number of decision trees to use.
 
 ```js
 var label = 'Presence';
@@ -197,7 +197,7 @@ var prediction = vars.classify(model);
 
 **Visualize the predicted distribution**
 
-First we will load in a custom palette for the visualization. Next step is to add it to our map. 
+First we will load in a custom palette for the visualization. Next step is to add it to our map.
 
 ```js
 var palettes = require('users/gena/packages:palettes');
@@ -207,8 +207,6 @@ Map.addLayer(prediction, {palette: palette},'Probability of occurence');
 ```
 
 **Ensemble methods**
-
-
 
 Save your script.
 
