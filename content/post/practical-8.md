@@ -51,7 +51,7 @@ Map.addLayer(countries_clip, {},"Area of interest");
 Map.addLayer(presences, {color: 'red'},'Bradypus variegatus localities');
 ```
 
-We then load in the bioclimatic variables from the WorldClim dataset.
+We then load in the bioclimatic variables from the WorldClim dataset. The WorldClim data provides average bioclimatic conditions for the entire globe between the period 1960-1991 and is commonly used in SDMs.
 
 ```js
 var worldclim = ee.Image("WORLDCLIM/V1/BIO").clip(countries_clip);
@@ -99,7 +99,14 @@ A crucial step in many classification approaches to make sure that your predicto
 // print("Matrix Outside",GenerateMatrix(Matrix));
 ```
 
-Based on the **R dismo** tutorials, these are the bioclim variables typically used for Bradypus SDMs. 
+If we wanted to add more predictor variables that we thought may be important in predicting *Bradypus* distributions, we can call another ImageCollection. In this example, which we won't use, we call the TerraClimate dataset, find the mean value for all bands over the full time period, select the variables we are interested in and clip it to our area of interest. We would then merge this together with the WorldClim data using addBands(). 
+
+```js
+// var terraclim = ee.Image(ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE").mean()).select(['aet','def','pdsi','pet','soil']).clip(countries_clip);
+// var vars = worldclim.addBands(terraclim);
+```
+
+Based on the **R dismo** tutorials, these are the bioclim variables typically used for *Bradypus* SDMs. 
 
 ```js
 var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17'])
@@ -127,7 +134,7 @@ var points = Presence.merge(pAbsencePoints);
 print('Check the total no. of points', points.size());
 ```
 
-
+The last step in the data processing is to 
 
 
 
