@@ -26,7 +26,7 @@ In this practical we will be using the Hansen forest loss dataset to look at for
 
 **Importing data**
 
-We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name. Then add the selected protected areas to the map.
+We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name. 
 
 ```js
 var WDPA = ee.FeatureCollection("WCMC/WDPA/current/polygons");
@@ -37,29 +37,42 @@ var PAs = WDPA.filter(ee.Filter.or(
   ee.Filter.eq("NAME", "WaiWai")
   ));
 print(PAs);
-
-Map.centerObject(PAs);
-Map.addLayer(PAs, {},'Protected areas');
 ```
 
-We will then create a polygon that neighbours the WaiWai protected area to give us an indication of whether protected areas have done a good job at protecting forests. To do this we can draw a polygon using the geometry tools or create our own list with the specified coordinates for the polygons. Once we have created this our new polygons outside of protected areas, we can merge the two FeatureCollections together. Make sure you use the same label for each Feature, in this case 'NAME'.
+We will then create a polygon that neighbours the WaiWai protected area to give us an indication of whether protected areas have done a good job at protecting forests. To do this we can draw a polygon using the geometry tools or create our own list with the specified coordinates for the polygons. Once we have created our new polygon outside of the protected area, we can merge the two FeatureCollections together. Make sure you use the same label for each Feature, in this case 'NAME'. We can then add the two regions to our map. 
 
 ```js
-// Make a list of Features.
 var features = [
-  ee.Feature(ee.Geometry.Polygon([[-55.17386487348057,-12.331976326908427],[-54.04776624066807,-12.331976326908427],
-  [-54.04776624066807,-10.393297266136067],[-55.17386487348057,-10.393297266136067],[-55.17386487348057,-12.331976326908427]]),
-  {NAME: 'Kayapó_out'}), 
-  ee.Feature(ee.Geometry.Polygon([[-50.499069721998964,-7.395583188876438],[-51.564743550123964,-8.79865424425475],
-  [-50.010178120436464,-8.907208666247044],[-48.796188862623964,-7.346553269876245],[-50.499069721998964,-7.395583188876438]]),
-  {NAME: 'Xingu_out'}) 
+  ee.Feature(ee.Geometry.Polygon([[-59.28733022709222,1.1991686972459115],
+[-59.95749624271722,1.0398973999767975],
+[-59.98496206302972,0.5524276267636883],
+[-59.291450100139095,0.7213319252602786],
+[-59.28733022709222,1.1991686972459115]]),
+  {NAME: 'WaiWai_out'})
 ];
 
-// Create a FeatureCollection from the list and print it.
 var out_FC = ee.FeatureCollection(features);
-print(out_FC, "Out FeatureCollection");
 
 var regions = PAs.merge(out_FC);
+
+Map.centerObject(regions);
+Map.addLayer(regions, {},'regions');
+```
+
+Next we will add in the most recent Hansen global forest change dataset, clip it to our regions and extract the band for tree cover in 2000.
+
+```js
+var Hansen = ee.Image('UMD/hansen/global_forest_change_2019_v1_7').clip(regions);
+print(Hansen, "Hansen");
+
+var cover_2000 = Hansen.select(['treecover2000']);
+```
+
+We want to select pixels for where tree cover in 2000 was 50% or over. Using the gte() (greater than or equal to) function, we will convert all numbers to a binary output, so that any value above 50% is converted to a 1 and anything below 0. We will then add it to our map.
+
+```js
+var trees_2000 = cover_2000.gte(50);
+Map.addLayer(trees_2000_clip, {min: 0, max: 1, palette: ['white','#1e8f1d']}, "trees_2000");
 ```
 
 **Write and map a function**
