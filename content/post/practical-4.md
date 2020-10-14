@@ -218,7 +218,7 @@ fileFormat: 'CSV'
 });
 ```
 
-In addition, to the export options presented above and in practical 3. save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo First create a list of band names for your rasterStack output. Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
+In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Braulio Carrillo. We will first create a list of band names for the rasterStack output and apply the function toBands() to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
 
 ```js
 var band_names = annualPrecip.map(function(image) {
