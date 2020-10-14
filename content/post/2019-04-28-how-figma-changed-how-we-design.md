@@ -1,6 +1,6 @@
 ---
 title: Practical 9
-date: 2019-04-28
+date: 2020-10-29T22:00:00+00:00
 hero: "/images/prac9_f1.png"
 excerpt: 'Supervised learning 2: Land cover classification.'
 timeToRead: 8
