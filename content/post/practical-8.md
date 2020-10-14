@@ -189,6 +189,23 @@ print(chart);
 
 **Model classification/prediction**
 
+This is a simple step. We classify or predict the output of the model, based on selected predictor variables. In this case, we use the full suite of variables used in the original model classification.
+
+```js
+var prediction = vars.classify(model);
+```
+
+**Visualize the predicted distribution**
+
+First we will load in a custom palette for the visualization. Next step is to add it to our map. 
+
+```js
+var palettes = require('users/gena/packages:palettes');
+var palette = palettes.matplotlib.magma[7];
+
+Map.addLayer(prediction, {palette: palette},'Probability of occurence');
+```
+
 **Ensemble methods**
 
 
