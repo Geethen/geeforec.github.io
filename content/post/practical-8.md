@@ -107,8 +107,25 @@ var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bi
 
 **Processing data**
 
-We now want to create pseudo-absence points
+We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Lastly, we merge the datasets together to give a single FeatureCollection of all points. 
 
+```js
+var filtered_locs = presences.filterBounds(countries_clip);
+print('No. of localities', filtered_locs.size());
+
+var Presence = filtered_locs.map(function(feature){
+  return feature.set('Presence', 1);
+});
+print('Check for the Presence property', Presence.limit(5));
+
+var pAbsencePoints = ee.FeatureCollection.randomPoints(countries_clip, 116, 42).map(function(feature){
+  return feature.set('Presence', 0); // we then add 0s to all pseudo-absences
+});
+Map.addLayer(pAbsencePoints, {color: "gray"}, "Pseudo-absence points");
+
+var points = Presence.merge(pAbsencePoints);
+print('Check the total no. of points', points.size());
+```
 
 
 
