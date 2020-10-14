@@ -210,9 +210,23 @@ Map.addLayer(prediction, {palette: palette},'Probability of occurence');
 
 **Ensemble methods**
 
+In many cases, you will not rely on a single model and it may be preferable to use many models and find an average over several models. A short example of how to do this, is to produce a new model - this time using MaxEnt - and finding the mean over our two predicted classifications. 
+
+```js
+var model2 = ee.Classifier.gmoMaxEnt()
+                            .setOutputMode('PROBABILITY')
+                            .train(sampleData, label, bands);
+
+var prediction2 = vars.classify(model2);
+```
+
+**Model evaluation**
+
+An important last step in all classification modelling is to determine the accuracy of the probability of occurrence or presence/absence map. There are several methods available to produce metrics on model (in)accuracy, which will be discussed in the next practical. 
+
 Save your script.
 
-**Practical 3 Exercise**
+**Practical 8 Exercise**
 
 Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
 
