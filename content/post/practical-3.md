@@ -80,104 +80,50 @@ var plotNDVI = ui.Chart.image.series(s2_ndvi, geometry, ee.Reducer.mean(), // we
 print(plotNDVI);
 ```
 
-You should notice two things: 1) the visualization shows very little detail and 2) we have output the image for the full global dataset.
-
-First, let’s center the interactive map on a chosen point. We can use two approaches here a) we can find the latitude/longitude coordinates using the Inspector tool and then copy and paste these values into the Map.setCenter() function, together with the zoom level.
+It is useful to visualize this data, to see a representation of your variable of interest. Let's take a look at the seasonal lows and highs for NDVI. First, extract the NDVI band and create a new ImageCollection. Next, filter the NDVI collection for January and August and then reduce this to a single image by calculating the median value for each pixel over each month. 
 
 ```js
-Map.setCenter(-84.006204, 10.431206, 10);
+var NDVI = s2_ndvi.select(['NDVI']);
+
+var NDVI_jan = NDVI.filterDate('2019-01-01', '2019-02-01').median();
+var NDVI_aug = NDVI.filterDate('2019-08-01', '2019-09-01').median();
 ```
 
-Let’s now look at visualization parameters. The SRTM visualization parameters need to be changed to produce better image. This is done within the Map.addLayer() function, by changing the minimum and maximum values.
+There are several options for creating interesting visualizations. We can make a custom palette or alternatively we can load in pre-built palettes. Here we will load in pre-built palettes from another users GEE repository and select the Red-Yellow-Green palette and specify the number of color values we want (i.e. 9). To view more palettes see: https://github.com/gee-community/ee-palettes
 
 ```js
-Map.addLayer(srtm, {min: 0, max: 3500});
+var palettes = require('users/gena/packages:palettes');
+var ndvi_pal = palettes.colorbrewer.RdYlGn[9];
 ```
 
-To clip the dataset to a smaller region, which can be important with big datasets, we need a specified area of interest. Use the polygon tool to create a geometry for clipping the SRTM data. This is polygon is called a feature. More than one feature make a FeatureCollection. Add the clipped data to the map, but this time we will add in a label for the image layer.
+The next step is to view the NDVI images on our map. Note the use of palette here.
 
 ```js
-var srtm_clip = srtm.clip(polygon);
-Map.addLayer(srtm_clip, {min: 0, max: 3500}, 'Elevation above sea level');
+Map.centerObject(geometry);
+
+Map.addLayer(NDVI_jan, {min:0, max:1, palette: ndvi_pal}, 'NDVI Jan');
+Map.addLayer(NDVI_aug, {min:0, max:1, palette: ndvi_pal}, 'NDVI Aug');
 ```
 
-Lastly, let’s further customise the visualisation, by adding in a colour palette.
+**Exporting data**
+
+The last step is to export the values of the time-series into a csv. The easiest way to do this is to open the plot in another window, using the pop out button. You have options to download the values of the time series as a csv or alternatively export the plot itsefl as an svg or png.
+
+A next step, which allows flexibility in analysis or visualizations in different softwares is to download a resulting image. GEE allows outputs to be exported to the users Google Drive account. This is limited by the storage size of your Google Drive account and the memory provided to each GEE users. We use the Export series of function. In this case for an image, we use Export.image.toDriver() and specify a number of variables. Once this line of code is run, you will need to go to your task tab to execute the task. 
 
 ```js
-Map.addLayer(srtm_clip, {min: 0, max: 3500, palette: ['blue','yellow','red']},'Elevation above sea level (palette)');
+Export.image.toDrive({
+  image: NDVI_aug,
+  description: 'NDVI Aug example',
+  scale: 100 // this can go down to 10, to match S2 original resolution
+});
+
 ```
 
-The last step is to save your script. First, create your own repository and provide a name (e.g. GEE4EC). Secondly, save the script as Practical 1a.
+Save your script. 
 
-**Part B**
+**Practical 3 Exercise**
 
-Start a new script and name it Practical 1b.
-
-While we could process data for a large region and over a long time period, this is typically not required, slows down your script and may exceed the amount of memory provided to each user by GEE.
-
-Using the Sentinel-2 dataset, let’s filter the dataset temporally and spatially, using filterDate() and filterBounds().
-
-The first step is to load the full Sentinel-2 dataset, using ee.ImageCollection() and provide an area of interest using ee.Geometry.Point()
-
-```js
-var s2_coll = ee.ImageCollection("COPERNICUS/S2");
-
-var aoi = ee.Geometry.Point([-35.008609532093686,-7.846847534023778])
-```
-
-We now want to apply filters to reduce our data to a time and space that we’re interested in. As Sentinel-2 is measuring surface reflectance and often has clouds, we also want to filter our ImageCollection based on properties related to clouds. We sort the data into ascending order, which then allows us to select the first image, using the .first() function, of the sorted collection, which will have the least cloud cover.
-
-```js
-var s2 = ee.Image(s2_coll
-.filterDate("2018-01-01","2019-12-31")
-.filterBounds(aoi)
-.sort("CLOUD_COVERAGE_ASSESSMENT")
-.first()
-// Alternatively, you can calculate a median value for all pixels over the time period
-// .median()
-);
-
-print(s2, 'Sentinel 2 image');
-```
-
-We have now reduced the ImageCollection (several images together) into a single Image. Now add the Image to the map. We will first center the map on our area of interest and then add the Sentinel-2 image to the map, selecting the red, green and blue bands in the visualisation parameters options to make a true colour composite image.
-
-In the Sentinel-2 metadata the red, green and blue bands are represented by B4, B3 and B2, respectively. We will need to add these into the correct channels.
-
-```js
-Map.centerObject(aoi, 13);
-
-Map.addLayer(s2, {bands:['B4','B3','B2']}, 'No defined vis parameters');
-```
-
-![](/images/practical_1_no_vis.png)
-
-Without specifying the minimum and maximum values, the image does not display correctly. Go to layers box and select the wheel icon and manually define the vis parameters. Use the custom drop-down menu and stretch the minimum and maximum values to 100% and click apply. We can also do this by selecting the min and max values within the visualization parameters.
-
-```js
-Map.addLayer(s2, {bands:['B4','B3','B2'], min:0, max: 3000}, 'True-colour');
-```
-
-![](/images/practical_1_true.png)
-
-We can use different bands to highlight specific properties that we may be interested in. Using the near infra-red band (B8 for Sentinel-2), we can highlight the high reflectance that healthy vegetation has in this band.
-
-```js
-Map.addLayer(s2, {bands:['B8','B4','B3'], min:0, max: 3000}, 'False-colour');
-```
-
-![](/images/practical_1_false.png)
-
-As a last step, save the script.
-
-**Practical 1 Exercise**
-
-Repeat this practical but use the Landsat-8 dataset. Produce a false colour image using the near infra-red band for a region in your country. Hint: the band names for Landsat-8 and Sentinel-2 satellites are different. Explore the dataset metadata to find the correct band names.
-
-```js
-ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
-```
+Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
 
 To share your script, click on Get Link and then copy script path. Send your completed script to **email**
-
-![](/images/practical_1_script_path.png)
