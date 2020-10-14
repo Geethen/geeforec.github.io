@@ -21,28 +21,48 @@ By the end of this practical you should be able to:
 3. Plot a time-series.
 4. Export data as a csv and image.
 
-**Access your code editor**
+**Importing data**
 
-The first step is to access the GEE code editor. This can be done from the earth engine [home page](https://earthengine.google.com/) by going to platform --> code editor. Alternatively, you can access it directly at https://code.earthengine.google.com/
-
-**Part A**
-
-**Importing datasets**
-
-![](/images/practical_1_importing_image.png)
-
-There are two ways to import datasets into the GEE code editor. We will run through both of these in this practical. The first method is to use the search bar. We will be using the NASA SRTM Digital Elevation Data 30m in the first half of this practical. In the search bar, type in elevation and select the SRTM dataset. This will also bring up the metadata for the chosen dataset. Take a look at the information provided regarding the processing of the data, dataset time periods, resolution of the bands, scaling factors (which are unique to Google's ingestion of the data) and reference to the data source or journal article.
-
-![](/images/practical_1_importing_image2.png)
-
-Import the SRTM data by selecting 'Import' in the bottom right hand corner. Once the dataset is in your Imports section of the code editor, rename it 'srtm'.
-
-An alternative and a more reproducible method is to call the dataset directly into your code editor. For this dataset, which has no temporal component, we use the function ee.Image(), insert the dataset string between the brackets and save the image as an object using: “var srtm = “. We can then print the image to the console to explore the details of the data using the print() function.
+We start by creating a polygon. This can be done using the polygon tool or by specifying the coordinates for each point of the polygon as shown below. We then filter the ImageCollection by time and space.
 
 ```js
-var srtm = ee.Image("USGS/SRTMGL1_003");
+var geometry = ee.Geometry.Polygon([
+[116.44967929649718,-33.98379973082278],[117.14593784141906,-33.98379973082278],
+[117.14593784141906,-33.62548866260113],[116.44967929649718,-33.62548866260113],
+[116.44967929649718,-33.98379973082278]]);
 
-print(srtm);
+var s2 = ee.ImageCollection('COPERNICUS/S2')
+.filterDate('2019-01-01', '2019-12-31')
+.filterBounds(geometry);
+```
+
+**Write and map a function**
+
+We will now write our first function. This function creates a mask cloud based on the metadata within each image of the collection. Look up the band information in the Sentinel-2 metadata. We create a variable name for the function as maskcloud. We then apply a set of functions for each image in the ImageCollection. Make sure the new variables within your function are consistent. First, we clip the image by our area of interest. Then we select the cloud mask band and lastly, return an image that has the mask applied to it. 
+
+We then use the map() function to apply a built-in algorithm or our own function over the Sentinel-2 collection. 
+
+```js
+var maskcloud = function(image) {
+var clipped = image.clip(geometry);
+var QA60 = clipped.select(['QA60']); // select the cloud mask band
+return clipped.updateMask(QA60.lt(1)); // mask image at all pixels that are not zero
+};
+
+var s2_cloudmask = s2.map(maskcloud); 
+```
+
+
+
+```js
+```
+
+Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. 
+
+```js
+var s2_ndvi = s2_cloudmask.map(function(image) {
+return image.addBands(image.normalizedDifference(['B8', 'B4']).rename('NDVI'))
+});
 ```
 
 **Visualization**
