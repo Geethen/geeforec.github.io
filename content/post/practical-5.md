@@ -80,6 +80,7 @@ Map.addLayer(trees_2000_clip, {min: 0, max: 1, palette: ['white','#1e8f1d']}, "t
 Next step is select the loss year band from the Hansen data, create a mask where tree cover was lower than 50% or where there was no tree loss. We then apply this mask to our loss_year image. 
 
 ```js
+var loss_year = Hansen.select(['lossyear']).clip(regions);
 var mask = loss_year.neq(0).and(trees_2000.eq(1));
 var loss_year_null = loss_year.mask(mask);
 ```
@@ -121,6 +122,9 @@ var forestlossPlot = ui.Chart.image.seriesByRegion(
 
 print(forestlossPlot);
 ```
+
+
+
 
 
 
