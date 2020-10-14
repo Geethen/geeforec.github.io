@@ -187,6 +187,11 @@ vAxis: {title: 'Importance'}
 print(chart);
 ```
 
+**Model classification/prediction**
+
+
+
+
 Save your script.
 
 **Practical 3 Exercise**
