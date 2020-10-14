@@ -165,7 +165,10 @@ print(model, "model output")
 
 We will then extract the variable importance data and add it to a chart
 
-
+```js
+var importance = model.explain().get('importance');
+print(importance, "variable importance");
+```
 
 Save your script.
 
