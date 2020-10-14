@@ -23,7 +23,7 @@ By the end of this practical you should be able to:
 
 Species Distribution Models are a valuable tool in ecology and conservation, providing us with insights into global change impacts, allowing us to project potential future range shifts in species. Using geo-referenced species localities and environmental predictors we can determine the important environmental conditions for species at their known sites.
 
-However, they need to be used carefully and with full understanding of the models used and outputs provided. For example, we may not have a full sample of species localities or not have all of the relevant environmental variables. This means we need to have a strong understanding of the species sampling, biogeography and potentially biotic interactions to accurately predict their distributions. Take a look at [this] (https://damariszurell.github.io/SDM-Intro/) R tutorial for more information on SDMs. 
+However, they need to be used carefully and with full understanding of the models used and outputs provided. For example, we may not have a full sample of species localities or not have all of the relevant environmental variables. This means we need to have a strong understanding of the species sampling, biogeography and potentially biotic interactions to accurately predict their distributions. Take a look at [this](https://damariszurell.github.io/SDM-Intro/) R tutorial for more information on SDMs. 
 
 SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly.
 
