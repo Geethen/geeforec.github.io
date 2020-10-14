@@ -97,6 +97,8 @@ var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
 
+**Visualize forest loss*
+
 We can now sum the values to create a visualization of pixels over the full time period where forest loss has occurred. 
 
 ```js
@@ -104,9 +106,21 @@ var loss_stack_clip = loss_stack.sum().clip(regions);
 Map.addLayer(loss_stack_clip, {palette: 'yellow'},"loss_stack");
 ```
 
+Next step is to produce a time-series chart showing forest loss over our two regions over the full time period. Note that we now use image.seriesByRegion to specify there are multiple regions of interest.
 
+```js
+var forestlossPlot = ui.Chart.image.seriesByRegion(
+    loss_stack, regions, ee.Reducer.sum(), 'lossyear', 30, 'year', 'NAME')
+        .setChartType('LineChart')
+        .setOptions({
+          title: 'Forest loss over selected features',
+          vAxis: {title: 'Forest loss summed per pixel'},
+          lineWidth: 1,
+          pointSize: 4
+});
 
-
+print(forestlossPlot);
+```
 
 
 
