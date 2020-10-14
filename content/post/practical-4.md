@@ -146,7 +146,9 @@ var rain_ndvi_chart = ui.Chart.image.series({
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
----
+
+***
+
 **VISUALISATION**
 
 Setup map elements to visualise results. Create a map title. Legend parameters (start with this but change later using the visual parameters pop-up).
@@ -173,12 +175,12 @@ Map.setControlVisibility({zoomControl: true});
 Map.add(title);
 ```
 
-  To save this map online as a GEE app, follow steps below:
+To save this map online as a GEE app, follow steps below:
 
-1.  Click the 'Apps' button above Select 'NEW APP'
-2.  Give the App a Name
-3.  Leave everything else default
-4.  Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
+1. Click the 'Apps' button above Select 'NEW APP'
+2. Give the App a Name
+3. Leave everything else default
+4. Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
 5. If you see a 'Not ready' page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
@@ -186,9 +188,10 @@ Map.add(title);
 Prepare data (outcome) for export
 From charts you can just maximise chart and click to export to csv, svg or png formats
 
+OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year. Export the new feature as a .csv table with date and mean rainfall value.
 
+![](/images/prac4_f3.png)
 
-OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year. Export the new feature as a .csv table with date and mean rainfall value
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
 var year = image.get('year');
@@ -209,9 +212,11 @@ folder: 'testOTS',
 fileFormat: 'CSV'
 });
 ```
+
 OR save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo
-First create a list of band names for your rasterStack output. 
+First create a list of band names for your rasterStack output.
 Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
+
 ```js
 var band_names = annualPrecip.map(function(image) {
 return ee.Feature(null, {'date': ee.Date(image.get('date'))
