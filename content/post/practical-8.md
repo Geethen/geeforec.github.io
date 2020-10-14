@@ -105,10 +105,9 @@ Based on the **R dismo** tutorials, these are the bioclim variables typically us
 var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17'])
 ```
 
-![](/images/prac8_hero-1.png)
+**Processing data**
 
-
-
+We now want to create pseudo-absence points
 
 
 
