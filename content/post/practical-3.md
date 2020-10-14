@@ -52,25 +52,32 @@ return clipped.updateMask(QA60.lt(1)); // mask image at all pixels that are not 
 var s2_cloudmask = s2.map(maskcloud); 
 ```
 
-
-
-```js
-```
-
-Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. 
+Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. Print out the new ImageCollection to view the new band.
 
 ```js
 var s2_ndvi = s2_cloudmask.map(function(image) {
 return image.addBands(image.normalizedDifference(['B8', 'B4']).rename('NDVI'))
 });
+
+print(s2_ndvi, 's2 with NDVI');
 ```
 
 **Visualization**
 
-We now want to add the SRTM data to the map. We do this using the Map.addLayer() function.
+Next we will create a time-series plot over the NDVI band of the ImageCollection. This is done using the ui.Chart series of functions. The function you chose depends on the type of data you are using. In this case, we are running an image series over a single region, so we will use ui.Chart.image.series(). The primary inputs here are: the ImageCollection, area of interest (geometry), a reducer, the band of interest, the scale and the x-axis property (which defaults to 'system:time_start'). In GEE, calculations that summarise your data are called reducers and can be called using the ee.Reducer series of functions. Here we will use ee.Reducer.mean() to calculate the mean NDVI values across our area of interest. 
+
+Lastly, we can specify details for the chart, including the type of chart and then label options. Run print() to see the outpot of the chart in your console. For more details on customizing your charts see: https://developers.google.com/chart/interactive/docs
 
 ```js
-Map.addLayer(srtm);
+var plotNDVI = ui.Chart.image.series(s2_ndvi, geometry, ee.Reducer.mean(), // we use an image based chart, with image, geom & reducer
+'NDVI', 500, 'system:time_start') // band, scale, x-axis property, label
+              .setChartType('LineChart').setOptions({
+                title: 'NDVI time series',
+                hAxis: {title: 'Date'},
+                vAxis: {title: 'NDVI'}
+});
+
+print(plotNDVI);
 ```
 
 You should notice two things: 1) the visualization shows very little detail and 2) we have output the image for the full global dataset.
