@@ -120,7 +120,9 @@ var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bi
 
 **Processing data**
 
-We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Lastly, we merge the datasets together to give a single FeatureCollection of all points.
+We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Note that the generation of pseudo-absence points has a lot of literature related to it and should be carefully considered before running any SDM. View [this](https://doi.org/10.1111/j.2041-210X.2011.00172.x) this article for more information on pseudo-absences in SDMs.
+
+Lastly, we merge the datasets together to give a single FeatureCollection of all points.
 
 ```js
 var filtered_locs = presences.filterBounds(countries_clip);
