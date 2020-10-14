@@ -155,7 +155,7 @@ print(rain_ndvi_chart);
 
 **VISUALISATION**
 
-Setup map elements to visualise results. Create a map title. Legend parameters (start with this but change later using the visual parameters pop-up).
+In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE app(lication) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
 
 ```js
 var title = ui.Label('Costa Rica: Mean Annual Rainfall 2000 to 2018', {
