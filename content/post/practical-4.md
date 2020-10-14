@@ -17,20 +17,18 @@ Access the completed practical script [here](https://code.earthengine.google.com
 By the end of this practical you should be able to:
 
 1. Access long-term rainfall data
-
 2. Summarise temporal data by region
-
 3. Generate interactive map
-
 4. Generate time-series plots
-
 5. Output data (csv, rasterStack) for analysis outside of GEE
-
 6. Explore understanding of rainfall as a driver of ecosystem processes (e.g. comparison with EVI, similar to NDVI from previous practical #3 with JW)
----
+
+***
+
 **Data import**
 
 The datasets that will be required in this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a a local dataset into GEE.
+
 ```js
 
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
@@ -41,12 +39,12 @@ var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 
 The first four datasets imported correspond to those already available within GEE and are the Country boundaries, Protected area boundaries, long-term rainfall data, and the long-term EVI data from Modis respectively. Below we describe how to import a local dataset.
 
-![](/images/prac4_f1.png)
----
+## ![](/images/prac4_f1.png)
 
 **Filtering data**
 
 We first define variables for the temporal window of interest. we will use these variables for the filtering of the long-term data.
+
 ```js
 var startYear = 2000;
 var endYear = 2018;
@@ -71,10 +69,13 @@ var costaRica_geo = costaRica.geometry();
 var braulio_geo = braulio.geometry();
 var myBraulio_geo = myBraulio.geometry();
 ```
----
+
+***
+
 **Processing**
 
 We first calculate the sum of rainfall on an annual basis within Costa Rica
+
 ```js
 var annualPrecip = ee.ImageCollection.fromImages(
 years.map(function (year) {
@@ -87,7 +88,9 @@ return annual
 .set('system:time_start', ee.Date.fromYMD(year, 1, 1));
 }));
 ```
-Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park. 
+
+Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
+
 ```js
 var rainMean = rainMeanMY.mean().clip(costaRica);
 var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
@@ -100,9 +103,11 @@ return img.addBands(\[evi_year, time\]).set('year', y).set('month', 1)
 .set('system:time_start', ee.Date.fromYMD(y,1,1));
 }).flatten());
 ```
+
 **Charting**
 Create time-series line chart of annual rainfall sum for Braulio Carrillo 2000 to 2018
 First create chart parameters (e.g. Title, axis labels). Now create the line chart using the processed summaries
+
 ```js
 var opt_chart_annualPrecip = {
   title: 'Mean Annual Rainfall: Braulio Carrillo',
@@ -121,8 +126,9 @@ var chart_annualPrecip = ui.Chart.image.seriesByRegion({
 print(chart_annualPrecip);
 ```
 
-Create comparative line chart of rainfall and EVI summaries for Braulio Carrillo 
+Create comparative line chart of rainfall and EVI summaries for Braulio Carrillo
 First create chart parameters (e.g. Title, axis labels). Now create the line chart with 2 y-axises using the processed summaries
+
 ```js
 var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI): Braulio Carrillo", pointSize: 3,
     legend: {maxLines: 5, position: 'top'},
@@ -140,7 +146,9 @@ var rain_ndvi_chart = ui.Chart.image.series({
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
----
+
+***
+
 **VISUALISATION**
 
 Setup map elements to visualise results. Create a map title. Legend parameters (start with this but change later using the visual parameters pop-up).
@@ -156,58 +164,57 @@ var rainViz = {
   min: 175, max: 317, 
   palette: 'ffffff, 67d9f1, 1036cb'};
 ```
-Center the map to Costa Rica and zoomed to preliminary scale. All other layers will align to this parent map.Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay.Enable zooming on the top-left map.
+
+Center the map to Costa Rica and zoomed to preliminary scale. All other layers will align to this parent map.Add long-term mean rainfall. Add Braulio Carrillo boundary last, to overlay.Enable zooming on the top-left map. Add title to the map
+
 ```js
 Map.centerObject(costaRica, 8);
 Map.addLayer(rainMean, rainViz, 'Mean Annual Rainfall'); 
 Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
 Map.setControlVisibility({zoomControl: true});
-```
-Add title to the map
 Map.add(title);
-To save this map online as a GEE app, follow steps below
-Click the 'Apps' button above
-Select 'NEW APP'
-Give the App a Name
-Leave everything else default
-Click 'PUBLISH'
-URL will appear - Click this to see your first online interactive map
-* If you see a 'Not ready' page, give it a few minutes and try again
+```
 
+  To save this map online as a GEE app, follow steps below:
+
+1.  Click the 'Apps' button above Select 'NEW APP'
+2.  Give the App a Name
+3.  Leave everything else default
+4.  Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
+5. If you see a 'Not ready' page, give it a few minutes and try again
 
 Prepare data (outcome) for export
 From charts you can just maximise chart and click to export to csv, svg or png formats
 
 1	Console panel > Max chart view	2	Export table or figure
-	 		 
 
 OR script the export using a reducer to get the mean rainfall value for Braulio Carrillo for each year
 var csv_annualPrecip = annualPrecip.map(function(image){
-  var year = image.get('year');
-  var month = image.get('month');
-  var mean = image.reduceRegion({
-    reducer: ee.Reducer.mean(),
-    geometry: myBraulio_geo,
-    scale: 5000
-  });  
-  return ee.Feature(null, {'mean': mean.get('rain'),
-                          'year': year})
+var year = image.get('year');
+var month = image.get('month');
+var mean = image.reduceRegion({
+reducer: ee.Reducer.mean(),
+geometry: myBraulio_geo,
+scale: 5000
+});  
+return ee.Feature(null, {'mean': mean.get('rain'),
+'year': year})
 });
 
 Export the new feature as a .csv table with date and mean rainfall value
 Export.table.toDrive({
-  collection: csv_annualPrecip,
-  description: 'annualRain',
-  folder: 'testOTS',
-  fileFormat: 'CSV'
+collection: csv_annualPrecip,
+description: 'annualRain',
+folder: 'testOTS',
+fileFormat: 'CSV'
 });
 
 OR save the results as a rasterStack with multiple layers representing annual sums of annual rainfall for Braulio Carrillo
 First create a list of band names for your rasterStack output
 var band_names = annualPrecip.map(function(image) {
-      return ee.Feature(null, {'date': ee.Date(image.get('date'))
-      .format('YYYY_MM')})})
-      .aggregate_array('date')
+return ee.Feature(null, {'date': ee.Date(image.get('date'))
+.format('YYYY_MM')})})
+.aggregate_array('date')
 print('Band Names', band_names);
 
 Apply the function toBands() to the image collection to stack all bands into one image, naming the layers appropriately
@@ -216,13 +223,13 @@ var stack_RainEVI = annualPrecip.toBands().rename(band_names);
 Export a cloud-optimized GeoTIFF.
 i.e. rasterStack with 19 layers, representing annual rain from 2000 to 2018
 Export.image.toDrive({
-  image: stack_RainEVI,
-  folder: 'testOTS',
-  description: 'Rainfall_Sums',
-  scale: 5000,
-  region: myBraulio_geo,
-  fileFormat: 'GeoTIFF',
-  formatOptions: {
-    cloudOptimized: true
-  }
+image: stack_RainEVI,
+folder: 'testOTS',
+description: 'Rainfall_Sums',
+scale: 5000,
+region: myBraulio_geo,
+fileFormat: 'GeoTIFF',
+formatOptions: {
+cloudOptimized: true
+}
 });
