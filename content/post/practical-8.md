@@ -142,7 +142,7 @@ var points = Presence.merge(pAbsencePoints);
 print('Check the total no. of points', points.size());
 ```
 
-![](/images/practical_1_importing_image.png)
+![](/images/prac8_p-a.png)
 
 The last step in the data processing is to extract the values of each band of our predictor variables for each point in our dataset. We do this using the sampleRegions() function.
 
@@ -191,7 +191,7 @@ vAxis: {title: 'Importance'}
 print(chart);
 ```
 
-![](/images/practical_1_importing_image.png)
+![](/images/prac8_vi.png)
 
 **Model classification/prediction**
 
@@ -212,7 +212,7 @@ var palette = palettes.matplotlib.magma[7];
 Map.addLayer(prediction, {palette: palette},'Probability of occurence (RF)');
 ```
 
-![](/images/practical_1_importing_image.png)
+![](/images/prac8_rf.png)
 
 **Ensemble methods**
 
@@ -237,7 +237,7 @@ var ensemble_prediction = collectionFromImages.mean()
 Map.addLayer(ensemble_prediction, {palette: palette},'Probability of occurence (ensemble)');
 ```
 
-![](/images/practical_1_importing_image.png)
+![](/images/prac8_ensemble.png)
 
 **Model evaluation**
 
