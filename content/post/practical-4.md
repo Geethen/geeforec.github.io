@@ -1,9 +1,10 @@
 +++
 authors = []
 date = 2020-10-04T22:00:00Z
+draft = true
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
 hero = "/images/prac4_f4.png"
-timeToRead = 0
+timeToRead = 15
 title = "Practical 4"
 
 +++
@@ -152,9 +153,9 @@ print(rain_ndvi_chart);
 
 ***
 
-**VISUALISATION**
+**Visualisation**
 
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE app(lication) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
+In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE application) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
 
 ```js
 var title = ui.Label('Costa Rica: Mean Annual Rainfall 2000 to 2018', {
