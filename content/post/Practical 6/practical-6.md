@@ -8,3 +8,16 @@ timeToRead = 15
 title = "Practical 6"
 
 +++
+**Learning Objectives**
+
+By the end of this practical you should be able to:
+
+1\. Access terrain model data from SRTM
+
+2\. Access monthly burn scar data
+
+3\. Generate a hillshade using SRTM data
+
+4\. Explore long-term patterns of fire frequency
+
+5\. Build an animation and output for use in, for example, PowerPoint presentations
