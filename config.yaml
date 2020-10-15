@@ -1,4 +1,4 @@
-baseURL: "https://example.com"
+baseURL: "geeforec.github.io"
 languageCode: "en-us"
 title: "Hugo Novela"
 pygmentsstyle: 'monokai'
@@ -19,4 +19,3 @@ social:
 taxonomies:
   author: authors
 
-publishDir: docs
