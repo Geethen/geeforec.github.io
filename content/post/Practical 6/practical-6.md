@@ -34,3 +34,67 @@ var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 ```
 
 The first two datasets imported correspond to those already available within GEE and are the Shuttle Radar Topography Mission (SRTM) digital elevation dataset and the MODIS Fire_cci Burned Area pixel product version 5.1 (FireCCI51). Below we describe how to import a dataset available locally into GEE. You can download and save the required boundary shapefile for the Kruger National Park (Kruger) from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
+
+## ![](/images/prac6_f1.png)
+
+***
+
+**Filtering data**
+
+We first define variables for the temporal and spatial windows of interest. We will use these variables to filter our data before processing.
+
+```js
+var startDate = ee.Date.fromYMD(2001,1,1);
+var endDate = ee.Date.fromYMD(2018,12,31);
+var years = ee.List(fire.aggregate_array('year')).distinct().sort();
+
+var knp_geo = knp.geometry();
+
+var srtm = dem.clipToCollection(knp);
+
+var fire = FireCCI
+    .filterBounds(knp_geo)
+    .filterDate(startDate, endDate)
+    .map(function(img) { // This function adds year as property to each image
+      return img.set('year', ee.Image(img).date().get('year'));
+    });
+```
+
+***
+
+**Processing**
+
+We will build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%.
+
+```js
+var confMask = function(img) {
+  var conf = img.select('ConfidenceLevel');
+  var level = conf.gt(50);
+  return img.updateMask(level).select('BurnDate'); //return only 'BurnDate' band
+};
+```
+
+Then we will run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger from 2001 until 2018. 
+
+```js
+var fireDOY_list = years.map(function(year) {
+  return fire
+    .filterMetadata('year', 'equals', year) // Filter image collection by year
+    .map(confMask) // Apply confidence mask >50%
+    .reduce(ee.Reducer.mode()) // Reduce image collection by most common DOY
+    .set('year', year) // Set composite year as an image property
+    .set('system:time_start', ee.Date.fromYMD(year, 1, 1));
+});
+var doyFires = ee.ImageCollection.fromImages(fireDOY_list); // Convert the image List back to an ImageCollection
+
+var fireCnt_list = years.map(function(year) {
+  return fire
+    .filterMetadata('year', 'equals', year) // Filter image collection by year
+    .map(confMask) // Apply confidence mask >50%
+    .reduce(ee.Reducer.countDistinct()) // Reduce image collection by count distinct doy
+    .set('year', year) ));// Set composite year as an image property
+    .set('system:time_start', ee.Date.fromYMD(year, 1, 1
+});
+var cntFiresDOY = ee.ImageCollection.fromImages(fireCnt_list); // Convert the image List back to an ImageCollection
+```
+
