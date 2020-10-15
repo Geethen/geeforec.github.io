@@ -1,7 +1,6 @@
 +++
 authors = []
 date = 2020-10-28T22:00:00Z
-draft = true
 excerpt = "Species distribution modeling (classification)"
 hero = "/images/prac8_hero.png"
 timeToRead = 3
