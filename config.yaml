@@ -18,3 +18,5 @@ social:
   youtube: "#"
 taxonomies:
   author: authors
+
+publishDir: docs
