@@ -16,11 +16,11 @@ Access the completed practical script [here](https://code.earthengine.google.com
 
 By the end of this practical you should be able to:
 
-1.	Access terrain model data from SRTM
-2.	Access monthly burn scar data
-3.	Generate a hillshade using SRTM data
-4.	Explore long-term patterns of fire frequency
-5.	Build an animation and output for use in, for example, PowerPoint presentations
+1. Access terrain model data from SRTM
+2. Access monthly burn scar data
+3. Generate a hillshade using SRTM data
+4. Explore long-term patterns of fire frequency
+5. Build an animation and output for use in, for example, PowerPoint presentations
 
 ***
 
@@ -29,10 +29,8 @@ By the end of this practical you should be able to:
 The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
 
 ```js
-var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
-var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons');
-var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
-var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
+var dem = ee.Image("CGIAR/SRTM90_V4");
+var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 ```
 
-The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term MODIS EVI data respectively. Below we describe how to import a dataset available locally into GEE. You can download and save the required Braulio Carillo boundary on your local hard drive from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
+The first two datasets imported correspond to those already available within GEE and are the Shuttle Radar Topography Mission (SRTM) digital elevation dataset and the MODIS Fire_cci Burned Area pixel product version 5.1 (FireCCI51). Below we describe how to import a dataset available locally into GEE. You can download and save the required boundary shapefile for the Kruger National Park (Kruger) from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
