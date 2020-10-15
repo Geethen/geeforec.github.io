@@ -1,6 +1,6 @@
 ---
 title: Practical 7
-date: 2020-10-27T22:00:00+00:00
+date: 2020-10-04T22:00:00+00:00
 hero: "/images/prac_7_f1.png"
 excerpt: Binary change detection, computing area and charting
 timeToRead: 8
