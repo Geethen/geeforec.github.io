@@ -41,5 +41,4 @@ fields:
   default: []
   label: Authors
 pages:
-- content/post/Practical 6/practical-6.md
 - content/post/practical-4.md

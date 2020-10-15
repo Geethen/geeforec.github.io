@@ -16,13 +16,13 @@ Access the completed practical script [here](https://code.earthengine.google.com
 
 By the end of this practical you should be able to:
 
-1. Filter, create and merge Feature Collections.
+1. Filter Feature Collections.
 2. Manipulate a dataset.
 3. Plot a time-series over multiple regions.
 4. Create a table and export data as a csv.
 5. Export a video of forest change using Landsat 8
 
-In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over a Protected Area and a neighbouring region outside of the Protected Area.
+In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over all of Madagascar and then within Protected Areas.
 
 **Importing data**
 
@@ -77,7 +77,7 @@ var trees_2000 = cover_2000.gte(50);
 Map.addLayer(trees_2000_clip, {min: 0, max: 1, palette: ['white','#1e8f1d']}, "trees_2000");
 ```
 
-Next step is select the loss year band from the Hansen data, create a mask where tree cover was lower than 50% or where there was no tree loss. We then apply this mask to our loss_year image. 
+Next step is select the loss year band from the Hansen data, create a mask where tree cover was lower than 50% or where there was no tree loss. We then apply this mask to our loss_year image.
 
 ```js
 var loss_year = Hansen.select(['lossyear']).clip(regions);
@@ -98,9 +98,9 @@ var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
 
-**Visualize forest loss*
+\*_Visualize forest loss_
 
-We can now sum the values to create a visualization of pixels over the full time period where forest loss has occurred. 
+We can now sum the values to create a visualization of pixels over the full time period where forest loss has occurred.
 
 ```js
 var loss_stack_clip = loss_stack.sum().clip(regions);
@@ -122,11 +122,6 @@ var forestlossPlot = ui.Chart.image.seriesByRegion(
 
 print(forestlossPlot);
 ```
-
-
-
-
-
 
 **Write and map a function**
 
