@@ -123,10 +123,21 @@ print(chart);
 
 **Part B: find forest loss over selected Protected Areas**
 
+For this next part, we will create a similar dataset, but this time we will produce an ImageCollection with each Image representing the summed forest loss over each year. 
 
+To start we will create a list of years and then use the masked loss year image that we used in Part A to produce a list of Images. We will then convert this list to an ImageCollection. Note: we need to convert our pixels to area again.
 
+```js
+var years = ee.List.sequence(1,19);
 
+var loss_by_year = years.map(function(year) {
+    return lossYear_mask.eq(ee.Image.constant(year)).multiply(ee.Image.pixelArea()).divide(1e6).set('year', year);
+});
+print(loss_by_year, 'loss by year');
 
+var loss_stack = ee.ImageCollection(loss_by_year);
+print(loss_stack, "loss_stack");
+```
 
 
 
