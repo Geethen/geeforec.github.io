@@ -67,12 +67,68 @@ var lossYear_mask = lossYear.mask(mask);
 
 We will now get into the details of manipulating our data for visualizing it later. The first step is to create 1) a feature collection for exporting a csv and 2) an array for plotting forest loss in Madagascar for 2000 to 2019. 
 
-As we currently have forest loss per pixel (30 m resolution), we want to convert our loss image to values of km2. We use the ee.Image.pixelArea() function for this, which gives an output in m2, which we then divide by 1e6 to get km^2.
+As we currently have forest loss per pixel (30 m resolution), we want to convert our loss image to values of km2. We use the ee.Image.pixelArea() function for this, which gives an output in m2, which we then divide by 1e6 to get km2.
 
 ```js
 var lossAreaImage = lossImage.multiply(ee.Image.pixelArea()).divide(1e6);
 print(lossAreaImage, 'lossAreaImage');
 ```
+
+We now apply a reducer over the region. First we add our loss image together with our loss year image and then sum values for each year (or group). The group() function requires a groupField argument, which in this case is the second band in our image (loss year) and is coded as 1.
+
+The reduceRegion() function then requires our geometry and scale. We also add in the argument for maxPixels, to make sure we do not cap our GEE size limit. 
+```js
+// Reduce the loss area image to an object with a summed value for each year
+var lossByYear = lossAreaImage.addBands(lossYear_mask).reduceRegion({
+  reducer: ee.Reducer.sum().group({ // we use the group function to calculate sum per year, and select the groupField 1 to specify lossYear
+    groupField: 1
+    }),
+  geometry: madag,
+  scale: 30,
+  maxPixels: 1e10 // due to the size of the geometry we may exceed the maxPixels allowed, so we increase this to a large value
+});
+print(lossByYear, 'lossByYear');
+```
+
+The output of the above processing is an ee.Object, which we now want to convert to a FeatureCollection for export. To do this we map over the function ee.Feature for each Object in the list to produce a list of features. The last step is to convert this to a FeatureCollection and export to our Google Drive account as a table.
+
+```js
+// Convert our loss by year dictionary to a list, and then convert each valye to a feature for output.
+var output = ee.FeatureCollection(ee.List(lossByYear.get('groups'))).map(function(pair) {
+  return ee.Feature(null, pair);
+});
+print(output, 'output');
+
+// To export a table, we need to convert our features to a FeatureCollection
+Export.table.toDrive(output,'Madagascar_yearly_forest_loss_km2');
+```
+
+We can then use this feature collection to plot the forest loss over all of Madagascar per year. The inputs for ui.Chart.Feature.byFeature() are the FeatureCollection, the xProperty and the yProperties.
+
+```js
+var chart = ui.Chart.feature.byFeature({
+  features: output,
+  xProperty: 'group',
+  yProperties: 'sum'
+}).setChartType('LineChart').setOptions({
+    title: 'Yearly Forest Loss in Madagascar',
+    hAxis: {title: 'Year'},
+    vAxis: {title: 'Area (square km)'},
+    legend: {position: "none"},
+    lineWidth: 1,
+    pointSize: 3
+  });
+print(chart);
+```
+
+**Part B: find forest loss over selected Protected Areas**
+
+
+
+
+
+
+
 
 
 
