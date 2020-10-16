@@ -145,9 +145,17 @@ var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
 
-We now return to the World Database on Protected Areas
+We now return to the World Database on Protected Areas. We want to filter out specific Protected Areas based on a property. In this case we use their name, coded as 'NAME'. To find out the names of these protected areas, either go to the WDPA webpage (https://www.protectedplanet.net/en) or alternatively add the full FeatureCollection to your map and use the inspector tool to find their names. Here we select 3 protected areas in Madagascar to demostrate the use of a time-series over multiple regions. 
 
-
+```js
+var selected_PAs = WDPA.filter(ee.Filter.or(
+  ee.Filter.eq("NAME", "Marolambo"),
+  ee.Filter.eq("NAME", "Corridor Forestier Ambositra Vondrozo"),
+  ee.Filter.eq("NAME", "Befotaka Midongy")
+  ));
+// print(select_PAs);
+Map.addLayer(selected_PAs.draw({color: 'white', strokeWidth: 2}),{}, 'Selected PAs');
+```
 
 
 
