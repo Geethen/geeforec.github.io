@@ -32,10 +32,10 @@ var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 var madag = countries.filter(ee.Filter.eq('country_na', 'Madagascar'));
 ```
 
-Next we will add in the most recent Hansen global forest change dataset and select the bands of interest, namely tree cover in 2000, overall forest loss over the time period (2000-2019) and the forest loss per year band.
+Next we will add in the most recent Hansen global forest change dataset, clip it to our area of interest (Madagascar) and then select the bands of interest, namely tree cover in 2000, overall forest loss over the time period (2000-2019) and the forest loss per year band.
 
 ```js
-var hansen2019 = ee.Image("UMD/hansen/global_forest_change_2019_v1_7");
+var hansen2019 = ee.Image("UMD/hansen/global_forest_change_2019_v1_7").clip(madag);
 var treeCover = hansen2019.select(['treecover2000']);
 var lossImage = hansen2019.select(['loss']);
 var lossYear = hansen2019.select(['lossyear']);
