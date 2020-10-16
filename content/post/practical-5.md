@@ -41,8 +41,27 @@ var lossImage = hansen2019.select(['loss']);
 var lossYear = hansen2019.select(['lossyear']);
 ```
 
+We can then add the tree cover 2000 and overall forest loss bands to our map. My masking each image with itself, values that are 0 become transparent pixels.
 
+```js
+Map.centerObject(madag, 6);
+Map.addLayer(treeCover.mask(treeCover), {palette: ['000000', '00FF00'], min: 0, max: 100}, 'Forest Cover');
+Map.addLayer(lossImage.mask(lossImage), {palette: ['FF0000']}, 'Forest Loss');
+```
 
+**Data processing**
+
+There are several steps required in processing this dataset. The goal here is for to become familiar with the different functions available and be able to manipulate ee.Objects into features, images, dictionaries and collections.
+
+We start with filtering our tree cover dataset to only include forested areas (our threshold here is 30% tree cover). To do this we use the gte() function, which provides us with a binary output. Any value equal to or over 30% gets a 1 and any value below this gets a 0. We then mask our forest loss image, so as to only include forest loss and not just tree cover loss. 
+
+```js
+var forestCover = treeCover.gte(30);
+
+// Create a mask to set nodata where lossyear = 0 and tree cover in 2000 < 30%; apply the mask
+var mask = lossYear.neq(0).and(forestCover.eq(1));
+var lossYear_mask = lossYear.mask(mask);
+```
 
 
 We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name.
