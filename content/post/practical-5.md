@@ -157,6 +157,23 @@ var selected_PAs = WDPA.filter(ee.Filter.or(
 Map.addLayer(selected_PAs.draw({color: 'white', strokeWidth: 2}),{}, 'Selected PAs');
 ```
 
+We can now add this to a chart. We will use the image.seriesByRegion() chart option. This requires your ImageCollection, FeatureCollection, a reducer, the band of interest, the scale for the reducer, the xProperty and lastly the seriesProperty.
+
+```js
+var forestlossPlot = ui.Chart.image.seriesByRegion(
+    loss_stack, selected_PAs, ee.Reducer.sum(), 'lossyear', 30, 'year', 'NAME')
+        .setChartType('LineChart')
+        .setOptions({
+          title: 'Yearly Forest Loss over selected PAs',
+          hAxis: {title: 'Year'},
+          vAxis: {title: 'Area (square km)'},
+          lineWidth: 1,
+          pointSize: 3
+});
+print(forestlossPlot);
+```
+
+
 
 
 We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name.
