@@ -67,7 +67,12 @@ var lossYear_mask = lossYear.mask(mask);
 
 We will now get into the details of manipulating our data for visualizing it later. The first step is to create 1) a feature collection for exporting a csv and 2) an array for plotting forest loss in Madagascar for 2000 to 2019. 
 
+As we currently have forest loss per pixel (30 m resolution), we want to convert our loss image to values of km2. We use the ee.Image.pixelArea() function for this, which gives an output in m2, which we then divide by 1e6 to get km^2.
 
+```js
+var lossAreaImage = lossImage.multiply(ee.Image.pixelArea()).divide(1e6);
+print(lossAreaImage, 'lossAreaImage');
+```
 
 
 
