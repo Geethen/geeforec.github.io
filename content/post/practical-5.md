@@ -49,7 +49,7 @@ Map.addLayer(treeCover.mask(treeCover), {palette: ['000000', '00FF00'], min: 0, 
 Map.addLayer(lossImage.mask(lossImage), {palette: ['FF0000']}, 'Forest Loss');
 ```
 
-**Data processing**
+**Data processing & manipulation**
 
 There are several steps required in processing this dataset. The goal here is for to become familiar with the different functions available and be able to manipulate ee.Objects into features, images, dictionaries and collections.
 
@@ -62,6 +62,13 @@ var forestCover = treeCover.gte(30);
 var mask = lossYear.neq(0).and(forestCover.eq(1));
 var lossYear_mask = lossYear.mask(mask);
 ```
+
+**Part A: find tree cover loss over all of Madagascar**
+
+We will now get into the details of manipulating our data for visualizing it later. The first step is to create 1) a feature collection for exporting a csv and 2) an array for plotting forest loss in Madagascar for 2000 to 2019. 
+
+
+
 
 
 We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name.
