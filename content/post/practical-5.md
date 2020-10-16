@@ -20,11 +20,30 @@ By the end of this practical you should be able to:
 2. Manipulate a dataset.
 3. Plot a time-series over multiple regions.
 4. Create a table and export data as a csv.
-5. Export a video of forest change using Landsat 8
 
 In this practical we will be using the Hansen forest loss dataset to look at forest loss over time over all of Madagascar and then within Protected Areas.
 
 **Importing data**
+
+We will start by loading in the International Boundaries dataset and filtering by selecting the country of interest. 
+
+```js
+var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+var madag = countries.filter(ee.Filter.eq('country_na', 'Madagascar'));
+```
+
+Next we will add in the most recent Hansen global forest change dataset and select the bands of interest, namely tree cover in 2000, overall forest loss over the time period (2000-2019) and the forest loss per year band.
+
+```js
+var hansen2019 = ee.Image("UMD/hansen/global_forest_change_2019_v1_7");
+var treeCover = hansen2019.select(['treecover2000']);
+var lossImage = hansen2019.select(['loss']);
+var lossYear = hansen2019.select(['lossyear']);
+```
+
+
+
+
 
 We will start by loading in the World Database on Protected Areas and filtering the database by selecting specific protected area by its name. To find other protected areas, you can add the full FeatureCollection to the map and use the inspector tool to find their name.
 
