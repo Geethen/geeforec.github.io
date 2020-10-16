@@ -25,7 +25,13 @@ In this practical we will be using the Hansen forest loss dataset to look at for
 
 **Importing data**
 
-We will start by loading in the International Boundaries dataset and filtering by selecting the country of interest. 
+We will start by loading in the World Database on Protected Areas, which we will use later in Part B. 
+
+```js
+var WDPA = ee.FeatureCollection("WCMC/WDPA/current/polygons");
+```
+
+We then load in the International Boundaries dataset and filtering by selecting the country of interest. 
 
 ```js
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
@@ -138,6 +144,8 @@ print(loss_by_year, 'loss by year');
 var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
+
+We now return to the World Database on Protected Areas
 
 
 
