@@ -1,7 +1,6 @@
 +++
 authors = []
 date = 2020-10-27T13:00:00Z
-draft = true
 excerpt = "Fire frequency in the Kruger National Park, South Africa"
 hero = "/images/prac6_f4.png"
 timeToRead = 15
@@ -74,7 +73,7 @@ var confMask = function(img) {
 };
 ```
 
-Then we will run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger annually from 2001 until 2018. 
+Then we will run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger annually from 2001 until 2018.
 
 ```js
 var fireDOY_list = years.map(function(year) {
@@ -195,11 +194,6 @@ To export the data shown in the created charts, similar to practical 3, you may 
 
 ![](/images/prac4_f3.png)
 
-```js
-```
-
 In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Braulio Carrillo. We will first create a list of band names for the rasterStack output and apply the function toBands() to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
 
-```js
-
-```
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
