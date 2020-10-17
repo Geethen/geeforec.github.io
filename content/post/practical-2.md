@@ -102,3 +102,9 @@ Repeat the steps in this practical for the level 2A data that you
 imported and renamed as s22a at the beginning of this practical.
 Thereafter, compare the water detection results and patterns with the
 s21c image results. Submit your final script.
+
+To share your script, click on Get Link and then copy the script path. Send your completed script to **email.**
+
+![](/images/practical_1_script_path.png)
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
