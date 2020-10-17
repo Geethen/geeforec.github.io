@@ -98,6 +98,10 @@ return rainAll
 .set('year', ee.Date.fromYMD(y, 1, 1)) 
 .set('name','rainfall');
 });
+
+// Convert the image List to an ImageCollection.
+var rainYr = ee.ImageCollection.fromImages(rainYr_list);
+print('Check rainYr', rainYr);
 ```
 
 ***
@@ -244,6 +248,7 @@ As a last step, save the script.
 ***
 
 **Bonus Section**
+
 Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
 
 ```js
