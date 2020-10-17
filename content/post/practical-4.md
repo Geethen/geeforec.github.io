@@ -25,6 +25,8 @@ By the end of this practical you should be able to:
 
 ***
 
+Rainfall blah blah blah
+
 **Data import**
 
 The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
@@ -255,6 +257,8 @@ Repeat this practical but use the Landsat-8 dataset and provide a new area of in
 
 To share your script, click on Get Link and then copy script path. Send your completed script to **email**
 
+***
+
 **References**
 
-Kim, D.H., Sexton, J.O., Noojipady, P., Huang, C., Anand, A., Channan, S., Feng, M. and Townshend, J.R., 2014. Global, Landsat-based forest-cover change from 1990 to 2000. _Remote Sensing of Environment_, _155_, pp.178-193.
+Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, Husak G, Rowland J, Harrison L, Hoell A, Michaelsen J (2015) The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data 2, 150066. doi:10.1038/sdata.2015.66 2015
