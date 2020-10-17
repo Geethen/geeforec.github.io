@@ -30,7 +30,7 @@ Rainfall plays a central role in a myriad of natural processes, including river 
 
 **Data import**
 
-The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
+The datasets that we will use for this practical are all available on Google Earth Engine. 
 
 ```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
