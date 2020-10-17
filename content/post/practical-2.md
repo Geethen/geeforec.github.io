@@ -98,7 +98,6 @@ level 2A (top), reference water detection based on the long-term surface
 water from Landsat-8 made available through the Global Surface Water
 product (centre), water detected from atmospherically uncorrected
 Sentinel-2, level 1C data (bottom).
--
 
 **_Practical 2 Exercise_**
 
