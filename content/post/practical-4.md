@@ -48,7 +48,7 @@ The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datase
 
 **Filtering data**
 
-We first define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
+First define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
 
 ```js
 var startDate = ee.Date.fromYMD(2000,1,1);
@@ -57,7 +57,7 @@ var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
 ```
 
-First we will filter our polygon features i.e. The country Costa Rica and Braulio Carrillo protected area. We will also need to convert these two FeatureCollections to geometry objects for function parameters later.
+Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll be building.
 
 ```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
@@ -69,14 +69,17 @@ var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 var braulio_geo = braulio.geometry();
 ```
 
-Then we'll filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. We'll also filter the bounds of these two ImageCollections to Costa Rica's boundary to help speed up analyses.
+Now filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up proceeding analyses.
 
 ```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
 .select('precipitation')
+.filterDate(startDate, endDate)
 .filterBounds(costaRica_geo);
+
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 .select('EVI')
+.filterDate(startDate, endDate)
 .filterBounds(costaRica_geo);
 ```
 
