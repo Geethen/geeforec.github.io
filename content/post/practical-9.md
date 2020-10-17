@@ -153,7 +153,7 @@ print('Users Accuracy', Test.errorMatrix('label', 'classification').consumersAcc
 
 ***
 
-**Visualisation** 
+**Visualisation**
 
 Visualising the RGB image, reference points, and classified image
 
@@ -207,3 +207,5 @@ The area of applicability concept is based on an experimental concept still unde
 Reference
 
 Meyer, H. and Pebesma, E., 2020. Predicting into unknown space? Estimating the area of applicability of spatial prediction models. arXiv preprint arXiv:2005.07939.
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
