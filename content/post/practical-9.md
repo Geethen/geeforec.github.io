@@ -186,7 +186,7 @@ Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'TrainingPoints', fa
 
 **Practical 9, part 2: Supervised learning 2: Improving land cover classification.**
 
-Access the completed practical, part 2 script [here](https://code.earthengine.google.com/017a363f7e3766b60ba17bc0a3ebc62c)
+Access the complete practical, part 2 script [here](https://code.earthengine.google.com/017a363f7e3766b60ba17bc0a3ebc62c)
 
 **Learning Objectives**
 
@@ -200,7 +200,7 @@ By the end of this practical you should be able to:
 
 ![](/images/prac9_f3.png)
 
-**Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogenous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
+**Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogeneous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
 
 The area of applicability concept is based on an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
 
