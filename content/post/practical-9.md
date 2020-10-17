@@ -9,7 +9,7 @@ authors: []
 ---
 **Practical 9, part 1: Supervised learning 2: Land cover classification.**
 
-Access the completed practical, part 1 script [here](https://code.earthengine.google.com/63bf79381841c0d81c3afaea76d08040)
+Access the complete practical, part 1 script [here](https://code.earthengine.google.com/63bf79381841c0d81c3afaea76d08040)
 
 **Learning Objectives**
 
@@ -17,30 +17,30 @@ By the end of this practical you should be able to:
 
 1. Describe the workflow for a typical supervised classification workflow.
 2. Create reference data for classes of interest.
-3. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover and other (neither of the three classes).
+3. Fit a random forest model on spectral variables to map the distribution of water, built-up areas, tree-cover, and other (neither of the three classes).
 4. Evaluate model accuracy and improve model accuracy
 
 **The end product**
 
 ![](/images/prac9_f1.png)
 
-**Figure 1:** The distribution of water, built-up areas, tree-cover and other (neither of the three classes) pixels at a 30 m resolution for a heterogenous coastal area in the Western cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
+**Figure 1:** The distribution of water, built-up areas, tree-cover, and other (neither of the three classes) pixels at a 30 m resolution for a heterogeneous coastal area in the Western Cape, South Africa based on Landsat-8 and Sentinel-1 radar imagery.
 
 ***
 
 **Import data**
 
-For this practical, you will be required to import Landsat-8 surface reflectance and Sentinel-1 Ground Range Detected imagery (GRD) data. Rename these as l8sr and s1 respectively. You have been provided with a reference points dataset (four feature collections within the imports section). However, you have the functionality within GEE to create your own reference points for each of the four classes of interest i.e. water, built-up areas, tree-cover and other.
+For this practical, you will be required to import Landsat-8 surface reflectance and Sentinel-1 Ground Range Detected imagery (GRD) data. Rename these as l8sr and s1 respectively. You have been provided with reference points dataset (four feature collections within the imports section). However, you have the functionality within GEE to create your own reference points for each of the four classes of interest i.e. water, built-up areas, tree-cover, and other.
 
 ***
 
 **Creating custom reference points**
 
-In the scenario that you are creating your own reference data points, you can use the following steps. Click on the add Markers button. Thereafter, hover over the geometry imports section and click on the cog wheel besides the geometry and setup the various options by changing the ‘Name’ to the class of interest, changing the ‘import as’ option to a feature collection and adding a property called label with a unique integer for each class. Once set, click ok and go to the map area and add reference points for the applicable class in appropriate locations. ‘Appropriate locations’ is dependent on the spatial resolution of your imagery to be classified and the time period of interest. For instance, when working with Landsat-8, 30 m imagery, it is ideal if you add markers for areas that are dominated by the class of interest. A higher resolution base map together with a RGB or FCI can be highly useful for guiding your reference point selection. Note, use a base map that overlaps with the period of concern.
+In the scenario that you are creating your own reference data points, you can use the following steps. Click on the add Markers button. Thereafter, hover over the geometry imports section and click on the cogwheel besides the geometry and set up the various options by changing the ‘Name’ to the class of interest, changing the ‘import as’ option to a feature collection, and adding a property called label with a unique integer for each class. Once set, click ok and go to the map area and add reference points for the applicable class in appropriate locations. ‘Appropriate locations’ is dependent on the spatial resolution of your imagery to be classified and the time period of interest. For instance, when working with Landsat-8, 30 m imagery, it is ideal if you add markers for areas that are dominated by the class of interest. A higher resolution base map together with an RGB or FCI can be highly useful for guiding your reference point selection. Note, use a base map that overlaps with the period of concern.
 
 ![](/images/prac9_f2.png)
 
-**Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero indexed.
+**Figure 2:** An example of setting up a feature collection for reference point collection of a class named water. Note, the labels for the land cover classes need to be zero-indexed.
 
 ***
 
@@ -153,8 +153,9 @@ print('Users Accuracy', Test.errorMatrix('label', 'classification').consumersAcc
 
 ***
 
-**Visualisation**
-Visualising the RGB image, reference points and classified image
+**Visualisation** 
+
+Visualising the RGB image, reference points, and classified image
 
 ```js
 Map.centerObject(points.geometry().bounds(), 13);
