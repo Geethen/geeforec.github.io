@@ -55,19 +55,25 @@ var startDate = ee.Date.fromYMD(2000,1,1);
 var endDate = ee.Date.fromYMD(2019,12,31);
 var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
+```
 
+First we will filter our polygon features i.e. The country Costa Rica and Braulio Carrillo protected area.
+
+```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
 .filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 .filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
-
+```
+```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
 .select('precipitation')
 .filterBounds(costaRica_geo);
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 .select('EVI')
 .filterBounds(costaRica_geo);
-
+```
+```js
 var costaRica_geo = costaRica.geometry();
 var braulio_geo = braulio.geometry();
 var myBraulio_geo = myBraulio.geometry();
