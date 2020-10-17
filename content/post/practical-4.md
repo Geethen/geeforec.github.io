@@ -1,16 +1,15 @@
 +++
 authors = []
 date = 2020-10-04T22:00:00Z
-draft = true
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
 hero = "/images/prac4_f4.png"
 timeToRead = 15
 title = "Practical 4"
 
 +++
-**Practical 4: Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica**
+**Practical 4: Long-term patterns of rainfall in and around Braulio Carrillo National Park in Costa Rica**
 
-Access the completed practical script [here](https://code.earthengine.google.com/63bf79381841c0d81c3afaea76d08040)
+Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2FBioGIS%2FbioGEE%3APractical_4%2Frainfall_costa_rica)
 
 **Learning Objectives**
 
@@ -21,13 +20,19 @@ By the end of this practical you should be able to:
 3. Generate interactive map
 4. Generate time-series plots
 5. Output data (csv, rasterStack) for analysis outside of GEE
-6. Explore understanding of rainfall as a driver of ecosystem processes (e.g. comparison with EVI, similar to NDVI from previous practical #3 with JW)
+6. Explore understanding of rainfall as a driver of ecosystem processes (e.g. comparison with vegetation dynamics e.g. previous practical #3)
+
+***
+
+**Introduction**
+
+Rainfall plays a central role in a myriad of natural processes, including river health, the transportation of nutrients, soil moisture, vegetation dynamics, fire regimes, animal movement and distribution patterns and landscape heterogeneity. Within protected areas these processes function together to safeguard ecosystem integrity. In the face of current climate change predictions, the spatio-temporal patterns of rainfall is an increasingly important component to include in any ecological study (MacFadyen et al 2018). Here we explore patterns of monthly rainfall across Costa Rica and the Braulio Carrillo National Park from 2000 to 2019 (20 years). We'll summarise monthly and annual rainfall patterns using line charts and examine the long-term spatial patterns of rainfall using an interactive map. Time permitting, we'll take a look at how the temporal patterns of annual rainfall compares to patterns of vegetation vigour or 'greeness', highlighting it's importance as a bottom-up ecosystem driver.
 
 ***
 
 **Data import**
 
-The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
+The datasets we will use for this practical are all available on Google Earth Engine and can be accessed as follows:
 
 ```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
@@ -36,75 +41,66 @@ var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
 
-The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term MODIS EVI data respectively. Below we describe how to import a dataset available locally into GEE. You can download and save the required Braulio Carillo boundary on your local hard drive from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
-
-## ![](/images/prac4_f1.png)
+The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second, [WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset and the last, [MOD13Q1](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depiciting vegetation 'greeness' per 250m pixel.
 
 ***
 
 **Filtering data**
 
-We first define variables for the temporal window of interest. We will use these variables for filtering the long-term data.
+First define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
 
 ```js
-var startYear = 2000;
-var endYear = 2018;
-var startDate = ee.Date.fromYMD(startYear,1, 1);
-var endDate = ee.Date.fromYMD(endYear + 1, 12, 31);
-var years = ee.List.sequence(startYear, endYear);
+var startDate = ee.Date.fromYMD(2000,1,1);
+var endDate = ee.Date.fromYMD(2019,12,31);
+var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
+```
 
+Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll be building.
+
+```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
 .filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
+var costaRica_geo = costaRica.geometry();
+
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 .filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
+var braulio_geo = braulio.geometry();
+```
 
+Now filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up proceeding analyses.
+
+```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
 .select('precipitation')
-.filterBounds(costaRica_geo);
-var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
-.select('EVI')
+.filterDate(startDate, endDate)
 .filterBounds(costaRica_geo);
 
-var costaRica_geo = costaRica.geometry();
-var braulio_geo = braulio.geometry();
-var myBraulio_geo = myBraulio.geometry();
+var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
+.select('EVI')
+.filterDate(startDate, endDate)
+.filterBounds(costaRica_geo);
 ```
 
 ***
 
 **Processing**
 
-We first calculate the sum of rainfall on an annual basis within Costa Rica.
+Now, to calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 2000 to 2019, we need to reduce the monthly rainfall record by their sum per year as follows:
 
 ```js
-var annualPrecip = ee.ImageCollection.fromImages(
-years.map(function (year) {
-var annual = rainAll
-.filter(ee.Filter.calendarRange(year, year, 'year'))
-.sum().rename('rain');
-return annual
-.clip(costaRica_geo)
-.set('year', year).set('date', ee.Date.fromYMD(year, 1, 1))
-.set('system:time_start', ee.Date.fromYMD(year, 1, 1));
-}));
-```
+var rainYr_list = years.map(function(y) {
+return rainAll
+.filter(ee.Filter.calendarRange(y,y,'year')) 
+.reduce(ee.Reducer.sum())
+.rename('rain_mean') 
+.set('year', ee.Date.fromYMD(y, 1, 1)) 
+.set('name','rainfall');
+});
 
-Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
-
-```js
-var rainMean = rainMeanMY.mean().clip(costaRica);
-var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
-
-var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-.max().multiply(0.0001).rename('evi');
-var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
-
-var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
-return img.addBands([evi_year, time]).set('year', y).set('month', 1)
-.set('date', ee.Date.fromYMD(y,1,1))
-.set('system:time_start', ee.Date.fromYMD(y,1,1));
-}).flatten());
+// Convert the image List to an ImageCollection.
+var rainYr = ee.ImageCollection.fromImages(rainYr_list);
+print('Check rainYr', rainYr);
 ```
 
 ***
@@ -188,6 +184,7 @@ To save this map online as a GEE app, follow the steps below:
 5. If you see a 'Not ready' page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ***
 
@@ -196,6 +193,7 @@ To save this map online as a GEE app, follow the steps below:
 To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
 
 ![](/images/prac4_f3.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
@@ -243,3 +241,43 @@ cloudOptimized: true
 }
 });
 ```
+
+As a last step, save the script.
+
+***
+
+**Bonus Section**
+
+Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
+
+```js
+var rainMean = rainMeanMY.mean().clip(costaRica);
+var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+
+var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+.max().multiply(0.0001).rename('evi');
+var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
+
+var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
+return img.addBands([evi_year, time]).set('year', y).set('month', 1)
+.set('date', ee.Date.fromYMD(y,1,1))
+.set('system:time_start', ee.Date.fromYMD(y,1,1));
+}).flatten());
+```
+
+***
+
+**Practical 4 Exercise**
+
+Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
+To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za)**.**
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
+
+***
+
+**References**
+
+Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, Husak G, Rowland J, Harrison L, Hoell A, Michaelsen J (2015) The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data 2, 150066
+
+MacFadyen S, Zambatis N, Van Teeffelen AJA, Hui C (2018) Long-term rainfall regression surfaces for the Kruger National Park, South Africa: A spatio-temporal review of patterns from 1981-2015. International Journal of Climatology 38(5): 2506-2519

@@ -140,7 +140,7 @@ Map.addLayer(s2, {bands:['B8','B4','B3'], min:0, max: 3000}, 'False-colour');
 
 ![](/images/practical_1_false.png)
 
-As a last step, save the script.
+As the last step, save the script.
 
 **Practical 1 Exercise**
 
@@ -150,6 +150,8 @@ Repeat this practical but use the Landsat-8 dataset. Produce a false colour imag
 ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
 ```
 
-To share your script, click on Get Link and then copy script path. Send your completed script to **email**
+To share your script, click on Get Link and then copy the script path. Send your completed script to **email.**
 
 ![](/images/practical_1_script_path.png)
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
