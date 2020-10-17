@@ -176,7 +176,7 @@ var forestlossPlot = ui.Chart.image.seriesByRegion(
 print(forestlossPlot);
 ```
 
-![](/images/prac5_loss_PAs.png)
+![](/images/prac5_loss_pas.png)
 
 Save your script.
 
