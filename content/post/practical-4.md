@@ -57,16 +57,19 @@ var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
 ```
 
-First we will filter our polygon features i.e. The country Costa Rica and Braulio Carrillo protected area.
+First we will filter our polygon features i.e. The country Costa Rica and Braulio Carrillo protected area. We will also need to convert these two FeatureCollections to geometry objects for function parameters later.
 
 ```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
 .filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
+var costaRica_geo = costaRica.geometry();
+
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 .filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
+var braulio_geo = braulio.geometry();
 ```
 
-Then we filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI).
+Then we'll filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. We'll also filter the bounds of these two ImageCollections to Costa Rica's boundary to help speed up analyses.
 
 ```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
@@ -75,11 +78,6 @@ var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 .select('EVI')
 .filterBounds(costaRica_geo);
-```
-```js
-var costaRica_geo = costaRica.geometry();
-var braulio_geo = braulio.geometry();
-var myBraulio_geo = myBraulio.geometry();
 ```
 
 ***
