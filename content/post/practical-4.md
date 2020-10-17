@@ -65,6 +65,9 @@ var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
 var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 .filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
 ```
+
+Then we filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI).
+
 ```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
 .select('precipitation')
@@ -256,11 +259,10 @@ cloudOptimized: true
 
 As a last step, save the script.
 
-**Practical 3 Exercise**
+**Practical 4 Exercise**
 
-Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
-
-To share your script, click on Get Link and then copy script path. Send your completed script to **email**
+Repeat this practical but use NDVI instead of EVI and the *** National Park instead of Braulio Carrillo. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
+To share your script, click on Get Link and then copy script path. Send your completed script to **[email](mailto:sandra@biogis.co.za)**
 
 ***
 
