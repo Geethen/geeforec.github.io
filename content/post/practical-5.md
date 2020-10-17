@@ -24,13 +24,13 @@ In this practical we will be using the Hansen forest loss dataset to look at for
 
 **Importing data**
 
-We will start by loading in the World Database on Protected Areas, which we will use later in Part B. 
+We will start by loading in the World Database on Protected Areas, which we will use later in Part B.
 
 ```js
 var WDPA = ee.FeatureCollection("WCMC/WDPA/current/polygons");
 ```
 
-We then load in the International Boundaries dataset and filtering by selecting the country of interest. 
+We then load in the International Boundaries dataset and filtering by selecting the country of interest.
 
 ```js
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
@@ -60,7 +60,7 @@ Map.addLayer(lossImage.mask(lossImage), {palette: ['FF0000']}, 'Forest Loss');
 
 There are several steps required in processing this dataset. The goal here is for to become familiar with the different functions available and be able to manipulate ee.Objects into features, images, dictionaries and collections.
 
-We start with filtering our tree cover dataset to only include forested areas (our threshold here is 30% tree cover). To do this we use the gte() function, which provides us with a binary output. Any value equal to or over 30% gets a 1 and any value below this gets a 0. We then mask our forest loss image, so as to only include forest loss and not just tree cover loss. 
+We start with filtering our tree cover dataset to only include forested areas (our threshold here is 30% tree cover). To do this we use the gte() function, which provides us with a binary output. Any value equal to or over 30% gets a 1 and any value below this gets a 0. We then mask our forest loss image, so as to only include forest loss and not just tree cover loss.
 
 ```js
 var forestCover = treeCover.gte(30);
@@ -72,7 +72,7 @@ var lossYear_mask = lossYear.mask(mask);
 
 **Part A: find tree cover loss over all of Madagascar**
 
-We will now get into the details of manipulating our data for visualizing it later. The first step is to create 1) a feature collection for exporting a csv and 2) an array for plotting forest loss in Madagascar for 2000 to 2019. 
+We will now get into the details of manipulating our data for visualizing it later. The first step is to create 1) a feature collection for exporting a csv and 2) an array for plotting forest loss in Madagascar for 2000 to 2019.
 
 As we currently have forest loss per pixel (30 m resolution), we want to convert our loss image to values of km2. We use the ee.Image.pixelArea() function for this, which gives an output in m2, which we then divide by 1e6 to get km2.
 
@@ -83,7 +83,8 @@ print(lossAreaImage, 'lossAreaImage');
 
 We now apply a reducer over the region. First we add our loss image together with our loss year image and then sum values for each year (or group). The group() function requires a groupField argument, which in this case is the second band in our image (loss year) and is coded as 1.
 
-The reduceRegion() function then requires our geometry and scale. We also add in the argument for maxPixels, to make sure we do not cap our GEE size limit. 
+The reduceRegion() function then requires our geometry and scale. We also add in the argument for maxPixels, to make sure we do not cap our GEE size limit.
+
 ```js
 // Reduce the loss area image to an object with a summed value for each year
 var lossByYear = lossAreaImage.addBands(lossYear_mask).reduceRegion({
@@ -132,7 +133,7 @@ print(chart);
 
 **Part B: find forest loss over selected Protected Areas**
 
-For this next part, we will create a similar dataset, but this time we will produce an ImageCollection with each Image representing the summed forest loss over each year. 
+For this next part, we will create a similar dataset, but this time we will produce an ImageCollection with each Image representing the summed forest loss over each year.
 
 To start we will create a list of years and then use the masked loss year image that we used in Part A to produce a list of Images. We will then convert this list to an ImageCollection. Note: we need to convert our pixels to area again.
 
@@ -148,7 +149,7 @@ var loss_stack = ee.ImageCollection(loss_by_year);
 print(loss_stack, "loss_stack");
 ```
 
-We now return to the World Database on Protected Areas. We want to filter out specific Protected Areas based on a property. In this case we use their name, coded as 'NAME'. To find out the names of these protected areas, either go to the WDPA webpage (https://www.protectedplanet.net/en) or alternatively add the full FeatureCollection to your map and use the inspector tool to find their names. Here we select 3 protected areas in Madagascar to demostrate the use of a time-series over multiple regions. 
+We now return to the World Database on Protected Areas. We want to filter out specific Protected Areas based on a property. In this case we use their name, coded as 'NAME'. To find out the names of these protected areas, either go to the WDPA webpage (https://www.protectedplanet.net/en) or alternatively add the full FeatureCollection to your map and use the inspector tool to find their names. Here we select 3 protected areas in Madagascar to demostrate the use of a time-series over multiple regions.
 
 ```js
 var selected_PAs = WDPA.filter(ee.Filter.or(
@@ -182,6 +183,8 @@ Save your script.
 
 **Practical 5 Exercise**
 
-Repeat this practical but use an alternative country as a region of interest for Part A and use three alternative Protected Areas for Part B. 
+Repeat this practical but use an alternative country as a region of interest for Part A and use three alternative Protected Areas for Part B.
 
-Send your completed script to **email**
+Send your completed script to **email.**
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
