@@ -259,7 +259,7 @@ As a last step, save the script.
 
 **Practical 4 Exercise**
 
-Repeat this practical but use NDVI instead of EVI and the *** National Park instead of Braulio Carrillo. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
+Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
 To share your script, click on Get Link and then copy script path. Send your completed script to **[email](mailto:sandra@biogis.co.za)**
 
 ***
