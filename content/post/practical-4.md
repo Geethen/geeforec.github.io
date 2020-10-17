@@ -1,7 +1,6 @@
 +++
 authors = []
 date = 2020-10-04T22:00:00Z
-draft = true
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
 hero = "/images/prac4_f4.png"
 timeToRead = 15
@@ -271,7 +270,9 @@ return img.addBands([evi_year, time]).set('year', y).set('month', 1)
 **Practical 4 Exercise**
 
 Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
-To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za)
+To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za)**.**
+
+Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
 
 ***
 
