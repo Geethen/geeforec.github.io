@@ -100,23 +100,6 @@ return rainAll
 });
 ```
 
-Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
-
-```js
-var rainMean = rainMeanMY.mean().clip(costaRica);
-var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
-
-var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-.max().multiply(0.0001).rename('evi');
-var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
-
-var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
-return img.addBands([evi_year, time]).set('year', y).set('month', 1)
-.set('date', ee.Date.fromYMD(y,1,1))
-.set('system:time_start', ee.Date.fromYMD(y,1,1));
-}).flatten());
-```
-
 ***
 
 **Charting**
@@ -257,6 +240,28 @@ cloudOptimized: true
 ```
 
 As a last step, save the script.
+
+***
+
+**Bonus Section**
+Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
+
+```js
+var rainMean = rainMeanMY.mean().clip(costaRica);
+var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+
+var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+.max().multiply(0.0001).rename('evi');
+var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
+
+var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
+return img.addBands([evi_year, time]).set('year', y).set('month', 1)
+.set('date', ee.Date.fromYMD(y,1,1))
+.set('system:time_start', ee.Date.fromYMD(y,1,1));
+}).flatten());
+```
+
+***
 
 **Practical 4 Exercise**
 
