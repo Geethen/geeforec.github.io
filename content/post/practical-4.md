@@ -25,8 +25,11 @@ By the end of this practical you should be able to:
 
 ***
 
+**Introduction**
+
 Rainfall plays a central role in a myriad of natural processes, including river health, the transportation of nutrients, soil moisture, vegetation dynamics, fire regimes, animal movement and distribution patterns and landscape heterogeneity. Within protected areas these processes function together to safeguard ecosystem integrity. In the face of current climate change predictions, the spatio-temporal patterns of rainfall is an increasingly important component to include in any ecological study (MacFadyen et al 2018). Here we explore patterns of monthly rainfall across Costa Rica and the Braulio Carrillo National Park from 1981 to 2019 (39 years). We'll summarise monthly and annual rainfall patterns using line charts and examine the long-term spatial patterns of rainfall using an interactive map. Time permitting, we'll take a look at how the temporal patterns of annual rainfall compares to patterns of vegetation 'greeness', highlighting it's importance as a bottom-up ecosystem driver.
 
+***
 
 **Data import**
 
