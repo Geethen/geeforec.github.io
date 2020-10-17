@@ -254,3 +254,7 @@ As a last step, save the script.
 Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
 
 To share your script, click on Get Link and then copy script path. Send your completed script to **email**
+
+**References**
+
+Kim, D.H., Sexton, J.O., Noojipady, P., Huang, C., Anand, A., Channan, S., Feng, M. and Townshend, J.R., 2014. Global, Landsat-based forest-cover change from 1990 to 2000. _Remote Sensing of Environment_, _155_, pp.178-193.
