@@ -1,6 +1,6 @@
 ---
 title: Practical 9
-date: 2020-09-30T22:00:00+00:00
+date: 2020-09-30T22:00:00.000+00:00
 hero: "/images/prac9_f1.png"
 excerpt: 'Supervised learning 2: Land cover classification.'
 timeToRead: 8
@@ -201,7 +201,7 @@ By the end of this practical you should be able to:
 
 **Figure 1:** The area of applicability for a model that discriminated water and non-water pixels at a 10 m resolution for a heterogenous area near Hartbeespoort Dam, South Africa based on Sentinel-2 imagery.
 
-> The area of applicability concept is based on an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
+The area of applicability concept is based on an experimental concept still under review and has been implemented based on the pre-print version available [here](https://arxiv.org/abs/2005.07939).
 
 Reference
 
