@@ -1,7 +1,6 @@
 +++
 authors = []
 date = 2020-10-21T22:00:00Z
-draft = true
 excerpt = "Forest loss over multiple regions"
 hero = "/images/prac3_hero_both.png"
 timeToRead = 3
@@ -54,6 +53,8 @@ Map.centerObject(madag, 6);
 Map.addLayer(treeCover.mask(treeCover), {palette: ['000000', '00FF00'], min: 0, max: 100}, 'Forest Cover');
 Map.addLayer(lossImage.mask(lossImage), {palette: ['FF0000']}, 'Forest Loss');
 ```
+
+![](/images/prac5_cover.png)
 
 **Data processing & manipulation**
 
@@ -127,6 +128,8 @@ var chart = ui.Chart.feature.byFeature({
 print(chart);
 ```
 
+![](/images/prac5_loss_full.png)
+
 **Part B: find forest loss over selected Protected Areas**
 
 For this next part, we will create a similar dataset, but this time we will produce an ImageCollection with each Image representing the summed forest loss over each year. 
@@ -172,6 +175,8 @@ var forestlossPlot = ui.Chart.image.seriesByRegion(
 });
 print(forestlossPlot);
 ```
+
+![](/images/prac5_loss_PAs.png)
 
 Save your script.
 
