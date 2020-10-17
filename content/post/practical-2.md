@@ -23,8 +23,7 @@ By the end of this practical you should be able to:
 
 ***
 
-**Importing and Filtering**
-Import the Sentinel-2, level 1C data and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
+**Importing and Filtering** Import the Sentinel-2, level 1C data, and rename it s21c. Thereafter, import the level 2A product and rename it s22a. Lastly, add a marker on the Theewaterskloof dam. Building from the previous practical where you imported and filtered Sentinel-2 data, we will repeat these steps.
 
 ```js
 var filtered = s21c.filterBounds(Theewaterskloof)
@@ -40,9 +39,7 @@ reflectance values. Like other atmospheric interferences, clouds and
 their associated shadows are largely undesirable and should be removed
 prior to any analysis.
 
-At this point you have converted an image collection to a single median
-image. Next, we will compute the NDVI and NDWI spectral indices. GEE has
-a dedicated function for this.
+At this point, you have converted an image collection to a single median image. Next, we will compute the NDVI and NDWI spectral indices. GEE has a dedicated function for this.
 
 ```js
 var NDVI = filtered.normalizedDifference(['B8','B4']);
