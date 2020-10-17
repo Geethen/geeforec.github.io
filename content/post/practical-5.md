@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-21T22:00:00Z
 excerpt = "Forest loss over multiple regions"
-hero = "/images/prac3_hero_both.png"
+hero = "/images/prac5_hero.png"
 timeToRead = 3
 title = "Practical 5"
 
