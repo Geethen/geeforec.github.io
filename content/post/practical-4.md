@@ -42,20 +42,18 @@ var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
 
-The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second,[WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS Pentad](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset and the last, [MOD13Q1.006](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depciting vegetation 'greeness' per 250m pixel.
+The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second, [WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset and the last, [MOD13Q1](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depiciting vegetation 'greeness' per 250m pixel.
 
 ***
 
 **Filtering data**
 
-We first define variables for the temporal window of interest. We will use these variables for filtering the long-term data.
+We first define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
 
 ```js
-var startYear = 2000;
-var endYear = 2018;
-var startDate = ee.Date.fromYMD(startYear,1, 1);
-var endDate = ee.Date.fromYMD(endYear + 1, 12, 31);
-var years = ee.List.sequence(startYear, endYear);
+var startDate = ee.Date.fromYMD(2000,1,1);
+var endDate = ee.Date.fromYMD(2019,12,31);
+var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
 
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
