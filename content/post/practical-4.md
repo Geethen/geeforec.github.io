@@ -87,19 +87,17 @@ var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 
 **Processing**
 
-We first calculate the sum of rainfall on an annual basis within Costa Rica.
+Now, to calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 2000 to 2019, we need to reduce the monthly rainfall record by their sum per year as follows:
 
 ```js
-var annualPrecip = ee.ImageCollection.fromImages(
-years.map(function (year) {
-var annual = rainAll
-.filter(ee.Filter.calendarRange(year, year, 'year'))
-.sum().rename('rain');
-return annual
-.clip(costaRica_geo)
-.set('year', year).set('date', ee.Date.fromYMD(year, 1, 1))
-.set('system:time_start', ee.Date.fromYMD(year, 1, 1));
-}));
+var rainYr_list = years.map(function(y) {
+return rainAll
+.filter(ee.Filter.calendarRange(y,y,'year')) 
+.reduce(ee.Reducer.sum())
+.rename('rain_mean') 
+.set('year', ee.Date.fromYMD(y, 1, 1)) 
+.set('name','rainfall');
+});
 ```
 
 Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
