@@ -10,7 +10,7 @@ title = "Practical 4"
 +++
 **Practical 4: Long-term patterns of rainfall in and around Braulio Carrillo National Park in Costa Rica**
 
-Access the completed practical script [here](https://code.earthengine.google.com/63bf79381841c0d81c3afaea76d08040)
+Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2FBioGIS%2FbioGEE%3APractical_4%2Frainfall_costa_rica)
 
 **Learning Objectives**
 
@@ -39,6 +39,7 @@ var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
 The first four datasets imported correspond to those already available within GEE and are the country boundaries, protected area boundaries, long-term rainfall data, and the long-term MODIS EVI data respectively. Below we describe how to import a dataset available locally into GEE. You can download and save the required Braulio Carillo boundary on your local hard drive from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
 
 ## ![](/images/prac4_f1.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ***
 
@@ -188,6 +189,7 @@ To save this map online as a GEE app, follow the steps below:
 5. If you see a 'Not ready' page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ***
 
@@ -196,6 +198,7 @@ To save this map online as a GEE app, follow the steps below:
 To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
 
 ![](/images/prac4_f3.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
@@ -243,3 +246,11 @@ cloudOptimized: true
 }
 });
 ```
+
+As a last step, save the script.
+
+**Practical 3 Exercise**
+
+Repeat this practical but use the Landsat-8 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
+
+To share your script, click on Get Link and then copy script path. Send your completed script to **email**
