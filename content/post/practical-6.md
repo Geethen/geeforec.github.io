@@ -198,6 +198,26 @@ var srtmParams = {
   max: 200, // Elevation max 840
   gamma: 1,
 };
+
+// Create RGB visualization images for use as animation frames.
+var srtmFires = doyFires.map(function(img) {
+  return srtmVis
+        .paint(knp, 'grey', 1) // Add KNP boundary
+        .blend(img.visualize(visDOY).clipToCollection(knp)); // Blend hillshade with knp and clip
+});
+
+// Print the GIF URL to the console
+var myGIF = srtmFires.getVideoThumbURL(gifParams);
+print(myGIF);
+
+// Render the GIF animation in the console
+print(ui.Thumbnail({
+  image: srtmFires,
+  params: gifParams,
+  style: {
+    position: 'bottom-right',
+    width: '180px'
+  }}));
 ```
 
 ##![](/images/prac6_f1.png)
