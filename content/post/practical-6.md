@@ -23,6 +23,10 @@ By the end of this practical you should be able to:
 
 ***
 
+**Introduction**
+
+***
+
 **Data import**
 
 The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
