@@ -165,7 +165,7 @@ var visCnt = {
 Map.centerObject(knp, 7);
 Map.addLayer(modFires, visDOY, 'Most frequently burnt day in Kruger (2001-2018)',true, 0.8)
 Map.addLayer(cntFires, visCnt, 'Fire frequency: Kruger Park (2001-2018)',true, 0.8)
-Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Braulio Carrillo boundary
+Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Kruger boundary
 ```
 
 ##![](/images/prac6_f1.png)
@@ -173,14 +173,36 @@ Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Braulio Carrillo 
 
 ***
 
-**Hillshade and animation**
+**Hillshade and Animation**
 
+
+```js
 //display hillshading and slope
 var hillshade = ee.Terrain.hillshade(dem);
 // print('Check hillshade',hillshade);
 
 // Set the clipped SRTM image as background
 var srtmVis = hillshade.visualize(srtmParams);
+
+// Define GIF visualization parameters
+var gifParams = {
+  'region': knp_geo,
+  'dimensions': 500,
+  'crs': 'EPSG:3857', // Check projection
+  'framesPerSecond': 1
+};
+
+// Define the hillshade background legend parameters
+var srtmParams = {
+  min: 120, // Elevation min 100
+  max: 200, // Elevation max 840
+  gamma: 1,
+};
+```
+
+##![](/images/prac6_f1.png)
+**Figure 4:** Map with layers indicating the most frequently burnt doy-of-year (doy) and the fire requency in Kruger from 2001 to 2018.
+
 ***
 
 **Data Export**
