@@ -68,7 +68,7 @@ var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 var braulio_geo = braulio.geometry();
 ```
 
-Now filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
+Now filter the CHIRPS ImageCollection for rainfall (i.e. `'precipitation'`) and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
 
 ```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
@@ -112,7 +112,7 @@ var rainAnnual = rainYr.mean().clip(costaRica);
 
 **Charting**
 
-Chart the annual rainfall results, summarised for Braulio Carrillo using a line chart as follows. First define the chart parameters (e.g. title and axis labels) and then create the line chart, using 'print()' to see the chart in your GEE console.
+Chart the annual rainfall results, summarised for Braulio Carrillo using a line chart as follows. First define the chart parameters (e.g. title and axis labels) and then create the line chart, using `print()` to see the chart in your GEE console.
 
 ```js
 var opt_chart_annualPrecip = {
@@ -138,7 +138,7 @@ print(chart_annualPrecip);
 
 **Visualisation**
 
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE application) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
+In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create a GEE application to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
 
 ```js
 var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
@@ -171,11 +171,11 @@ Map.add(title);
 
 To save this map online as a GEE app, follow the steps below:
 
-1. Click the 'Apps' button above Select 'NEW APP'
+1. Click the `Apps` button above Select `NEW APP`
 2. Give the App a Name
 3. Leave everything else default
-4. Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
-5. If you see a 'Not ready' page, give it a few minutes and try again
+4. Click `PUBLISH` URL will appear - Click this to see your first online interactive map
+5. If you see a `Not ready` page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
 **Figure 1:** Steps to publish interactive map online. Use URL to access.
@@ -184,8 +184,8 @@ To save this map online as a GEE app, follow the steps below:
 
 **Relationship between annual rainfall and vegetation 'greeness'**
 
-Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a '
-flatten()' command as follows:
+Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a `
+flatten()` command as follows:
 
 ```js
 var annualRainEVI_list =  years.map(function(y){
