@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-04T22:00:00Z
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
-hero = "/images/prac4_f4.png"
+hero = "/images/prac4_0.png"
 timeToRead = 15
 title = "Practical 4"
 
@@ -223,6 +223,9 @@ var rain_ndvi_chart = ui.Chart.image.series({
 print(rain_ndvi_chart);
 ```
 
+![](/images/prac4_f4a.png)
+**Figure 4:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
+
 ***
 
 **Data Export**
@@ -230,7 +233,7 @@ print(rain_ndvi_chart);
 To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
 
 ![](/images/prac4_f3.png)
-**Figure 4:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+**Figure 5:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
