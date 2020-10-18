@@ -162,6 +162,9 @@ Map.setControlVisibility({zoomControl: true});
 Map.add(title);
 ```
 
+![](/images/prac4_f2b.png)
+**Figure 1:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
+
 ***
 
 **Save map online**
