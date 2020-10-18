@@ -39,7 +39,8 @@ var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 
 The first two datasets imported correspond to those already available within GEE and are the Shuttle Radar Topography Mission (SRTM) digital elevation dataset and the MODIS Fire_cci Burned Area pixel product version 5.1 (FireCCI51). Below we describe how to import a dataset available locally into GEE. You can download and save the required boundary shapefile for the Kruger National Park (Kruger) from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
 
-## ![](/images/prac6_f1.png)
+![](/images/prac6_f1.png)
+**Figure 1:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
 
 ***
 
