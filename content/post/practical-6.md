@@ -30,7 +30,7 @@ Fire is blah blah blah
 
 **Data import**
 
-In addition to datasets available on Google Earth Engine, in this practical we will learn how to import shapefiles from your local hard-drive into GEE by uploading new assets (Fig. 1).
+In addition to datasets available on Google Earth Engine, in this practical we will learn how to import shapefiles from your local hard-drive into GEE by uploading them as new assets (Fig. 1).
 
 ```js
 var dem = ee.Image("CGIAR/SRTM90_V4");
