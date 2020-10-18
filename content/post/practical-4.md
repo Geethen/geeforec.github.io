@@ -229,7 +229,7 @@ print(rain_ndvi_chart);
 
 **Data Export**
 
-To export the data shown in the created charts, you may simply maximise the chart and then click to export to formats .csv, .svg or .png. 
+To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`. 
 
 ![](/images/prac4_f3.png)
 **Figure 5:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
@@ -257,7 +257,7 @@ fileFormat: 'CSV'
 });
 ```
 
-![](/images/prac4_f6b.png)
+![](/images/prac4_f6a.png)
 **Figure 6:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 
