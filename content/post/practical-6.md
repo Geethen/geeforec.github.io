@@ -221,7 +221,7 @@ print(ui.Thumbnail({
 ```
 
 ##![](/images/prac6_f1.png)
-**Figure 4:** Map with layers indicating the most frequently burnt doy-of-year (doy) and the fire requency in Kruger from 2001 to 2018.
+**Figure 4:** Animation of days fires occured in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
 
 ***
 
