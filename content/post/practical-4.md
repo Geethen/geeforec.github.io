@@ -178,7 +178,7 @@ To save this map online as a GEE app, follow the steps below:
 5. If you see a 'Not ready' page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
-**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
+**Figure 1:** Steps to publish interactive map online. Use URL to access.
 
 ***
 
