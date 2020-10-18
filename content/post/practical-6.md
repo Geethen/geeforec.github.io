@@ -220,7 +220,7 @@ print(ui.Thumbnail({
   }}));
 ```
 
-##![](/images/prac6_f1.png)
+##![](/images/prac6_f4.gif)
 **Figure 4:** Animation of days fires occured in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
 
 ***
