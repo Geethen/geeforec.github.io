@@ -131,6 +131,7 @@ var chart_annualPrecip = ui.Chart.image.series({
 print(chart_annualPrecip);
 ```
 
+![](/images/prac4_f1b.png)
 **Figure 1:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
 
 ***
