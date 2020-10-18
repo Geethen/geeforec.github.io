@@ -40,7 +40,7 @@ var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 The first dataset, [SRTM90](https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4), is a Digital Elevation Model (DEM) from the Shuttle Radar Topography Mission (SRTM). The second, [FireCCI51](https://developers.google.com/earth-engine/datasets/catalog/ESA_CCI_FireCCI_5_1), is a Fire_cci Burned Area pixel product version 5.1 from MODIS. Figure 1 below, describes how to import the boundary shapefile for the Kruger National Park (Kruger) from files stored locally on your hard-drive. You can download and save the required files from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
 
 ![](/images/prac6_f1.png)
-**Figure 1:** Process to upload a shapefile into GEE as a new assest imported into the script as a FeatureColection 
+**Figure 1:** Process to upload a shapefile into GEE as a new assest imported into the script as a FeatureColection
 
 ***
 
@@ -69,7 +69,8 @@ var fire = FireCCI
 
 **Processing**
 
-Now build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%. 
+Now build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%.
+
 ```js
 // Define a function to remove all fires <50% confidence interval
 var confMask = function(img) {
@@ -175,7 +176,6 @@ Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Kruger boundary
 
 **Hillshade and Animation**
 
-
 ```js
 //display hillshading and slope
 var hillshade = ee.Terrain.hillshade(dem);
@@ -227,7 +227,7 @@ print(ui.Thumbnail({
 
 **Data Export**
 
-To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
+To export the animation, simply right mouse-click and select `Save Image As…` to save the animation locally as a .GIF file to your hard-drive.
 
 As a last step, save the script.
 
@@ -235,7 +235,7 @@ As a last step, save the script.
 
 **Practical 6 Exercise**
 
-Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
+Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger National Park. 
 To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za).
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
