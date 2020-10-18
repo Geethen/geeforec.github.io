@@ -132,6 +132,53 @@ var chart_annualPrecip = ui.Chart.image.seriesByRegion({
 print(chart_annualPrecip);
 ```
 
+***
+
+**Visualisation**
+
+In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE application) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
+
+```js
+var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
+  stretch: 'horizontal',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: '20px'});
+
+var rainViz = {
+  min: 175, max: 317, 
+  palette: 'ffffff, 67d9f1, 1036cb'};
+```
+
+Next, we center the map to Costa Rica. All other layers will align with this parent map and add the data of interest. Specifically, we add the long-term mean rainfall raster and the Braulio Carrillo boundary. To conclude, we will add a zoom control button and the previously defined title.
+
+```js
+Map.centerObject(costaRica, 8);
+Map.addLayer(rainMean, rainViz, 'Long-term Annual Rainfall'); 
+Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
+Map.setControlVisibility({zoomControl: true});
+Map.add(title);
+```
+
+***
+
+**Save map online**
+
+To save this map online as a GEE app, follow the steps below:
+
+1. Click the 'Apps' button above Select 'NEW APP'
+2. Give the App a Name
+3. Leave everything else default
+4. Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
+5. If you see a 'Not ready' page, give it a few minutes and try again
+
+![](/images/prac4_f2.png)
+**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
+
+***
+
+**Relationship between annual rainfall and vegetation 'greeness'**
+
 It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
 
 ```js
@@ -151,45 +198,6 @@ var rain_ndvi_chart = ui.Chart.image.series({
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
-
-***
-
-**Visualisation**
-
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE application) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
-
-```js
-var title = ui.Label('Costa Rica: Mean Annual Rainfall 2000 to 2018', {
-  stretch: 'horizontal',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  fontSize: '20px'});
-
-var rainViz = {
-  min: 175, max: 317, 
-  palette: 'ffffff, 67d9f1, 1036cb'};
-```
-
-Next, we center the map to Costa Rica. All other layers will align with this parent map and add the data of interest. Specifically, we add the long-term mean rainfall raster and the Braulio Carrillo boundary. To conclude, we will add a zoom control button and the previously defined title.
-
-```js
-Map.centerObject(costaRica, 8);
-Map.addLayer(rainMean, rainViz, 'Mean Annual Rainfall'); 
-Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
-Map.setControlVisibility({zoomControl: true});
-Map.add(title);
-```
-
-To save this map online as a GEE app, follow the steps below:
-
-1. Click the 'Apps' button above Select 'NEW APP'
-2. Give the App a Name
-3. Leave everything else default
-4. Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
-5. If you see a 'Not ready' page, give it a few minutes and try again
-
-![](/images/prac4_f2.png)
-**Figure 1:** The spatial distribution of forest change between 2000-2005 within Costa Rica with forest cover gain (green), loss (red) and forest cover that remained unchanged (no change, grey). To display the actual area coverage (sqkm), refer to the pie chart within the GEE console.
 
 ***
 
