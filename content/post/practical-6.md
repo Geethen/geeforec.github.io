@@ -235,7 +235,7 @@ As a last step, save the script.
 
 **Practical 6 Exercise**
 
-Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger National Park. 
+Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger National Park.
 To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za).
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
