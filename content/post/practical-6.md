@@ -137,7 +137,7 @@ var cntFireMonth_chart = ui.Chart.image.series({ // ui.Chart.image.byRegion
 print(cntFireMonth_chart);
 ```
 
-##![](/images/prac6_f2a.png)
+![](/images/prac6_f2a.png)
 **Figure 2:** Line chart the number of days a fire occured in Kruger from 2001 to 2018.
 
 ***
@@ -168,7 +168,7 @@ Map.addLayer(cntFires, visCnt, 'Fire frequency: Kruger Park (2001-2018)',true, 0
 Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Kruger boundary
 ```
 
-##![](/images/prac6_f1.png)
+![](/images/prac6_f3.png)
 **Figure 3:** Map with layers indicating the most frequently burnt doy-of-year (doy) and the fire requency in Kruger from 2001 to 2018.
 
 ***
@@ -220,7 +220,7 @@ print(ui.Thumbnail({
   }}));
 ```
 
-##![](/images/prac6_f4.gif)
+![](/images/prac6_f4.gif)
 **Figure 4:** Animation of days fires occured in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
 
 ***
