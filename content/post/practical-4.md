@@ -303,6 +303,9 @@ var rainMeanMY_list = years.map(function(y) {
 });
 ```
 
+![](/images/prac4_f6.png)
+**Figure 6:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019..
+
 ***
 
 **Practical 4 Exercise**
