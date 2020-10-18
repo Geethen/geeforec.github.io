@@ -202,10 +202,11 @@ var annualRainEVI_list =  years.map(function(y){
 var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 ```
 
-It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
+Now plot both rainfall and EVI in a single chart. What do you think the relationship between these two variables will be? 
+To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo, first define the chart parameters and then create the line chart with two y-axes as follows:
 
 ```js
-var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI): Braulio Carrillo", pointSize: 3,
+var opt_annualRainEVI = {title: "Annual Max Rainfall vs. EVI for Braulio Carrillo", pointSize: 3,
     legend: {maxLines: 5, position: 'top'},
     series: { 0: {targetAxisIndex: 0},
               1: {targetAxisIndex: 1}},
