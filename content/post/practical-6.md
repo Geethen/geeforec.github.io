@@ -37,16 +37,16 @@ var dem = ee.Image("CGIAR/SRTM90_V4");
 var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 ```
 
-The first two datasets imported correspond to those already available within GEE and are the Shuttle Radar Topography Mission (SRTM) digital elevation dataset and the MODIS Fire_cci Burned Area pixel product version 5.1 (FireCCI51). Below we describe how to import a dataset available locally into GEE. You can download and save the required boundary shapefile for the Kruger National Park (Kruger) from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
+The first dataset, [SRTM90](https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4), is a Digital Elevation Model (DEM) from the Shuttle Radar Topography Mission (SRTM). The second, [FireCCI51](https://developers.google.com/earth-engine/datasets/catalog/ESA_CCI_FireCCI_5_1), is a Fire_cci Burned Area pixel product version 5.1 from MODIS. Figure 1 below, describes how to import the boundary shapefile for the Kruger National Park (Kruger) from files stored locally on your hard-drive. You can download and save the required files from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
 
 ![](/images/prac6_f1.png)
-**Figure 1:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
+**Figure 1:** Process to upload a shapefile into GEE as a new assest imported into the script as a FeatureColection 
 
 ***
 
 **Filtering data**
 
-We first define variables for the temporal and spatial windows of interest. We will use these variables to filter our data before processing.
+First define your variables for the temporal and spatial windows of interest. We will use these variables to filter our data before processing.
 
 ```js
 var startDate = ee.Date.fromYMD(2001,1,1);
@@ -69,9 +69,9 @@ var fire = FireCCI
 
 **Processing**
 
-We will build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%.
-
+Now build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%. 
 ```js
+// Define a function to remove all fires <50% confidence interval
 var confMask = function(img) {
   var conf = img.select('ConfidenceLevel');
   var level = conf.gt(50);
@@ -79,19 +79,21 @@ var confMask = function(img) {
 };
 ```
 
-Then we will run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger annually from 2001 until 2018.
+Run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger annually from 2001 until 2018.
 
 ```js
+// Most frequently burnt DOY
 var fireDOY_list = years.map(function(year) {
   return fire
     .filterMetadata('year', 'equals', year) // Filter image collection by year
     .map(confMask) // Apply confidence mask >50%
-    .reduce(ee.Reducer.mode()) // Reduce image collection by most common DOY
+    .reduce(ee.Reducer.mode()).rename('fire_doy') // Reduce image collection by most common DOY
     .set('year', year) // Set composite year as an image property
     .set('system:time_start', ee.Date.fromYMD(year, 1, 1));
 });
 var doyFires = ee.ImageCollection.fromImages(fireDOY_list); // Convert the image List back to an ImageCollection
 
+// Frequency of days burnt
 var fireCnt_list = years.map(function(year) {
   return fire
     .filterMetadata('year', 'equals', year) // Filter image collection by year
@@ -103,10 +105,10 @@ var fireCnt_list = years.map(function(year) {
 var cntFiresDOY = ee.ImageCollection.fromImages(fireCnt_list); // Convert the image List back to an ImageCollection
 ```
 
-Similarly, we can summarise these results to represent the most frequently burnt day-of-year (doy) and the most frequently burnt areas in Kruger over the last 18 years (2001-2018).
+Summarise these results to represent the most frequently burnt day-of-year (doy) and the frequency areas have burnt in Kruger over the last 18 years (2001-2018).
 
 ```js
-var modFires = cntFiresDOY.mode().clip(knp_geo);
+var modFires = doyFires.mode().clip(knp_geo);
 var cntFires = cntFiresDOY.sum().clip(knp_geo);
 ```
 
@@ -114,83 +116,59 @@ var cntFires = cntFiresDOY.sum().clip(knp_geo);
 
 **Charting**
 
-We will now chart the annual sum of rainfall for Braulio Carrillo 2000 to 2018. Here, we first define chart parameters (e.g. title and axis labels). Thereafter, we create the line chart that incorporates these pre-defined chart parameters.
+To plot these results, first define your chart parameters (e.g. title and axis labels), then create the line chart, incorporating these pre-defined chart parameters and `print` it to the console as follows:
 
 ```js
-var opt_chart_annualPrecip = {
-  title: 'Mean Annual Rainfall: Braulio Carrillo',
+// Chart parameters
+var opt_cntFireMonth = {
+  title: 'Monthly fire frequencies: Kruger National Park 2001 to 2018',
+  pointSize: 3,
   hAxis: {title: 'Year'},
-  vAxis: {title: 'Rainfall (mm)'},};
+  vAxis: {title: 'Number of fires'},
+};
 
-var chart_annualPrecip = ui.Chart.image.seriesByRegion({
-  imageCollection: annualPrecip, 
-  regions: myBraulio_geo,
-  reducer: ee.Reducer.mean(),
-  scale: 5000,
-  xProperty: 'date',
-  seriesProperty: 'band'
-}).setOptions(opt_chart_annualPrecip)
-  .setChartType('LineChart');
-print(chart_annualPrecip);
-```
-
-It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
-
-```js
-var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI): Braulio Carrillo", pointSize: 3,
-    legend: {maxLines: 5, position: 'top'},
-    series: { 0: {targetAxisIndex: 0},
-              1: {targetAxisIndex: 1}},
-        vAxes: {Adds titles to each axis.
-          0: {title: 'Max EVI (*0.0001)'},
-          1: {title: 'Max Rainfall (mm)'}},};
-
-var rain_ndvi_chart = ui.Chart.image.series({
-  imageCollection: annualRainEVI.select(['evi', 'rain']),
-  region:myBraulio_geo,
-  reducer: ee.Reducer.mean(),
-  scale: 5000
-}).setOptions(opt_annualRainEVI);
-print(rain_ndvi_chart);
+// Plot day count of monthly fires
+var cntFireMonth_chart = ui.Chart.image.series({ // ui.Chart.image.byRegion
+  imageCollection: fire.select('BurnDate'),
+  region: knp_geo,
+  reducer: ee.Reducer.countDistinct(),
+  scale: 250
+}).setOptions(opt_cntFireMonth).setChartType('LineChart');
+print(cntFireMonth_chart);
 ```
 
 ***
 
 **Visualisation**
 
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create GEE application) to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
+To visualise the long-term summaries of your results, first setup your map elements as you've done in the past, in previous practicals.
 
 ```js
-var title = ui.Label('Costa Rica: Mean Annual Rainfall 2000 to 2018', {
-  stretch: 'horizontal',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  fontSize: '20px'});
+// Define legend parameters for unique DOY
+// Light colours are earlier in the year, dark colours are later
+var visDOY = {
+    min:1, max:366, 
+    palette:['eef5b7','99f74f','4ff7b0','4fc2f7',
+    '3940db','7239db','db39db','db395c','7c1229']};
 
-var rainViz = {
-  min: 175, max: 317, 
-  palette: 'ffffff, 67d9f1, 1036cb'};
+// Define a legend for fire frequency
+// Light colours are areas that burn less frequently, 
+// dark colours are areas that burn often
+var visCnt = {
+    min:1, max:12, 
+    palette:['eef5b7','99f74f','4ff7b0','4fc2f7','3940db','7239db','db39db','db395c','7c1229']};
+
+Map.centerObject(knp, 7);
+Map.addLayer(modFires, visDOY, 'Most frequently burnt day in Kruger (2001-2018)',true, 0.8)
+Map.addLayer(cntFires, visCnt, 'Fire frequency: Kruger Park (2001-2018)',true, 0.8)
+Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Braulio Carrillo boundary
 ```
-
-Next, we center the map to Costa Rica. All other layers will align with this parent map and add the data of interest. Specifically, we add the long-term mean rainfall raster and the Braulio Carrillo boundary. To conclude, we will add a zoom control button and the previously defined title.
-
-```js
-Map.centerObject(costaRica, 8);
-Map.addLayer(rainMean, rainViz, 'Mean Annual Rainfall'); 
-Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
-Map.setControlVisibility({zoomControl: true});
-Map.add(title);
-```
-
-To save this map online as a GEE app, follow the steps below:
-
-1. Click the 'Apps' button above Select 'NEW APP'
-2. Give the App a Name
-3. Leave everything else default
-4. Click 'PUBLISH' URL will appear - Click this to see your first online interactive map
-5. If you see a 'Not ready' page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
+
+***
+
+**Hillshade and animation**
 
 ***
 
