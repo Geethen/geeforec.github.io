@@ -24,12 +24,13 @@ By the end of this practical you should be able to:
 ***
 
 **Introduction**
+Fire is blah blah blah
 
 ***
 
 **Data import**
 
-The datasets that we will use for this practical are largely already available on Google Earth Engine. In addition to these datasets, we will practice how to import a local dataset into GEE.
+In addition to datasets available on Google Earth Engine, in this practical we will learn how to import shapefiles from your local hard-drive into GEE by uploading new assets (Fig. 1).
 
 ```js
 var dem = ee.Image("CGIAR/SRTM90_V4");
