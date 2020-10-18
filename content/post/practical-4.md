@@ -163,7 +163,7 @@ Map.add(title);
 ```
 
 ![](/images/prac4_f2b.png)
-**Figure 1:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
+**Figure 2:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
 
 ***
 
@@ -178,7 +178,7 @@ To save this map online as a GEE app, follow the steps below:
 5. If you see a `Not ready` page, give it a few minutes and try again
 
 ![](/images/prac4_f2.png)
-**Figure 1:** Steps to publish interactive map online. Use URL to access.
+**Figure 3:** Steps to publish interactive map online. Use URL to access.
 
 ***
 
@@ -230,7 +230,7 @@ print(rain_ndvi_chart);
 To export the data shown in the created charts, similar to practical 3, you may simply maximise the chart and then click to export to the available formats (csv, svg or png). Alternatively, you may script the export. this option benefits from having more options to customise the data export. For example, including numerous variables and, potentially a well- formatted date: time variable. In this practical, this is achieved by first using a reducer to get the mean rainfall value for Braulio Carrillo for each year and adding a date variable. The exported csv table will contain a column for both date and mean annual rainfall. you will find this csv file in your google drive.
 
 ![](/images/prac4_f3.png)
-**Figure 1:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+**Figure 4:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
