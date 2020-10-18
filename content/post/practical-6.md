@@ -137,7 +137,7 @@ var cntFireMonth_chart = ui.Chart.image.series({ // ui.Chart.image.byRegion
 print(cntFireMonth_chart);
 ```
 
-##![](/images/prac6_f1.png)
+##![](/images/prac6_f2a.png)
 **Figure 2:** Line chart the number of days a fire occured in Kruger from 2001 to 2018.
 
 ***
