@@ -56,7 +56,7 @@ var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
 ```
 
-Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll be building.
+Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll build.
 
 ```js
 var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
@@ -68,7 +68,7 @@ var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 var braulio_geo = braulio.geometry();
 ```
 
-Now filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up proceeding analyses.
+Now filter the CHIRPS ImageCollection for rainfall (i.e. 'precipitation') and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
 
 ```js
 var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
@@ -97,7 +97,11 @@ return rainAll
 .set('year', ee.Date.fromYMD(y, 1, 1)) 
 .set('name','rainfall');
 });
+```
 
+This produces a list of 20 images. Convert this list back to an ImageCollection as follows:
+
+```js
 // Convert the image List to an ImageCollection.
 var rainYr = ee.ImageCollection.fromImages(rainYr_list);
 print('Check rainYr', rainYr);
