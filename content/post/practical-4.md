@@ -184,21 +184,21 @@ To save this map online as a GEE app, follow the steps below:
 
 **Relationship between annual rainfall and vegetation 'greeness'**
 
-Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
+Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a ```js flatten()``` command as follows:
 
 ```js
-var rainMean = rainMeanMY.mean().clip(costaRica);
-var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+var annualRainEVI_list =  years.map(function(y){
+  var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+  .max().multiply(0.0001).rename('evi');
+  var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+  .max().rename('rain');
+  var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat(); //  number of milliseconds since 1970-01-01T00:00:00Z
+  return img.addBands([evi_year, time]).set('year', y).set('month', 1)
+  .set('system:time_start', ee.Date.fromYMD(y,1,1));
+});
 
-var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-.max().multiply(0.0001).rename('evi');
-var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
-
-var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
-return img.addBands([evi_year, time]).set('year', y).set('month', 1)
-.set('date', ee.Date.fromYMD(y,1,1))
-.set('system:time_start', ee.Date.fromYMD(y,1,1));
-}).flatten());
+// // Convert the image List to an ImageCollection.
+var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 ```
 
 It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
