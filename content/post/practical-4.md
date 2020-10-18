@@ -89,13 +89,13 @@ var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 To calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 2000 to 2019, reduce the monthly rainfall records by their sum per year as follows:
 
 ```js
-var rainYr_list = years.map(function(y) {
-return rainAll
-.filter(ee.Filter.calendarRange(y,y,'year')) 
-.reduce(ee.Reducer.sum())
-.rename('rain_yr') 
-.set('year', ee.Date.fromYMD(y, 1, 1)) 
-.set('name','rainfall');
+var rainYr_list =  years.map(function(y){
+var rain_year = rainAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+.sum().rename('rain_yr');
+var time = ee.Image(ee.Date.fromYMD(y,1,1)
+.millis()).divide(1e18).toFloat(); //  number of milliseconds since 1970-01-01T00:00:00Z
+return rain_year.addBands(time).set('year', y).set('month', 1)
+.set('system:time_start', ee.Date.fromYMD(y,1,1));
 });
 ```
 
@@ -116,21 +116,22 @@ Chart the annual rainfall results, summarised for Braulio Carrillo using a line 
 
 ```js
 var opt_chart_annualPrecip = {
-  title: 'Mean Annual Rainfall: Braulio Carrillo',
+  title: 'Annual Rainfall: Braulio Carrillo',
+  pointSize: 3,
   hAxis: {title: 'Year'},
-  vAxis: {title: 'Rainfall (mm)'},};
+  vAxis: {title: 'Rainfall (mm)'},
+};
 
-var chart_annualPrecip = ui.Chart.image.seriesByRegion({
-  imageCollection: annualPrecip, 
-  regions: myBraulio_geo,
+var chart_annualPrecip = ui.Chart.image.series({
+  imageCollection: rainYr.select('rain_yr'),
+  region:myBraulio_geo,
   reducer: ee.Reducer.mean(),
-  scale: 5000,
-  xProperty: 'date',
-  seriesProperty: 'band'
-}).setOptions(opt_chart_annualPrecip)
-  .setChartType('LineChart');
+  scale: 5000
+}).setOptions(opt_chart_annualPrecip);
 print(chart_annualPrecip);
 ```
+
+**Figure 1:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
 
 ***
 
@@ -145,8 +146,8 @@ var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
   fontWeight: 'bold',
   fontSize: '20px'});
 
-var rainViz = {
-  min: 175, max: 317, 
+var rainYvis = {
+  min: 2100, max: 3800, 
   palette: 'ffffff, 67d9f1, 1036cb'};
 ```
 
@@ -154,7 +155,7 @@ Next, we center the map to Costa Rica. All other layers will align with this par
 
 ```js
 Map.centerObject(costaRica, 8);
-Map.addLayer(rainMean, rainViz, 'Long-term Annual Rainfall'); 
+Map.addLayer(rainAnnual, rainYvis, 'Long-term Annual Rainfall'); 
 Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
 Map.setControlVisibility({zoomControl: true});
 Map.add(title);
@@ -178,6 +179,23 @@ To save this map online as a GEE app, follow the steps below:
 ***
 
 **Relationship between annual rainfall and vegetation 'greeness'**
+
+Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
+
+```js
+var rainMean = rainMeanMY.mean().clip(costaRica);
+var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
+
+var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+.max().multiply(0.0001).rename('evi');
+var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
+
+var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
+return img.addBands([evi_year, time]).set('year', y).set('month', 1)
+.set('date', ee.Date.fromYMD(y,1,1))
+.set('system:time_start', ee.Date.fromYMD(y,1,1));
+}).flatten());
+```
 
 It is also possible to plot both rainfall and EVI within a single chart. This may be valuable in understanding the relationship between these two variables. To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo. As in the previous chart, we first define chart parameters and then create the line chart with two y-axes using the processed summaries
 
@@ -260,23 +278,6 @@ As a last step, save the script.
 ***
 
 **Bonus Section**
-
-Calculate long-term annual mean rainfall, clipped to Costa Rica. Calculate annual mean Rainfall vs. EVI for Braulio Carrillo National Park.
-
-```js
-var rainMean = rainMeanMY.mean().clip(costaRica);
-var annualRainEVI = ee.ImageCollection.fromImages(years.map(function(y){
-
-var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-.max().multiply(0.0001).rename('evi');
-var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).max().rename('rain');
-
-var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat();
-return img.addBands([evi_year, time]).set('year', y).set('month', 1)
-.set('date', ee.Date.fromYMD(y,1,1))
-.set('system:time_start', ee.Date.fromYMD(y,1,1));
-}).flatten());
-```
 
 Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 2000 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
 
