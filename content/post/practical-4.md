@@ -112,7 +112,7 @@ var rainAnnual = rainYr.mean().clip(costaRica);
 
 **Charting**
 
-Chart the annual rainfall results, summarised for Braulio Carrillo using a line chart as follows. First define the chart parameters (e.g. title and axis labels) and then create the line chart, using ```jsprint()``` to see the chart in your GEE console.
+Chart the annual rainfall results, summarised for Braulio Carrillo using a line chart as follows. First define the chart parameters (e.g. title and axis labels) and then create the line chart, using 'print()' to see the chart in your GEE console.
 
 ```js
 var opt_chart_annualPrecip = {
@@ -184,7 +184,8 @@ To save this map online as a GEE app, follow the steps below:
 
 **Relationship between annual rainfall and vegetation 'greeness'**
 
-Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a ```js flatten()``` command as follows:
+Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a '
+flatten()' command as follows:
 
 ```js
 var annualRainEVI_list =  years.map(function(y){
