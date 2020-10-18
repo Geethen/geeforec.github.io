@@ -177,15 +177,14 @@ To save this map online as a GEE app, follow the steps below:
 4. Click `PUBLISH` URL will appear - Click this to see your first online interactive map
 5. If you see a `Not ready` page, give it a few minutes and try again
 
-![](/images/prac4_f2.png)
+![](/images/prac_f2.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
 
 ***
 
 **Relationship between annual rainfall and vegetation 'greeness'**
 
-Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a `
-flatten()` command as follows:
+Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a `flatten()` command as follows:
 
 ```js
 var annualRainEVI_list =  years.map(function(y){
@@ -202,7 +201,7 @@ var annualRainEVI_list =  years.map(function(y){
 var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 ```
 
-Now plot both rainfall and EVI in a single chart. What do you think the relationship between these two variables will be? 
+Now plot both rainfall and EVI in a single chart. What do you think the relationship between these two variables will be?
 To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo, first define the chart parameters and then create the line chart with two y-axes as follows:
 
 ```js
