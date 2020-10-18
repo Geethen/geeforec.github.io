@@ -177,7 +177,7 @@ To save this map online as a GEE app, follow the steps below:
 4. Click `PUBLISH` URL will appear - Click this to see your first online interactive map
 5. If you see a `Not ready` page, give it a few minutes and try again
 
-![](/images/prac_f2.png)
+![](/images/prac4_f2.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
 
 ***
