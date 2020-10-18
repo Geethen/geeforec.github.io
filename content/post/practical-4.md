@@ -229,10 +229,12 @@ print(rain_ndvi_chart);
 
 **Data Export**
 
-To export the data shown in the created charts, you may simply maximise the chart and then click to export to formats .csv, .svg or .png. Alternatively, you may script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
+To export the data shown in the created charts, you may simply maximise the chart and then click to export to formats .csv, .svg or .png. 
 
 ![](/images/prac4_f3.png)
 **Figure 5:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+
+Alternatively, you may script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
 
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
@@ -254,6 +256,10 @@ folder: 'testOTS',
 fileFormat: 'CSV'
 });
 ```
+
+![](/images/prac4_f6b.png)
+**Figure 6:** Steps followed to script a CSV table export to your local hard-drive.
+
 
 In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Costa Rica. We will first create a list of band names for the rasterStack output and apply the function `toBands()` to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
 
@@ -303,7 +309,7 @@ var rainMeanMY_list = years.map(function(y) {
 ```
 
 ![](/images/prac4_f6.png)
-**Figure 6:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019..
+**Figure 7:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019..
 
 ***
 
