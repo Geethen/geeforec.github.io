@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-03T13:00:00Z
 excerpt = "Fire frequency in the Kruger National Park, South Africa"
-hero = "/images/prac6_f4.png"
+hero = "/images/prac6_f0.png"
 timeToRead = 15
 title = "Practical 6"
 
