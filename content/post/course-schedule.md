@@ -2,14 +2,12 @@
 authors = []
 date = 2020-10-11T22:00:00Z
 draft = true
-excerpt = "Importing, exploring and visualising datasets"
+excerpt = ""
 hero = ""
 timeToRead = 3
 title = "Course Schedule"
 
 +++
-### **Course Schedule**
-
 ##### **Monday 19th October**
 
 Course Introduction 
