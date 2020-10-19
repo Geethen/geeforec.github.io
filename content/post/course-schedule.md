@@ -12,7 +12,7 @@ title = "Course Schedule"
 
 ##### **Monday 19th October**
 
-**Course Introduction** 
+Course Introduction 
 
 Presenter: ALL
 
