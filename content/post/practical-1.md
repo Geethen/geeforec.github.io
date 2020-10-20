@@ -147,6 +147,7 @@ As the last step, save the script.
 Repeat this practical but use the Landsat-8 dataset. Produce a false colour image using the near infra-red band for a region in your country. Hint: the band names and the metadata labels for cloud cover for Landsat-8 and Sentinel-2 satellites are different. Explore the metadata to find the correct band names.
 
 ```js
+// USGS Landsat 8 Surface Reflectance Tier 1
 ee.ImageCollection("LANDSAT/LC08/C01/T1_SR");
 ```
 
