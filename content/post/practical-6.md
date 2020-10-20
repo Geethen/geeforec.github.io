@@ -31,12 +31,10 @@ Fire is blah blah blah
 **Data import**
 
 In addition to datasets available on Google Earth Engine, in this practical we will learn how to import shapefiles from your local hard-drive into GEE by uploading them as new assets (Fig. 1).
-
 ```js
 var dem = ee.Image("CGIAR/SRTM90_V4");
 var FireCCI = ee.ImageCollection('ESA/CCI/FireCCI/5_1');
 ```
-
 The first dataset, [SRTM90](https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4), is a Digital Elevation Model (DEM) from the Shuttle Radar Topography Mission (SRTM). The second, [FireCCI51](https://developers.google.com/earth-engine/datasets/catalog/ESA_CCI_FireCCI_5_1), is a Fire_cci Burned Area pixel product version 5.1 from MODIS. Figure 1 below, describes how to import the boundary shapefile for the Kruger National Park (Kruger) from files stored locally on your hard-drive. You can download and save the required files from [here](https://drive.google.com/file/d/1omD5vPk4LMQSnC2BHJCg6GlnmpzBsFQG/view?usp=sharing).
 
 ![](/images/prac6_f1.png)
@@ -45,9 +43,7 @@ The first dataset, [SRTM90](https://developers.google.com/earth-engine/datasets/
 ***
 
 **Filtering data**
-
 First define your variables for the temporal and spatial windows of interest. We will use these variables to filter our data before processing.
-
 ```js
 var startDate = ee.Date.fromYMD(2001,1,1);
 var endDate = ee.Date.fromYMD(2018,12,31);
@@ -64,13 +60,10 @@ var fire = FireCCI
       return img.set('year', ee.Image(img).date().get('year'));
     });
 ```
-
 ***
 
 **Processing**
-
 Now build a function to remove all burn scars from the fire dataset that have a confidence interval of less than 50%.
-
 ```js
 // Define a function to remove all fires <50% confidence interval
 var confMask = function(img) {
@@ -79,9 +72,7 @@ var confMask = function(img) {
   return img.updateMask(level).select('BurnDate'); //return only 'BurnDate' band
 };
 ```
-
 Run the function and summarise the burn scars by the day-of-year (doy) most frequently burnt, followed by the the frequency areas are burnt in Kruger annually from 2001 until 2018.
-
 ```js
 // Most frequently burnt DOY
 var fireDOY_list = years.map(function(year) {
