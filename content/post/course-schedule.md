@@ -9,7 +9,7 @@ title = "Course Schedule"
 +++
 | Date   |    | Session | Type         | Details                                                          | Presenter |
 |--------|----|---------|--------------|------------------------------------------------------------------|-----------|
-| Week 2 |    |         |              |                                                                  |           |
+| Week 1 |    |         |              |                                                                  |           |
 | MON    | 19 | 1       | Introduction | Course introduction                                              | ALL       |
 |        |    |         | Lecture 1    | Introduction to Remote Sensing I                                 | GS        |
 | TUE    | 20 | 2       | Lecture 2    | Introduction to Remote Sensing II                                | GS        |
@@ -18,7 +18,6 @@ title = "Course Schedule"
 |        |    |         | Lecture 3    | How to setup your workflow                                       | GS        |
 | THU    | 22 | 4       | Practical 3  | NDVI time\-series over a single region                           | JW        |
 | FRI    | 23 | 5       | Practical 4  | Rainfall patterns: Time\-series and interactive maps             | SM        |
-|        |    |         |              |                                                                  |           |
 |        |    |         |              |                                                                  |           |
 | Date   |    | Session | Type         | Details                                                          | Presenter |
 | Week 2 |    |         |              |                                                                  |           |
