@@ -147,7 +147,7 @@ As the last step, save the script.
 Repeat this practical but use the Landsat-8 dataset. Produce a false colour image using the near infra-red band for a region in your country. Hint: the band names for Landsat-8 and Sentinel-2 satellites are different. Explore the dataset metadata to find the correct band names.
 
 ```js
-ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA ");
+ee.ImageCollection("LANDSAT/LC08/C01/T1_SR");
 ```
 
 To share your script, click on Get Link and then copy the script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com)
