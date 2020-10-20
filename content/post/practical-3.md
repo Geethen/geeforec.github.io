@@ -1,6 +1,6 @@
 +++
 authors = []
-date = 2020-10-05T22:00:00Z
+date = 2020-10-21T22:00:00Z
 excerpt = "NDVI time-series over a single region"
 hero = "/images/prac3_hero_both.png"
 timeToRead = 3
