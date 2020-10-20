@@ -12,24 +12,19 @@ title = "Practical 6"
 Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2FBioGIS%2FbioGEE%3APractical_6%2Ffires_knp)
 
 **Learning Objectives**
-
 By the end of this practical you should be able to:
-
 1. Access terrain model data from SRTM
 2. Access monthly burn scar data
 3. Generate a hillshade using SRTM data
 4. Explore long-term patterns of fire frequency
 5. Build an animation and output for use in, for example, PowerPoint presentations
-
 ***
 
 **Introduction**
 Fire is blah blah blah
-
 ***
 
 **Data import**
-
 In addition to datasets available on Google Earth Engine, in this practical we will learn how to import shapefiles from your local hard-drive into GEE by uploading them as new assets (Fig. 1).
 ```js
 var dem = ee.Image("CGIAR/SRTM90_V4");
@@ -39,7 +34,6 @@ The first dataset, [SRTM90](https://developers.google.com/earth-engine/datasets/
 
 ![](/images/prac6_f1.png)
 **Figure 1:** Process to upload a shapefile into GEE as a new assest imported into the script as a FeatureColection
-
 ***
 
 **Filtering data**
@@ -96,20 +90,15 @@ var fireCnt_list = years.map(function(year) {
 });
 var cntFiresDOY = ee.ImageCollection.fromImages(fireCnt_list); // Convert the image List back to an ImageCollection
 ```
-
 Summarise these results to represent the most frequently burnt day-of-year (doy) and the frequency areas have burnt in Kruger over the last 18 years (2001-2018).
-
 ```js
 var modFires = doyFires.mode().clip(knp_geo);
 var cntFires = cntFiresDOY.sum().clip(knp_geo);
 ```
-
 ***
 
 **Charting**
-
 To plot these results, first define your chart parameters (e.g. title and axis labels), then create the line chart, incorporating these pre-defined chart parameters and `print` it to the console as follows:
-
 ```js
 // Chart parameters
 var opt_cntFireMonth = {
@@ -131,13 +120,10 @@ print(cntFireMonth_chart);
 
 ![](/images/prac6_f2a.png)
 **Figure 2:** Line chart the number of days a fire occured in Kruger from 2001 to 2018.
-
 ***
 
 **Visualisation**
-
 To visualise the long-term summaries of your results, first setup your map elements as you've done in previous practicals.
-
 ```js
 // Define legend parameters for unique DOY
 // Light colours are earlier in the year, dark colours are later
@@ -162,11 +148,9 @@ Map.addLayer(knp,{color: 'grey'}, 'Kruger',true, 0.8);  // Add Kruger boundary
 
 ![](/images/prac6_f3.png)
 **Figure 3:** Map with layers indicating the most frequently burnt doy-of-year (doy) and the fire requency in Kruger from 2001 to 2018.
-
 ***
 
 **Hillshade and Animation**
-
 ```js
 //display hillshading and slope
 var hillshade = ee.Terrain.hillshade(dem);
@@ -223,20 +207,17 @@ var thumb = ui.Thumbnail({
 Map.add(thumb);
 ```
 
-![](/images/prac6_f4.gif)**Figure 4:** Animation of days fires occurred in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
-
+![](/images/prac6_f4.gif)
+**Figure 4:** Animation of days fires occurred in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
 ***
 
 **Data Export**
-
 To export the animation, simply right mouse-click and select `Save Image As…` to save the animation locally as a .GIF file to your hard-drive.
 
-As a last step, save the script.
-
+As a last step is always "save your script".
 ***
 
 **Practical 6 Exercise**
-
 Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger National Park.
 To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:ots.online.education@gmail.com).
 
