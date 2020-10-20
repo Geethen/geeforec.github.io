@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-18T22:00:00Z
 excerpt = ""
-hero = ""
+hero = "/images/jeshoots-com-9n1usijyjz4-unsplash.jpg"
 timeToRead = 3
 title = "Course Schedule"
 
