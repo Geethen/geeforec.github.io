@@ -218,6 +218,18 @@ print(ui.Thumbnail({
     position: 'bottom-right',
     width: '180px'
   }}));
+
+// Or add it to your map
+// Create a video thumbnail and add it to the map.
+var thumb = ui.Thumbnail({
+  // Specifying a collection for "image" animates the sequence of images.
+  image: srtmFires,
+  params: gifParams,
+  style: {
+    position: 'bottom-right',
+    width: '180px'
+  }});
+Map.add(thumb);
 ```
 
 ![](/images/prac6_f4.gif)
