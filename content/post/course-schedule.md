@@ -19,7 +19,6 @@ title = "Course Schedule"
 | THU    | 22 | 4       | Practical 3  | NDVI time\-series over a single region                           | JW        |
 | FRI    | 23 | 5       | Practical 4  | Rainfall patterns: Time\-series and interactive maps             | SM        |
 |        |    |         |              |                                                                  |           |
-| Date   |    | Session | Type         | Details                                                          | Presenter |
 | Week 2 |    |         |              |                                                                  |           |
 | MON    | 26 | 6       | Practical 5  | Forest loss over multiple regions                                | JW        |
 | TUE    | 27 | 7       | Practical 6  | Fire frequency: Map calculations and animations                  | SM        |
@@ -29,6 +28,7 @@ title = "Course Schedule"
 | FRI    | 30 | 10      | Practical 9  | Supervised learning: Landcover classification                    | GS        |
 |        |    |         | Lecture 5    | Additional resources                                             | JW        |
 |        |    |         | Wrap\-up     | End\-notes                                                       | ALL       |
+
 
 ##### **Monday 19th October**
 
