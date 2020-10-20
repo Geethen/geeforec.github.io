@@ -17,8 +17,7 @@ title = "Course Schedule"
 |      |    |         | Lecture 3    | How to setup your workflow                                       | GS        |
 | THU  | 22 | 4       | Practical 3  | NDVI time\-series over a single region                           | JW        |
 | FRI  | 23 | 5       | Practical 4  | Rainfall patterns: Time\-series and interactive maps             | SM        |
-|      |    |         |              |                                                                  |           |
-|      |    |         |              |                                                                  |           |
+
 | Date |    | Session | Type         | Details                                                          | Presenter |
 | MON  | 26 | 6       | Practical 5  | Forest loss over multiple regions                                | JW        |
 | TUE  | 27 | 7       | Practical 6  | Fire frequency: Map calculations and animations                  | SM        |
