@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-18T22:00:00Z
 excerpt = ""
-hero = ""
+hero = "/images/whatsapp-image-2020-10-20-at-12-15-08.jpeg"
 timeToRead = 3
 title = "Team"
 
