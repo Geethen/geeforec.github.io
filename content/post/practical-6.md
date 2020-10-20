@@ -232,8 +232,7 @@ var thumb = ui.Thumbnail({
 Map.add(thumb);
 ```
 
-![](/images/prac6_f4.gif)
-**Figure 4:** Animation of days fires occurred in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
+![](/images/prac6_f4.gif)**Figure 4:** Animation of days fires occurred in Kruger from 2001 to 2018. Light colours represent fires that happened earlier in the year, while dark colours are those that burnt in later months.
 
 ***
 
@@ -248,6 +247,6 @@ As a last step, save the script.
 **Practical 6 Exercise**
 
 Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger National Park.
-To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:sandra@biogis.co.za).
+To share your script, click on Get Link and then copy script path. Send your completed script to [**email**](mailto:ots.online.education@gmail.com).
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
