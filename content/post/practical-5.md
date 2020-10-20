@@ -1,6 +1,6 @@
 +++
 authors = []
-date = 2020-10-21T22:00:00Z
+date = 2020-10-25T22:00:00Z
 excerpt = "Forest loss over multiple regions"
 hero = "/images/prac5_hero.png"
 timeToRead = 3
