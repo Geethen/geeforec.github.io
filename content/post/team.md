@@ -7,7 +7,6 @@ timeToRead = 3
 title = "Team"
 
 +++
-
 **![](/images/g10.png)**
 
 **Geethen Singh**
@@ -29,6 +28,8 @@ Joseph White is a Postdoctoral Researcher at the University of the Witwatersrand
 Joseph White is a NRF-SASSCAL Postdoctoral Researcher at the University of the Witwatersrand, South Africa, working on species distribution shifts and disrupted ecosystem services in response to global change using occupancy models and remote sensed products. He is interested in spatial ecology and using earth observation to provide ecological and conservation insights.![](/images/don.png)
 
 **Donovon Tye**
+
+Donovan Tye is the Field Director for the Organization for Tropical Studies in Skukuza, South Africa. His research has centered on understanding the determinants of species assemblages in disturbance-prone ecosystems. More recently, he has become increasingly interested in the application of emerging technologies in the realm of biodiversity science. In particular, the application of remote sensing products and automated recorders in savanna systems.
 
 ![](/images/bernard.png)
 
