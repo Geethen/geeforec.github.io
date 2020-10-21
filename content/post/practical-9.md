@@ -1,6 +1,6 @@
 ---
 title: Practical 9
-date: 2020-10-29T22:00:00+00:00
+date: 2020-10-29T22:00:00.000+00:00
 hero: "/images/prac9_f4.png"
 excerpt: 'Supervised learning 2: Land cover classification.'
 timeToRead: 8
@@ -207,5 +207,7 @@ The area of applicability concept is based on an experimental concept still unde
 Reference
 
 Meyer, H. and Pebesma, E., 2020. Predicting into unknown space? Estimating the area of applicability of spatial prediction models. arXiv preprint arXiv:2005.07939.
+
+To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
