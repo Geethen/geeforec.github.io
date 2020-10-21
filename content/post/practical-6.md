@@ -21,26 +21,7 @@ By the end of this practical you should be able to:
 ***
 
 **Introduction**
-Fire is an important driver of spatio-temporal patterns
-in savannas. Different fire regimes can result in diverse
-outcomes in vegetation biomass (Bond et al. 2005), composition
-(Whateley and Wills 1996) and structure (Higgins
-et al. 2007). Furthermore, fire frequency, fire intensity and
-season of fire interact to enable the coexistence of trees and
-grass in savannas. Together with other factors like geology,
-rainfall and herbivory, fire widens the range of tree:grass
-ratios (Higgins et al. 2000, Anderies et al. 2002, Bond and
-Keeley 2005, Sankaran et al. 2005, Nano and Clarke 2010).
-For example, it has been shown in the Kruger National Park
-(KNP) that landscapes that repeatedly experience frequent
-and high intensity fires have less woody cover than comparable
-landscapes continuously experiencing less frequent
-and low intensity fires (Smit et al. 2010). Fire regime characteristics
-also sometimes influence vegetation composition,
-with certain plant species persisting in frequently burned
-habitats (Silva et al. 1991, Canales et al. 1994) whereas
-long-unburned habitats create important refugia for fire sensitive
-species (Russell-Smith et al. 2002, 2012).
+Fire is an important driver of spatio-temporal patterns in savannas. Different fire regimes can result in diverse outcomes in vegetation biomass, composition and structure. Furthermore, fire frequency, fire intensity and season of fire interact to enable the coexistence of trees and grass in savannas. Together with other factors like geology,rainfall and herbivory, fire widens the range of tree:grass ratios. For example, it has been shown in the Kruger National Park (KNP) that landscapes that repeatedly experience frequent and high intensity fires have less woody cover than comparable landscapes continuously experiencing less frequent and low intensity fires. Fire regime characteristics also sometimes influence vegetation composition, with certain plant species persisting in frequently burned habitats whereas long-unburned habitats create important refugia for fire sensitive species. The above suggests that both frequently and infrequently burned areas may be important for biodiversity conservation.(Smit et al. 2013).
 ***
 
 **Data import**
@@ -241,3 +222,7 @@ Repeat this practical but use xxx instead of xxx and xxx instead of the Kruger N
 To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com).
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
+***
+
+**References**
+Smit IPJ, Smit CF, Govender N, van der Linde M and MacFadyen S (2013) Rainfall, geology and landscape position generate large-scale spatiotemporal fire pattern heterogeneity in an African savanna. Ecography 36(4): 447-459
