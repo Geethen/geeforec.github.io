@@ -21,7 +21,26 @@ By the end of this practical you should be able to:
 ***
 
 **Introduction**
-Fire is blah blah blah
+Fire is an important driver of spatio-temporal patterns
+in savannas. Different fire regimes can result in diverse
+outcomes in vegetation biomass (Bond et al. 2005), composition
+(Whateley and Wills 1996) and structure (Higgins
+et al. 2007). Furthermore, fire frequency, fire intensity and
+season of fire interact to enable the coexistence of trees and
+grass in savannas. Together with other factors like geology,
+rainfall and herbivory, fire widens the range of tree:grass
+ratios (Higgins et al. 2000, Anderies et al. 2002, Bond and
+Keeley 2005, Sankaran et al. 2005, Nano and Clarke 2010).
+For example, it has been shown in the Kruger National Park
+(KNP) that landscapes that repeatedly experience frequent
+and high intensity fires have less woody cover than comparable
+landscapes continuously experiencing less frequent
+and low intensity fires (Smit et al. 2010). Fire regime characteristics
+also sometimes influence vegetation composition,
+with certain plant species persisting in frequently burned
+habitats (Silva et al. 1991, Canales et al. 1994) whereas
+long-unburned habitats create important refugia for fire sensitive
+species (Russell-Smith et al. 2002, 2012).
 ***
 
 **Data import**
