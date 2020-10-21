@@ -1,6 +1,6 @@
 ---
 title: Practical 2
-date: 2020-10-20T22:00:00+00:00
+date: 2020-10-20T22:00:00.000+00:00
 hero: "/images/prac_2_f1.png"
 excerpt: Spectral indices, atmospheric interference and water detection
 timeToRead: 3
@@ -103,7 +103,7 @@ imported and renamed as s22a at the beginning of this practical.
 Thereafter, compare the water detection results and patterns with the
 s21c image results. Submit your final script.
 
-To share your script, click on Get Link and then copy the script path. Send your completed script to **email.**
+To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
 ![](/images/practical_1_script_path.png)
 
