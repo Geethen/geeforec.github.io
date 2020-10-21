@@ -1,6 +1,6 @@
 ---
 title: Practical 7
-date: 2020-10-27T22:00:00+00:00
+date: 2020-10-27T22:00:00.000+00:00
 hero: "/images/prac_7_f1.png"
 excerpt: Binary change detection, computing area and charting
 timeToRead: 8
@@ -147,5 +147,7 @@ The ‘best’ option to use is often case-specific and is dependent on your goa
 **References**
 
 Kim, D.H., Sexton, J.O., Noojipady, P., Huang, C., Anand, A., Channan, S., Feng, M. and Townshend, J.R., 2014. Global, Landsat-based forest-cover change from 1990 to 2000. _Remote Sensing of Environment_, _155_, pp.178-193.
+
+To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
