@@ -185,6 +185,6 @@ Save your script.
 
 Repeat this practical but use an alternative country as a region of interest for Part A and use three alternative Protected Areas for Part B.
 
-Send your completed script to **email.**
+To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
