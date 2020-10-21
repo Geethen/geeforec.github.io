@@ -254,6 +254,6 @@ Load in the dataset to a new script using the below asset id:
 ee.FeatureCollection('users/jdmwhite/solanum_acuale')
 ```
 
-To share your script, click on Get Link and then copy script path. Send your completed script to **email.**
+To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
