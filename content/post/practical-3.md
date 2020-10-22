@@ -108,14 +108,20 @@ Next we will create a time-series plot over the NDVI band of the ImageCollection
 Lastly, we can specify details for the chart, including the type of chart and then label options. Run print() to see the output of the chart in your console. Hover your cursor over the chart to see interactive details. For more details on customizing your charts see: https://developers.google.com/chart/interactive/docs
 
 ```js
-var plotNDVI = ui.Chart.image.series(s2_ndvi, geometry, ee.Reducer.mean(), // we use an image based chart, with image, geom & reducer
-'NDVI', 500, 'system:time_start') // band, scale, x-axis property, label
+// Create a time series chart.
+var plotNDVI = ui.Chart.image.seriesByRegion(s2_ndvi, geometry, ee.Reducer.median(), 
+// we use an image based chart, with image, geom & reducer
+'NDVI', 100, 'system:time_start') // band, scale, x-axis property
               .setChartType('LineChart').setOptions({
                 title: 'NDVI time series',
                 hAxis: {title: 'Date'},
-                vAxis: {title: 'NDVI'}
+                vAxis: {title: 'NDVI'},
+                legend: {position: "none"},
+                lineWidth: 1,
+                pointSize: 3
 });
 
+// Display the chart
 print(plotNDVI);
 ```
 
