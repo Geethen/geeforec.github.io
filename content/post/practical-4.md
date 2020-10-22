@@ -202,19 +202,23 @@ var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 Now plot both rainfall and EVI in a single chart. What do you think the relationship between these two variables will be?
 To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo, first define the chart parameters and then create the line chart with two y-axes as follows:
 ```js
-var opt_annualRainEVI = {title: "Annual Max Rainfall vs. EVI for Braulio Carrillo", pointSize: 3,
+// Display a comparative line chart of rainfall and EVI for Braulio Carrillo 
+// Set chart parameters e.g. title
+var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI) for Braulio Carrillo", pointSize: 3,
     legend: {maxLines: 5, position: 'top'},
     series: { 0: {targetAxisIndex: 0},
               1: {targetAxisIndex: 1}},
-        vAxes: {Adds titles to each axis.
+        vAxes: {// Adds titles to each axis.
           0: {title: 'Max EVI (*0.0001)'},
           1: {title: 'Max Rainfall (mm)'}},};
-
+          
+// Build the chart and plot it          
 var rain_ndvi_chart = ui.Chart.image.series({
   imageCollection: annualRainEVI.select(['evi', 'rain']),
-  region:myBraulio_geo,
+  region:aoi_clip,
   reducer: ee.Reducer.mean(),
-  scale: 5000
+  scale: 5000,
+  xProperty: 'year'
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
