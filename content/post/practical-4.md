@@ -73,15 +73,11 @@ var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
 To calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 2000 to 2019, reduce the monthly rainfall records by their sum per year as follows:
 ```js
 var rainYr_list =  years.map(function(y){
-var rain_year = rainAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-.sum().rename('rain_yr');
-var time = ee.Image(ee.Date.fromYMD(y,1,1)
-.millis()).divide(1e18).toFloat(); //  number of milliseconds since 1970-01-01T00:00:00Z
-return rain_year.addBands(time).set('year', y).set('month', 1)
-.set('system:time_start', ee.Date.fromYMD(y,1,1));
+  var rain_year = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).sum().rename('rain_yr');
+  return rain_year.set('year', ee.Date.fromYMD(y,1,1)); // ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat()
 });
 ```
-This produces a list of 20 images. Convert the list back to an ImageCollection and calculate the long-term annual rainfall patterns for Costa Rica as follows:
+This produces a list of 20 images, which you'll need to convert back to an ImageCollection. Then calculate the long-term annual rainfall patterns for Costa Rica as follows:
 ```js
 // Convert the image List to an ImageCollection.
 var rainYr = ee.ImageCollection.fromImages(rainYr_list);
@@ -103,7 +99,7 @@ var rainYvis = {
   min: 2100, max: 3800, 
   palette: 'ffffff, 67d9f1, 1036cb'};
 ```
-Next, we centre the map to Costa Rica - In this way all other layers will now align with this parent map. Now add the long-term mean annual rainfall for Costa Rica and the Braulio Carrillo boundary. Lastly add the defined title.
+Next, we centre the map to Costa Rica - In this way all other layers will align with this parent map. Now add the long-term mean annual rainfall for Costa Rica and the Braulio Carrillo boundary. Lastly add the defined title.
 ```js
 Map.centerObject(costaRica, 8);
 Map.addLayer(rainAnnual, rainYvis, 'Long-term Annual Rainfall'); 
@@ -116,7 +112,7 @@ Map.add(title);
 ***
 
 **Charting**
-Now let's chart annual rainfall results but summarised for Braulio Carrillo National Park using a line chart. First define the chart parameters (e.g. title and axis labels) and then create the line chart.
+Now chart annual rainfall results but summarised for Braulio Carrillo National Park using a line chart. To do this, first define the chart parameters (e.g. title and axis labels) and then create the line chart.
 ```js
 var opt_chart_annualPrecip = {
   title: 'Annual Rainfall: Braulio Carrillo',
@@ -151,18 +147,18 @@ panel.add(chart_annualPrecip)
 ***
 
 **Save your map online**
-Now for the fun part! We can share this map with the world by creating a GEE application. To save your map online as a GEE app, follow the steps below:
+Now for the fun part! We can share this map with the world by creating a GEE Application (App). To save your map online as your first GEE App, follow the steps below:
 
 1. Click the `Apps` button above 
 2. Select `NEW APP`
 3. Give the App a Name and click `PUBLISH`. Leave everything else default
-4. Your new URL will appear - Click this to see your first online interactive map *
+4. Your new URL will appear - Click this to see your first online interactive map (if you get an error message, follow the steps below instead).
 5. If you see a `Not ready` page, give it a few minutes and try again
 
 ![](/images/prac4_f3a_fix.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
 
-If you get an error message, chances are you haven't accepted the terms and conditions of using GEE Apps in your Google Cloud Platform.
+If you get an error message, chances are you haven't accepted the terms and conditions of using GEE Apps in your Google Cloud Platform. To do so, follow these steps instead of the ones above.
 
 1. Click the `Apps` button above
 2. Select `NEW APP`
@@ -179,14 +175,14 @@ If you get an error message, chances are you haven't accepted the terms and cond
 ![](/images/prac4_f3b.png)
 **Figure 4:** Steps to publish interactive map online. Use URL to access.
 
-And voilà! Your first GEE App!
+**And voilà! Your first GEE App!**
 
 ![](/images/prac4_f4_new.png)
 **Figure 5:** Steps to publish interactive map online. Use URL to access.
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
-Combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019. Then convert the list that is returned, back to an ImageCollection, including a `flatten()` command as follows:
+Taking things even further, we could also combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019, to see what the relationship between the two might be (what do you think we'll see?). 
 ```js
 var annualRainEVI_list =  years.map(function(y){
   var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
@@ -197,7 +193,9 @@ var annualRainEVI_list =  years.map(function(y){
   return img.addBands([evi_year, time]).set('year', y).set('month', 1)
   .set('system:time_start', ee.Date.fromYMD(y,1,1));
 });
-
+```
+Then convert the list that is returned, back to an ImageCollection, including a `flatten()` command as follows:
+```js
 // // Convert the image List to an ImageCollection.
 var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 ```
