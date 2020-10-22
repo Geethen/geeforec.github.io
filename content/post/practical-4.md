@@ -40,8 +40,10 @@ The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datase
 **Filtering data**
 First define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
 ```js
+var startDate0 = ee.Date.fromYMD(1981,1,1);
 var startDate = ee.Date.fromYMD(2000,1,1);
 var endDate = ee.Date.fromYMD(2019,12,31);
+var years0 = ee.List.sequence(1981, 2019);
 var years = ee.List.sequence(2000, 2019);
 var months = ee.List.sequence(1, 12);
 ```
@@ -72,11 +74,11 @@ var eviAll = MOD13Q1.select('EVI')
 ***
 
 **Processing**
-To calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 2000 to 2019, reduce the monthly rainfall records by their sum per year as follows:
+To calculate the annual monthly sum of rainfall across Braulio Carrillo National Park from 1981 to 2019, reduce the monthly rainfall records by their sum per year as follows:
 ```js
 var rainYr_list =  years.map(function(y){
   var rain_year = rainAll.filter(ee.Filter.calendarRange(y, y, 'year')).sum().rename('rain_yr');
-  return rain_year.set('year', ee.Date.fromYMD(y,1,1)); // ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat()
+  return rain_year.set('year', ee.Date.fromYMD(y,1,1)); 
 });
 ```
 This produces a list of 20 images, which you'll need to convert back to an ImageCollection. Then calculate the long-term annual rainfall patterns for Costa Rica as follows:
@@ -91,7 +93,7 @@ var rainAnnual = rainYr.mean().clip(costaRica);
 **Visualisation**
 Now let's plot these results on a map. First define the various map elements i.e. the `title` and `symbology` for the legend as follows:
 ```js
-var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
+var title = ui.Label('Costa Rica: Annual Rainfall 1981 to 2018', {
   stretch: 'horizontal',
   textAlign: 'center',
   fontWeight: 'bold',
@@ -110,7 +112,7 @@ Map.add(title);
 ```
 
 ![](/images/prac4_f1_new.png)
-**Figure 1:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
+**Figure 1:** Map of long-term annual rainfall in Costa Rica from 1981 to 2019.
 ***
 
 **Charting**
@@ -146,7 +148,7 @@ Map.add(panel);
 panel.add(chart_annualPrecip)
 ```
 ![](/images/prac4_f1.png)
-**Figure 2:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
+**Figure 2:** Line chart of annual rainfall in Braulio Carrillo National Park from 1981 to 2019.
 ***
 
 **Save your map online**
@@ -206,7 +208,7 @@ To create a comparative line chart of rainfall and EVI summaries for Braulio Car
 ```js
 // Display a comparative line chart of rainfall and EVI for Braulio Carrillo 
 // Set chart parameters e.g. title
-var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI) for Braulio Carrillo", pointSize: 3,
+var opt_annualRainEVI = {title: "Annual Max Rainfall vs. 'Greenness (EVI) for Braulio Carrillo", pointSize: 2,
     legend: {maxLines: 5, position: 'top'},
     series: { 0: {targetAxisIndex: 0},
               1: {targetAxisIndex: 1}},
@@ -227,6 +229,51 @@ print(rain_ndvi_chart);
 ![](/images/prac4_f4.png)
 **Figure 6:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
 ***
+
+We could also run a linear regression or correlation between the two variables directly as follows:
+```js
+// REGRESSION
+// Compute a linear least squares regression with 1 independent and 1 dependent variable.
+// First set chart parameters e.g. title
+var opt_regress = {title: "Relationship between annual Rainfall and EVI for Braulio Carrillo", pointSize: 2,
+    legend: {maxLines: 5, position: 'top'},
+    series: { 0: {targetAxisIndex: 0},
+              1: {targetAxisIndex: 1}},
+        vAxes: {// Adds titles to each axis.
+          0: {title: 'Coefficient)'},
+          1: {title: 'Residual'}},};
+// Build the chart and plot it          
+var regress_chart = ui.Chart.image.series({
+  imageCollection: annualRainEVI.select(['evi', 'rain']),
+  region:aoi_clip,
+  reducer: ee.Reducer.linearRegression(1, 1),
+  scale: 5000,
+  xProperty: 'year'
+}).setOptions(opt_regress);
+print(regress_chart);
+// -------------------------------------------------------------------------
+
+// CORRELATION
+// Compute a Pearson's product-moment correlation coefficient 
+// and the 2-sided p-value test for correlation = 0.
+var opt_correl = {title: "Correlation between Rainfall and EVI for Braulio Carrillo", pointSize: 2,
+    legend: {maxLines: 5, position: 'top'},
+    series: { 0: {targetAxisIndex: 0},
+              1: {targetAxisIndex: 1}},
+        vAxes: {// Adds titles to each axis.
+          0: {title: 'Correlation - R2)'},
+          1: {title: 'P-Value'}},};
+// Build the chart and plot it          
+var correl_chart = ui.Chart.image.series({
+  imageCollection: annualRainEVI.select(['evi', 'rain']),
+  region:aoi_clip,
+  reducer: ee.Reducer.pearsonsCorrelation(),
+  scale: 5000,
+  xProperty: 'year'
+}).setOptions(opt_correl);
+print(correl_chart);
+// -------------------------------------------------------------------------
+```
 
 **Data Export**
 To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`.
@@ -275,7 +322,7 @@ MacFadyen S, Zambatis N, Van Teeffelen AJA, Hui C (2018) Long-term rainfall regr
 ***
 
 **Bonus Section**
-Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 2000 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
+Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 1981 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
 ```js
 var rainMeanMY_list = years.map(function(y) {
   return months.map(function(m) {
@@ -316,7 +363,7 @@ print(chart_rainMeanMY);
 ```
 
 ![](/images/prac4_f7.png)
-**Figure 9:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019.
+**Figure 9:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 1981 to 2019.
 
 In addition, to the export options presented above and in practical 3. You could also export the results as a `rasterStack` with multiple layers representing the sum of monthly rainfall per year for Costa Rica. To do so, first create a list of band names for the `rasterStack` and apply the function `toBands()` to the ImageCollection. This will stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year and the month of summed rainfall.
 ```js
@@ -331,7 +378,7 @@ var stack_RainEVI = rainMeanMY.toBands().rename(band_names);
 print('Check Names',stack_RainEVI); // Use print() to check your results
 
 // Export a cloud-optimized GeoTIFF.
-// i.e. rasterStack with 240 layers, representing monthly rainfall each year from 2000 to 2019
+// i.e. rasterStack with 468 layers, representing monthly rainfall each year from 1981 to 2019
 Export.image.toDrive({
   image: stack_RainEVI,
   folder: 'testOTS',
