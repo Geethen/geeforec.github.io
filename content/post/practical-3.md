@@ -67,6 +67,27 @@ var s2_cloudmask = s2.map(maskS2clouds);
 
 The above code is complicated, so let's make sure we are happy with what it is doing. Let's do this by plotting a unmasked vs. masked image.
 
+```js
+// Let's take a look at what this function is doing...
+
+// Print the unmasked dataset sorting it from the most to least cloudy image
+print(s2.sort('CLOUDY_PIXEL_PERCENTAGE', false), 'S2 collection clouds');
+
+// There are two ways to plot the cloudiest image
+
+// First select the image by it's ID
+// Map.addLayer(ee.Image('COPERNICUS/S2_SR/20190618T020449_20190618T021219_T50HNH'), 
+//               {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloudy image ID');
+// Second, we can select the most cloudy image by sorting the list in descending 
+// order and selecting the first image
+Map.addLayer(s2.sort('CLOUDY_PIXEL_PERCENTAGE', false).first(), 
+              {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloudy image first');
+
+// Let's now plot the image with the cloud mask applied
+Map.addLayer(s2_cloudmask.sort('CLOUDY_PIXEL_PERCENTAGE', false).first(), 
+              {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloud masked image');
+```
+
 Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. Print out the new ImageCollection to view the new band.
 
 ```js
