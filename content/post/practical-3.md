@@ -174,7 +174,7 @@ Save your script.
 
 **Practical 3 Exercise**
 
-Repeat this practical but with the Sentinel-2 dataset and provide a new area of interest. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
+Repeat this practical but with the Sentinel-2 dataset and provide a new area of interest by deleting the existing geometry and providing your own. Play around with extending the filterDate duration, the size of your area of interest, and the scale used ui.Chart. Take note that the ImageCollection size may produce memory errors.
 
 To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
 
