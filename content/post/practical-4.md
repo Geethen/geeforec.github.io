@@ -153,19 +153,33 @@ panel.add(chart_annualPrecip)
 **Save your map online**
 Now for the fun part! We can share this map with the world by creating a GEE application. To save your map online as a GEE app, follow the steps below:
 
-1. Click the `Apps` button above Select `NEW APP`
-2. Give the App a Name
-3. Leave everything else default
-4. Click `PUBLISH` and your URL will appear - Click this to see your first online interactive map *
+1. Click the `Apps` button above 
+2. Select `NEW APP`
+3. Give the App a Name and click `PUBLISH`. Leave everything else default
+4. Your new URL will appear - Click this to see your first online interactive map *
 5. If you see a `Not ready` page, give it a few minutes and try again
 
 ![](/images/prac4_f3a_fix.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
 
-If you get an error message:
+If you get an error message, chances are you haven't accepted the terms and conditions of using GEE Apps in your Google Cloud Platform.
+
+1. Click the `Apps` button above
+2. Select `NEW APP`
+3. Give the App a Name and click `PUBLISH`
+4. When the error appears, click the `Cloud Terms of Service` link
+5. This will open the `Cloud Platform Console`
+6. Go down to `App Engine` and select `Dashboard`
+7. You'll be asked to agree to the Terms of Service, `AGREE AND CONTINUE`
+8. Close your `Cloud Platform Console` and go back to GEE and click `NEW APP` again
+9. Give the App a Name and click `PUBLISH`. Leave everything else default
+10. Your new URL will appear - Click this to see your first online interactive map
+11. If you see a `Not ready` page, give it a few minutes or refresh the page and try again
 
 ![](/images/prac4_f3b.png)
 **Figure 4:** Steps to publish interactive map online. Use URL to access.
+
+And voilà! Your first GEE App!
 
 ![](/images/prac4_f4_new.png)
 **Figure 5:** Steps to publish interactive map online. Use URL to access.
