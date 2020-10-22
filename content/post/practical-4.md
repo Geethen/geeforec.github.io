@@ -165,8 +165,12 @@ Now for the fun part! We can share this map with the world by creating a GEE app
 
 If you get an error message: 
 
+![](/images/prac4_f3b.png)
+**Figure 4:** Steps to publish interactive map online. Use URL to access.
+
 ![](/images/prac4_f4_new.png)
 **Figure 4:** Steps to publish interactive map online. Use URL to access.
+***
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
