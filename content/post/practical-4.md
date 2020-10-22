@@ -27,12 +27,12 @@ Rainfall plays a central role in a myriad of natural processes, including river 
 ***
 
 **Data import**
-The datasets we will use for this practical are all available on Google Earth Engine and can be accessed as follows:
+The datasets we will use for this practical are all available on Google Earth Engine and can be accessed as follows (You can convert these to an import record, using `convert` from the pop-up message):
 ```js
-var costaRica = ee.FeatureCollection('USDOS/LSIB/2017');
-var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons');
-var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
-var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1");
+var Countries = ee.FeatureCollection('USDOS/LSIB/2017');
+var WDPA = ee.FeatureCollection('WCMC/WDPA/current/polygons');
+var CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
+var MOD13Q1 = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
 The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second, [WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset (Funk et al 2015) and the last, [MOD13Q1](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depicting vegetation 'greenness' per 250m pixel.
 ***
@@ -47,25 +47,27 @@ var months = ee.List.sequence(1, 12);
 ```
 Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll build.
 ```js
-var costaRica = ee.FeatureCollection('USDOS/LSIB/2017')
-.filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
-var costaRica_geo = costaRica.geometry();
-
-var braulio = ee.FeatureCollection('WCMC/WDPA/current/polygons')
-.filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
-var braulio_geo = braulio.geometry();
+// Country boundaries filtered to Costa Rica
+var costaRica = Countries.filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
+// WDPA boundaries filtered to 'Braulio Carrillo' National Park in Costa Rica
+var braulio = WDPA.filter(ee.Filter.stringContains('ORIG_NAME', 'Braulio Carrillo'));
+    
+// Convert features to geometry objects
+var costaRica_geo = costaRica.geometry(); 
+var braulio_geo = braulio.geometry(); 
 ```
 Now filter the CHIRPS ImageCollection for rainfall (i.e. `'precipitation'`) and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
 ```js
-var rainAll = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD")
-.select('precipitation')
-.filterDate(startDate, endDate)
-.filterBounds(costaRica_geo);
+// Long-term rainfall data from CHIRPS
+var rainAll = CHIRPS.select('precipitation')
+    .filterDate(startDate, endDate)
+    .filterBounds(costaRica_geo);
+// print('Çheck rainAll', rainAll);
 
-var eviAll = ee.ImageCollection("MODIS/006/MOD13Q1")
-.select('EVI')
-.filterDate(startDate, endDate)
-.filterBounds(costaRica_geo);
+// Long-term EVI data from MODIS
+var eviAll = MOD13Q1.select('EVI')
+    .filterDate(startDate, endDate)
+    .filterBounds(costaRica_geo);
 ```
 ***
 
@@ -115,17 +117,18 @@ Map.add(title);
 Now chart annual rainfall results but summarised for Braulio Carrillo National Park using a line chart. To do this, first define the chart parameters (e.g. title and axis labels) and then create the line chart.
 ```js
 var opt_chart_annualPrecip = {
-  title: 'Annual Rainfall: Braulio Carrillo',
-  pointSize: 3,
+  title: 'Annual Rainfall: Braulio Carrillo National Park',
+  pointSize: 2,
   hAxis: {title: 'Year'},
   vAxis: {title: 'Rainfall (mm)'},
 };
 
 var chart_annualPrecip = ui.Chart.image.series({
-  imageCollection: rainYr.select('rain_yr'),
-  region:myBraulio_geo,
+  imageCollection: rainYr,
+  region:aoi_clip,
   reducer: ee.Reducer.mean(),
-  scale: 5000
+  scale: 5000,
+  xProperty: 'year'
 }).setOptions(opt_chart_annualPrecip);
 // print(chart_annualPrecip);
 ```
@@ -182,24 +185,23 @@ If you get an error message, chances are you haven't accepted the terms and cond
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
-Taking things even further, we could also combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019, to see what the relationship between the two might be (what do you think we'll see?). 
+Taking things even further, we could also combine the calculation of annual max rainfall with annual maximum EVI for Costa Rica for the same period, 2000 to 2019, to see whether there's a relationship between the two. What do you think we'll see? 
 ```js
+// Calculate annual mean for every year for both Rainfall and EVI imageCollections
 var annualRainEVI_list =  years.map(function(y){
   var evi_year = eviAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-  .max().multiply(0.0001).rename('evi');
-  var img = rainAll.filter(ee.Filter.calendarRange(y, y, 'year'))
-  .max().rename('rain');
-  var time = ee.Image(ee.Date.fromYMD(y,1,1).millis()).divide(1e18).toFloat(); //  number of milliseconds since 1970-01-01T00:00:00Z
-  return img.addBands([evi_year, time]).set('year', y).set('month', 1)
-  .set('system:time_start', ee.Date.fromYMD(y,1,1));
+    .max().multiply(0.0001).rename('evi'); // Need to scale by constant
+  var rain_year = rainAll.filter(ee.Filter.calendarRange(y, y, 'year'))
+    .max().rename('rain');
+  return rain_year.addBands(evi_year).set('year', ee.Date.fromYMD(y,1,1));
 });
 ```
-Then convert the list that is returned, back to an ImageCollection, including a `flatten()` command as follows:
+Remember to convert the list that is returned, back to an ImageCollection, including a `flatten()` command as follows:
 ```js
-// // Convert the image List to an ImageCollection.
+// Convert the image List to an ImageCollection.
 var annualRainEVI = ee.ImageCollection.fromImages(annualRainEVI_list.flatten());
 ```
-Now plot both rainfall and EVI in a single chart. What do you think the relationship between these two variables will be?
+Now plot both rainfall and EVI in a single chart. 
 To create a comparative line chart of rainfall and EVI summaries for Braulio Carrillo, first define the chart parameters and then create the line chart with two y-axes as follows:
 ```js
 // Display a comparative line chart of rainfall and EVI for Braulio Carrillo 
@@ -232,61 +234,36 @@ To export the data shown in the created charts, you can simply `maximise` the ch
 ![](/images/prac4_f5.png)
 **Figure 7:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
-Alternatively, you may script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
+You can also script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
 ```js
-var csv_annualPrecip = annualPrecip.map(function(image){
-var year = image.get('year');
-var month = image.get('month');
-var mean = image.reduceRegion({
-reducer: ee.Reducer.mean(),
-geometry: myBraulio_geo,
-scale: 5000
-});  
-return ee.Feature(null, {'mean': mean.get('rain'),
-'year': year})
+var csv_annualPrecip = rainYr.map(function(image){
+  var year = image.get('year');
+  var mean = image.reduceRegion({
+    reducer: ee.Reducer.mean(),
+    geometry: aoi_clip,
+    scale: 5000
+  });  
+  return ee.Feature(null, {'mean': mean.get('rain_yr'),'year': year})
 });
 
+// Export a .csv table of year and mean rainfall
 Export.table.toDrive({
-collection: csv_annualPrecip,
-description: 'annualRain',
-folder: 'testOTS',
-fileFormat: 'CSV'
+  collection: csv_annualPrecip,
+  description: 'annualRain',
+  folder: 'testOTS',
+  fileFormat: 'CSV'
 });
 ```
 
 ![](/images/prac4_f8_fix.png)
 **Figure 8:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
-In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Costa Rica. We will first create a list of band names for the rasterStack output and apply the function `toBands()` to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
-```js
-var band_names = annualPrecip.map(function(image) {
-return ee.Feature(null, {'date': ee.Date(image.get('date'))
-.format('YYYY_MM')})})
-.aggregate_array('date')
-print('Band Names', band_names);
-
-var stack_RainEVI = annualPrecip.toBands().rename(band_names);
-
-// Export a cloud-optimized GeoTIFF.
-// i.e. rasterStack with 20 layers, representing annual rain from 2000 to 2019
-Export.image.toDrive({
-image: stack_RainEVI,
-folder: 'testOTS',
-description: 'Rainfall_Sums',
-scale: 5000,
-region: myBraulio_geo,
-fileFormat: 'GeoTIFF',
-formatOptions: {
-cloudOptimized: true
-}
-});
-```
-The last step, as always, save the script.
+The last step, as always, is to save the script.
 ***
 
 **Practical 4 Exercise**
 Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
-To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com).
+To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script. 
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
 ***
@@ -303,15 +280,68 @@ Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo 
 var rainMeanMY_list = years.map(function(y) {
   return months.map(function(m) {
   return rainAll
-    .filter(ee.Filter.calendarRange(y,y, 'year')) // Filter images by date range 
-    .filter(ee.Filter.calendarRange(m,m, 'month')) // Filter images by date range
-    .reduce(ee.Reducer.sum()).rename('rain_mnth') // Reduce the resulting image collection by mean
+    .filter(ee.Filter.calendarRange(y,y, 'year')) // Filter images by year
+    .filter(ee.Filter.calendarRange(m,m, 'month')) // Filter images by month
+    .reduce(ee.Reducer.sum()).rename('rain_mnth') // Reduce the resulting image collection by the sum
     .set('yrmnth', ee.Date.fromYMD(y, m, 1)) // .set('year',ee.Date(ee.String(y)).format('YYYY'))
-    .set('name','rainfall');
+    .set('name','rainfall'); // Name the new property
 });
 });
+```
+Remember to convert the list that is returned, back to an ImageCollection and include a `flatten()` command as follows:
+```js
+// Convert the image List to an ImageCollection.
+var rainMeanMY = ee.ImageCollection.fromImages(rainMeanMY_list.flatten());
+```
+Then make your line chart, the same way you did for the annual rainfall above.
+```js
+// Display a line chart of the annual, monthly rainfall for Braulio Carrillo
+// First setup the chart properties 
+var opt_rainMeanMY = {
+  title: 'Annual Monthly Mean Rainfall for Braulio Carrillo',
+  hAxis: {title: 'Date'},
+  vAxis: {title: 'Rainfall (mm)'},
+};
+// And then the actual chart
+var chart_rainMeanMY = ui.Chart.image.seriesByRegion({
+  imageCollection: rainMeanMY, 
+  regions: aoi_clip,
+  reducer: ee.Reducer.mean(),
+  scale: 5000,
+  xProperty: 'yrmnth',
+  seriesProperty: 'name'
+}).setOptions(opt_rainMeanMY)
+  .setChartType('LineChart');//'ColumnChart
+print(chart_rainMeanMY);
 ```
 
 ![](/images/prac4_f7.png)
 **Figure 9:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019.
+
+In addition, to the export options presented above and in practical 3. You could also export the results as a `rasterStack` with multiple layers representing the sum of monthly rainfall per year for Costa Rica. To do so, first create a list of band names for the `rasterStack` and apply the function `toBands()` to the ImageCollection. This will stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year and the month of summed rainfall.
+```js
+// Create list of band names for rasterStack output
+var band_names = rainMeanMY.map(function(image) {
+      return ee.Feature(null, {'yrmnth': ee.Date(image.get('yrmnth'))
+      .format('YYYY_MM')})})
+      .aggregate_array('yrmnth')
+
+// Apply the function toBands() on the image collection to stack all bands into one image
+var stack_RainEVI = rainMeanMY.toBands().rename(band_names);
+print('Check Names',stack_RainEVI); // Use print() to check your results
+
+// Export a cloud-optimized GeoTIFF.
+// i.e. rasterStack with 240 layers, representing monthly rainfall each year from 2000 to 2019
+Export.image.toDrive({
+  image: stack_RainEVI,
+  folder: 'testOTS',
+  description: 'Rainfall_Sums',
+  scale: 5000,
+  region: aoi_clip,
+  fileFormat: 'GeoTIFF',
+  formatOptions: {
+    cloudOptimized: true
+  }
+});
+```
 ***
