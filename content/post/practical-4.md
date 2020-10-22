@@ -2,7 +2,7 @@
 authors = []
 date = 2020-10-22T22:00:00Z
 excerpt = "Long-term patterns of rainfall in and around Braulio Carrillo National Park, Costa Rica"
-hero = "/images/xprac4_0.png"
+hero = "/images/prac4_f0.png"
 timeToRead = 15
 title = "Practical 4"
 
@@ -213,7 +213,7 @@ var rain_ndvi_chart = ui.Chart.image.series({
 print(rain_ndvi_chart);
 ```
 
-![](/images/prac4_f4.png)
+
 **Figure 4:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
 
 ***
