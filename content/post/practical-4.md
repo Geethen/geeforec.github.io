@@ -148,7 +148,7 @@ To save this map online as a GEE app, follow the steps below:
 4. Click `PUBLISH` URL will appear - Click this to see your first online interactive map
 5. If you see a `Not ready` page, give it a few minutes and try again
 
-![](/images/prac4_f3a.png)
+![](/images/prac4_f3a_fix.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
 ***
 
@@ -187,9 +187,8 @@ var rain_ndvi_chart = ui.Chart.image.series({
 }).setOptions(opt_annualRainEVI);
 print(rain_ndvi_chart);
 ```
-![]()
+![](/images/prac4_f4.png)
 **Figure 4:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
-
 ***
 
 **Data Export**
@@ -199,7 +198,6 @@ To export the data shown in the created charts, you can simply `maximise` the ch
 **Figure 5:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 Alternatively, you may script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
-
 ```js
 var csv_annualPrecip = annualPrecip.map(function(image){
 var year = image.get('year');
@@ -225,7 +223,6 @@ fileFormat: 'CSV'
 **Figure 6:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Costa Rica. We will first create a list of band names for the rasterStack output and apply the function `toBands()` to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
-
 ```js
 var band_names = annualPrecip.map(function(image) {
 return ee.Feature(null, {'date': ee.Date(image.get('date'))
@@ -249,9 +246,7 @@ cloudOptimized: true
 }
 });
 ```
-
 The last step, as always, save the script.
-
 ***
 
 **Practical 4 Exercise**
@@ -259,19 +254,16 @@ Repeat this practical but use NDVI instead of EVI and Germany instead of Costa R
 To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com).
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
-
 ***
 
 **References**
 Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, Husak G, Rowland J, Harrison L, Hoell A, Michaelsen J (2015) The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data 2, 150066
 
 MacFadyen S, Zambatis N, Van Teeffelen AJA, Hui C (2018) Long-term rainfall regression surfaces for the Kruger National Park, South Africa: A spatio-temporal review of patterns from 1981-2015. International Journal of Climatology 38(5): 2506-2519
-
 ***
 
 **Bonus Section**
 Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 2000 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
-
 ```js
 var rainMeanMY_list = years.map(function(y) {
   return months.map(function(m) {
@@ -287,5 +279,4 @@ var rainMeanMY_list = years.map(function(y) {
 
 ![](/images/prac4_f7.png)
 **Figure 7:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019..
-
 ***
