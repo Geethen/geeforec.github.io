@@ -163,7 +163,7 @@ A next step, which allows flexibility in analysis or visualizations in different
 ```js
 Export.image.toDrive({
   image: NDVI_aug,
-  description: 'NDVI Aug example',
+  description: 'NDVI_Aug_example',
   scale: 100 // this can go down to 10, to match S2 original resolution
 });
 ```
