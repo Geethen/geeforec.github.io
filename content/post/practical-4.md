@@ -230,7 +230,7 @@ print(rain_ndvi_chart);
 **Figure 6:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
 ***
 
-We could also run a linear regression or correlation between the two variables directly as follows:
+We could also just directly run a linear regression or correlation between the two variables as follows:
 ```js
 // REGRESSION
 // Compute a linear least squares regression with 1 independent and 1 dependent variable.
@@ -251,8 +251,9 @@ var regress_chart = ui.Chart.image.series({
   xProperty: 'year'
 }).setOptions(opt_regress);
 print(regress_chart);
-// -------------------------------------------------------------------------
+```
 
+```js
 // CORRELATION
 // Compute a Pearson's product-moment correlation coefficient 
 // and the 2-sided p-value test for correlation = 0.
@@ -272,8 +273,8 @@ var correl_chart = ui.Chart.image.series({
   xProperty: 'year'
 }).setOptions(opt_correl);
 print(correl_chart);
-// -------------------------------------------------------------------------
 ```
+***
 
 **Data Export**
 To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`.
@@ -309,8 +310,7 @@ The last step, as always, is to save the script.
 ***
 
 **Practical 4 Exercise**
-Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection.
-To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script. 
+Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection. To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script. 
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
 ***
