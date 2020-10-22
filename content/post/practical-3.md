@@ -22,34 +22,50 @@ By the end of this practical you should be able to:
 
 **Importing data**
 
-We start by creating a polygon. This can be done using the polygon tool or by specifying the coordinates for each point of the polygon as shown below. We then filter the ImageCollection by time and space.
+We start by creating a polygon. This can be done using the polygon tool. 
+
+We then filter the ImageCollection by time and space. Lastly, we filter it by the amount of cloud cover to remove excessively cloudy scenes.
 
 ```js
-var geometry = ee.Geometry.Polygon([
-[116.44967929649718,-33.98379973082278],[117.14593784141906,-33.98379973082278],
-[117.14593784141906,-33.62548866260113],[116.44967929649718,-33.62548866260113],
-[116.44967929649718,-33.98379973082278]]);
-
-var s2 = ee.ImageCollection('COPERNICUS/S2')
+// Create image collection of S-2 imagery for the full year of 2019
+var s2 = ee.ImageCollection('COPERNICUS/S2_SR')
+//filter start and end date
 .filterDate('2019-01-01', '2019-12-31')
-.filterBounds(geometry);
+//filter according to drawn boundary
+.filterBounds(geometry)
+// pre-filter to get less cloudy images (only keeps images with less than 20% cloudy pixels)
+.filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE',20))
+;
 ```
 
 **Write and map a function**
 
-We will now write our first function. This function creates a mask cloud based on the metadata within each image of the collection. Look up the band information in the Sentinel-2 metadata. We create a variable name for the function as maskcloud. We then apply a set of functions for each image in the ImageCollection. Make sure the new variables within your function are consistent. First, we clip the image by our area of interest. Then we select the cloud mask band and lastly, return an image that has the mask applied to it.
+We will now use our first function. This function creates a cloud mask based on the metadata within each image of the collection. Look up the band information in the Sentinel-2 metadata. We create a variable name for the function called maskS2clouds. We then apply a set of functions for each image in the ImageCollection. Make sure the new variables within your function are consistent. This is the default cloud masking process provided by GEE for Sentinel 2 images, though this is frequently updated when better data becomes available. See: [https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR "https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR")
 
 We then use the map() function to apply a built-in algorithm or our own function over the Sentinel-2 collection.
 
 ```js
-var maskcloud = function(image) {
-var clipped = image.clip(geometry);
-var QA60 = clipped.select(['QA60']); // select the cloud mask band
-return clipped.updateMask(QA60.lt(1)); // mask image at all pixels that are not zero
+// Function to mask cloud from built-in quality band
+// information on cloud
+var maskS2clouds = function(image) {
+  var qa = image.select('QA60');
+
+  // Bits 10 and 11 are clouds and cirrus, respectively.
+  var cloudBitMask = 1 << 10;
+  var cirrusBitMask = 1 << 11;
+
+  // Both flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudBitMask).eq(0)
+      .and(qa.bitwiseAnd(cirrusBitMask).eq(0));
+
+  return image.updateMask(mask);
 };
 
-var s2_cloudmask = s2.map(maskcloud); 
+// run the mask cloud function over each image in the s2 collection
+var s2_cloudmask = s2.map(maskS2clouds); 
 ```
+
+The above code is complicated, so let's make sure we are happy with what it is doing. Let's do this by plotting a unmasked vs. masked image.
 
 Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. Print out the new ImageCollection to view the new band.
 
