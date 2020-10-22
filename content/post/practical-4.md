@@ -90,8 +90,33 @@ var rainAnnual = rainYr.mean().clip(costaRica);
 ```
 ***
 
+**Visualisation**
+Now let's plot these results on a map. First define the various map elements i.e. the `title` and `symbology` for the legend as follows:
+```js
+var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
+  stretch: 'horizontal',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: '20px'});
+
+var rainYvis = {
+  min: 2100, max: 3800, 
+  palette: 'ffffff, 67d9f1, 1036cb'};
+```
+Next, we centre the map to Costa Rica - In this way all other layers will now align with this parent map. Now add the long-term mean annual rainfall for Costa Rica and the Braulio Carrillo boundary. Lastly add the defined title.
+```js
+Map.centerObject(costaRica, 8);
+Map.addLayer(rainAnnual, rainYvis, 'Long-term Annual Rainfall'); 
+Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
+Map.add(title);
+```
+
+![](/images/prac4_f2_fix.png)
+**Figure 1:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
+***
+
 **Charting**
-Chart the annual rainfall results, summarised for Braulio Carrillo using a line chart as follows. First define the chart parameters (e.g. title and axis labels) and then create the line chart, using `print()` to see the chart in your GEE console.
+Now let's chart annual rainfall results but summarised for Braulio Carrillo National Park using a line chart. First define the chart parameters (e.g. title and axis labels) and then create the line chart. 
 ```js
 var opt_chart_annualPrecip = {
   title: 'Annual Rainfall: Braulio Carrillo',
@@ -106,40 +131,28 @@ var chart_annualPrecip = ui.Chart.image.series({
   reducer: ee.Reducer.mean(),
   scale: 5000
 }).setOptions(opt_chart_annualPrecip);
-print(chart_annualPrecip);
+// print(chart_annualPrecip);
+```
+We could use `print()` to see the chart in the GEE console but for this practical we'll add the chart to our map  layout instead. To do this, first make a panel to hold the chart in the map, then add the empty panel to the map and fill it with your chart:
+```js
+// Create a panel to hold the chart in the map
+var panel = ui.Panel();
+panel.style().set({
+  width: '350px',
+  position: 'bottom-left'
+});
+// Add empty panel to map
+Map.add(panel);
+// Add chart to panel
+panel.add(chart_annualPrecip)
 ```
 
 ![](/images/prac4_f1.png)
-**Figure 1:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
-***
-
-**Visualisation**
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create a GEE application to achieve this. Here the first step is to define the various map elements to visualise results. This includes; defining a map title and legend parameters.
-```js
-var title = ui.Label('Costa Rica: Annual Rainfall 2000 to 2018', {
-  stretch: 'horizontal',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  fontSize: '20px'});
-
-var rainYvis = {
-  min: 2100, max: 3800, 
-  palette: 'ffffff, 67d9f1, 1036cb'};
-```
-Next, we centre the map to Costa Rica. All other layers will align with this parent map and add the data of interest. Specifically, we add the long-term mean rainfall raster and the Braulio Carrillo boundary. To conclude, we will add a zoom control button and the previously defined title.
-```js
-Map.centerObject(costaRica, 8);
-Map.addLayer(rainAnnual, rainYvis, 'Long-term Annual Rainfall'); 
-Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);  
-Map.setControlVisibility({zoomControl: true});
-Map.add(title);
-```
-
-![](/images/prac4_f2_fix.png)
-**Figure 2:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
+**Figure 2:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
 ***
 
 **Save map online**
+In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create a GEE application to achieve this. 
 To save this map online as a GEE app, follow the steps below:
 
 1. Click the `Apps` button above Select `NEW APP`
