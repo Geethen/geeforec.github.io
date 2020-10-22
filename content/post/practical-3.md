@@ -83,6 +83,10 @@ print(s2.sort('CLOUDY_PIXEL_PERCENTAGE', false), 'S2 collection clouds');
 Map.addLayer(s2.sort('CLOUDY_PIXEL_PERCENTAGE', false).first(), 
               {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloudy image first');
 
+// Plot the cloud mask layer QA60
+Map.addLayer(s2_cloudmask.sort('CLOUDY_PIXEL_PERCENTAGE', false).first().select('QA60'), 
+              {min:0, max: 1}, 'Cloud mask', false);
+
 // Let's now plot the image with the cloud mask applied
 Map.addLayer(s2_cloudmask.sort('CLOUDY_PIXEL_PERCENTAGE', false).first(), 
               {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloud masked image');
