@@ -151,18 +151,20 @@ panel.add(chart_annualPrecip)
 **Figure 2:** Line chart of annual rainfall in Braulio Carrillo National Park from 2000 to 2019.
 ***
 
-**Save map online**
-In addition to creating charts, you may want to create a sharable image visualisation that is viewable on any electronic device. We can create a GEE application to achieve this. 
-To save this map online as a GEE app, follow the steps below:
+**Save your map online**
+Now for the fun part! We can share this map with the world by creating a GEE application. To save your map online as a GEE app, follow the steps below:
 
 1. Click the `Apps` button above Select `NEW APP`
 2. Give the App a Name
 3. Leave everything else default
-4. Click `PUBLISH` URL will appear - Click this to see your first online interactive map
+4. Click `PUBLISH` and your URL will appear - Click this to see your first online interactive map *
 5. If you see a `Not ready` page, give it a few minutes and try again
 
 ![](/images/prac4_f3a_fix.png)
 **Figure 3:** Steps to publish interactive map online. Use URL to access.
+
+If you get an error message: 
+
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
