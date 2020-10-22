@@ -111,7 +111,7 @@ Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);
 Map.add(title);
 ```
 
-![](/images/prac4_f2_fix.png)
+![](/images/prac4_f1_new.png)
 **Figure 1:** Map of long-term annual rainfall in Costa Rica from 2000 to 2019.
 ***
 
@@ -165,6 +165,8 @@ Now for the fun part! We can share this map with the world by creating a GEE app
 
 If you get an error message: 
 
+![](/images/prac4_f4_new.png)
+**Figure 4:** Steps to publish interactive map online. Use URL to access.
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
@@ -203,14 +205,14 @@ var rain_ndvi_chart = ui.Chart.image.series({
 print(rain_ndvi_chart);
 ```
 ![](/images/prac4_f4.png)
-**Figure 4:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
+**Figure 5:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
 ***
 
 **Data Export**
 To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`.
 
 ![](/images/prac4_f5.png)
-**Figure 5:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+**Figure 6:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 Alternatively, you may script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
 ```js
@@ -235,7 +237,7 @@ fileFormat: 'CSV'
 ```
 
 ![](/images/prac4_f6.png)
-**Figure 6:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
+**Figure 7:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 In addition, to the export options presented above and in practical 3. You may also export the results as a rasterStack with multiple layers representing the sum of annual rainfall for Costa Rica. We will first create a list of band names for the rasterStack output and apply the function `toBands()` to the image collection to stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year of the annual sum.
 ```js
@@ -293,5 +295,5 @@ var rainMeanMY_list = years.map(function(y) {
 ```
 
 ![](/images/prac4_f7.png)
-**Figure 7:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019.
+**Figure 8:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 2000 to 2019.
 ***
