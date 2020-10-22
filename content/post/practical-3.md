@@ -22,7 +22,7 @@ By the end of this practical you should be able to:
 
 **Importing data**
 
-We start by creating a polygon. This can be done using the polygon tool. 
+We start by creating a polygon. This can be done using the polygon tool.
 
 We then filter the ImageCollection by time and space. Lastly, we filter it by the amount of cloud cover to remove excessively cloudy scenes.
 
@@ -88,11 +88,12 @@ Map.addLayer(s2_cloudmask.sort('CLOUDY_PIXEL_PERCENTAGE', false).first(),
               {min:0, max:3000, bands:['B4','B3','B2']}, 'Cloud masked image');
 ```
 
-Next we will make a custom function to add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. Print out the new ImageCollection to view the new band.
+Next we will make a custom function to clip the image to our AOI and add a band to the image containing NDVI values. We will use the normalizedDifference() function and apply it over the near infra-red and red bands. Lastly, we will rename the new band to ‘NDVI’. Note that the function is now nested inside the map function. Print out the new ImageCollection to view the new band.
 
 ```js
 var s2_ndvi = s2_cloudmask.map(function(image) {
-return image.addBands(image.normalizedDifference(['B8', 'B4']).rename('NDVI'))
+    var s2_clip = image.clip(geometry)
+    return s2_clip.addBands(s2_clip.normalizedDifference(['B8', 'B4']).rename('NDVI'))
 });
 
 print(s2_ndvi, 's2 with NDVI');
