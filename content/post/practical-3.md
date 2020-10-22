@@ -9,7 +9,7 @@ title = "Practical 3"
 +++
 **Practical 3: NDVI time-series over a single region**
 
-Access the completed practical script [here](https://code.earthengine.google.com/d63f4ee617f4dec15d5142916f6c09ef)
+Access the completed practical script [here](https://code.earthengine.google.com/044349c8b2d9816b7eafff0f79742298)
 
 **Learning Objectives**
 
