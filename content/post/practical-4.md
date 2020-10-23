@@ -202,7 +202,7 @@ If you get an error message, chances are you haven't accepted the terms and cond
 11. If you see a `Not ready` page, give it a few minutes or refresh the page and try again
 
 ![](/images/prac4_f3b.png)
-**Figure 4:** Steps to publish interactive map online. Use URL to access.
+**Figure 4:** Additional steps to publish interactive map online. Use URL to access.
 
 **And voilà! Your first GEE App!**
 
