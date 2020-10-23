@@ -16,7 +16,7 @@ By the end of this practical you should be able to:
 
 1. Access long-term rainfall data
 2. Summarise temporal data by region
-3. Generate time-series plots
+3. Display results on a map and in time-series plots
 4. Make an interactive map (GEE App)
 5. Compare rainfall and vegetation 'greenness" (i.e. rainfall as a driver of ecosystem processes like vegetation dynamics)
 6. Output data (csv, rasterStack) for analysis outside of GEE
