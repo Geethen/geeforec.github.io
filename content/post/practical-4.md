@@ -9,7 +9,7 @@ title = "Practical 4"
 +++
 **Practical 4: Long-term patterns of rainfall in and around Braulio Carrillo National Park in Costa Rica**
 
-Access the completed practical script [here](https://code.earthengine.google.com/9249a7054607e64747b86d5c3cf0c8c9?noload=true)
+Access the completed practical script [here](https://code.earthengine.google.com/3dd552f8746a7617bac7a8b197ee3eb6?noload=true)
 
 **Learning Objectives**
 By the end of this practical you should be able to:
