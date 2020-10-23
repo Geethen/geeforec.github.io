@@ -129,7 +129,7 @@ Map.addLayer(braulio,{color: 'grey'}, 'Braulio Carrillo',true, 0.8);
 Map.add(title);
 ```
 
-![](/images/prac4_f1_new.png)
+![](/images/prac4_f1_final.png)
 **Figure 1:** Map of long-term annual rainfall in Costa Rica from 1981 to 2019.
 
 ***
@@ -170,7 +170,7 @@ Map.add(panel);
 panel.add(chart_annualPrecip)
 ```
 
-![](/images/prac4_f1.png)
+![](/images/prac4_f2_new.png)
 **Figure 2:** Line chart of annual rainfall in Braulio Carrillo National Park from 1981 to 2019.
 
 ***
@@ -206,9 +206,8 @@ If you get an error message, chances are you haven't accepted the terms and cond
 
 **And voilà! Your first GEE App!**
 
-![](/images/prac4_f4_new.png)
-**Figure 5:** Steps to publish interactive map online. Use URL to access.
-
+![](/images/prac4_f5_final.png)
+**Figure 5:** Your first online GEE App / interactive map interface.
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
@@ -257,7 +256,7 @@ var rain_ndvi_chart = ui.Chart.image.series({
 print(rain_ndvi_chart);
 ```
 
-![](/images/prac4_f4.png)
+![](/images/prac4_f6_final.png)
 **Figure 6:** Dual axis chart of annual maximum rainfall versus vegetation 'greenness' or vigour using a MODIS Enhanced Vegetation Index (EVI) in Braulio Carrillo National Park from 2000 to 2019.
 
 ***
@@ -285,6 +284,8 @@ var regress_chart = ui.Chart.image.series({
 }).setOptions(opt_regress);
 print(regress_chart);
 ```
+![](/images/prac4_new_f7.png)
+**Figure 7:** Results of Pearson's product-moment correlation coefficient and the 2-sided p-value test for correlation = 0, between rainfall and EVI in Braulio Carrillo National Park from 2000 to 2019.
 
 ```js
 // CORRELATION
@@ -307,17 +308,17 @@ var correl_chart = ui.Chart.image.series({
 }).setOptions(opt_correl);
 print(correl_chart);
 ```
-
+![](/images/prac4_new_f8.png)
+**Figure 8:** Results of a linear least squares regression with rainfall as the independent variable and EVI as the dependent variable.
 ***
 
 **Data Export**
 To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`.
 
 ![](/images/prac4_f5.png)
-**Figure 7:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+**Figure 9:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 You can also script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
-
 ```js
 var csv_annualPrecip = rainYr.map(function(image){
   var year = image.get('year');
@@ -339,29 +340,25 @@ Export.table.toDrive({
 ```
 
 ![](/images/prac4_f8_fix.png)
-**Figure 8:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
+**Figure 10:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 The last step, as always, is to save the script.
-
 ***
 
 **Practical 4 Exercise**
 Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection. To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script.
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
-
 ***
 
 **References**
 Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, Husak G, Rowland J, Harrison L, Hoell A, Michaelsen J (2015) The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data 2, 150066
 
 MacFadyen S, Zambatis N, Van Teeffelen AJA, Hui C (2018) Long-term rainfall regression surfaces for the Kruger National Park, South Africa: A spatio-temporal review of patterns from 1981-2015. International Journal of Climatology 38(5): 2506-2519
-
 ***
 
 **Bonus Section**
 Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 1981 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
-
 ```js
 var rainMeanMY_list = years.map(function(y) {
   return months.map(function(m) {
@@ -376,14 +373,12 @@ var rainMeanMY_list = years.map(function(y) {
 ```
 
 Remember to convert the list that is returned, back to an ImageCollection and include a `flatten()` command as follows:
-
 ```js
 // Convert the image List to an ImageCollection.
 var rainMeanMY = ee.ImageCollection.fromImages(rainMeanMY_list.flatten());
 ```
 
 Then make your line chart, the same way you did for the annual rainfall above.
-
 ```js
 // Display a line chart of the annual, monthly rainfall for Braulio Carrillo
 // First setup the chart properties 
@@ -406,7 +401,7 @@ print(chart_rainMeanMY);
 ```
 
 ![](/images/prac4_f7.png)
-**Figure 9:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 1981 to 2019.
+**Figure 11:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 1981 to 2019.
 
 In addition, to the export options presented above and in practical 3. You could also export the results as a `rasterStack` with multiple layers representing the sum of monthly rainfall per year for Costa Rica. To do so, first create a list of band names for the `rasterStack` and apply the function `toBands()` to the ImageCollection. This will stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year and the month of summed rainfall.
 
@@ -435,5 +430,4 @@ Export.image.toDrive({
   }
 });
 ```
-
 ***
