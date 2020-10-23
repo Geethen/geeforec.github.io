@@ -20,31 +20,25 @@ By the end of this practical you should be able to:
 4. Make an interactive map (GEE App)
 5. Output data (csv, rasterStack) for analysis outside of GEE
 6. Compare rainfall and vegetation 'greenness" (i.e. rainfall as a driver of ecosystem processes like vegetation dynamics)
-
 ***
 
 **Introduction**
 Rainfall plays a central role in a myriad of natural processes, including river health, the transportation of nutrients, soil moisture, vegetation dynamics, fire regimes, animal movement and distribution patterns and landscape heterogeneity. Within protected areas these processes function together to safeguard ecosystem integrity. In the face of current climate change predictions, the spatio-temporal patterns of rainfall is an increasingly important component to include in any ecological study (MacFadyen et al 2018). Here we explore patterns of monthly rainfall across Costa Rica and the Braulio Carrillo National Park from 2000 to 2019 (20 years). We'll summarise monthly and annual rainfall patterns using line charts and examine the long-term spatial patterns of rainfall using an interactive map. Lastly, we'll take a look at how the temporal patterns of annual rainfall compares to those of vegetation vigour or 'greenness', highlighting its importance as a bottom-up ecosystem driver.
-
 ***
 
 **Data import**
 The datasets we will use for this practical are all available on Google Earth Engine and can be accessed as follows (You can convert these to an import record, using `convert` from the pop-up message):
-
 ```js
 var Countries = ee.FeatureCollection('USDOS/LSIB/2017');
 var WDPA = ee.FeatureCollection('WCMC/WDPA/current/polygons');
 var CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var MOD13Q1 = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
-
 The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second, [WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset (Funk et al 2015) and the last, [MOD13Q1](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depicting vegetation 'greenness' per 250m pixel.
-
 ***
 
 **Filtering data**
 First define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
-
 ```js
 var startDate0 = ee.Date.fromYMD(1981,1,1);
 var startDate = ee.Date.fromYMD(2000,1,1);
@@ -55,7 +49,6 @@ var months = ee.List.sequence(1, 12);
 ```
 
 Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll build.
-
 ```js
 // Country boundaries filtered to Costa Rica
 var costaRica = Countries.filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
@@ -68,7 +61,6 @@ var braulio_geo = braulio.geometry();
 ```
 
 Now filter the CHIRPS ImageCollection for rainfall (i.e. `'precipitation'`) and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
-
 ```js
 // Long-term rainfall data from CHIRPS
 var rainAll = CHIRPS.select('precipitation')
@@ -81,7 +73,6 @@ var eviAll = MOD13Q1.select('EVI')
     .filterDate(startDate, endDate)
     .filterBounds(costaRica_geo);
 ```
-
 ***
 
 **Processing**
