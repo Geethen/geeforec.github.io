@@ -18,27 +18,33 @@ By the end of this practical you should be able to:
 2. Summarise temporal data by region
 3. Generate time-series plots
 4. Make an interactive map (GEE App)
-5. Output data (csv, rasterStack) for analysis outside of GEE
-6. Compare rainfall and vegetation 'greenness" (i.e. rainfall as a driver of ecosystem processes like vegetation dynamics)
+5. Compare rainfall and vegetation 'greenness" (i.e. rainfall as a driver of ecosystem processes like vegetation dynamics)
+6. Output data (csv, rasterStack) for analysis outside of GEE
+
 ***
 
 **Introduction**
 Rainfall plays a central role in a myriad of natural processes, including river health, the transportation of nutrients, soil moisture, vegetation dynamics, fire regimes, animal movement and distribution patterns and landscape heterogeneity. Within protected areas these processes function together to safeguard ecosystem integrity. In the face of current climate change predictions, the spatio-temporal patterns of rainfall is an increasingly important component to include in any ecological study (MacFadyen et al 2018). Here we explore patterns of monthly rainfall across Costa Rica and the Braulio Carrillo National Park from 1981 to 2019 (39 years). We'll summarise monthly and annual rainfall patterns using line charts and examine the long-term spatial patterns of rainfall using an interactive map. Lastly, we'll take a look at how the temporal patterns of annual rainfall compares to those of vegetation vigour or 'greenness', highlighting its importance as a bottom-up ecosystem driver.
+
 ***
 
 **Data import**
 The datasets we will use for this practical are all available on Google Earth Engine and can be accessed as follows (You can convert these to an import record, using `convert` from the pop-up message):
+
 ```js
 var Countries = ee.FeatureCollection('USDOS/LSIB/2017');
 var WDPA = ee.FeatureCollection('WCMC/WDPA/current/polygons');
 var CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD");
 var MOD13Q1 = ee.ImageCollection("MODIS/006/MOD13Q1");
 ```
+
 The first dataset, [LSIB 2017](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygon representations of all international boundaries. The second, [WDPA](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons), contains polygons of all the world's protected areas. The third, [CHIRPS](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_PENTAD), is a gridded rainfall time series dataset (Funk et al 2015) and the last, [MOD13Q1](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1), provides vegetation indexes (NDVI and EVI) depicting vegetation 'greenness' per 250m pixel.
+
 ***
 
 **Filtering data**
 First define variables for the temporal window of interest, including a start-date, end-date and the range of years and months. We will use these variables later to filter and summarise the long-term data.
+
 ```js
 var startDate0 = ee.Date.fromYMD(1981,1,1);
 var startDate = ee.Date.fromYMD(2000,1,1);
@@ -49,6 +55,7 @@ var months = ee.List.sequence(1, 12);
 ```
 
 Then filter our polygon features to our areas of interest (AOI), namely Costa Rica and Braulio Carrillo protected area. At the same time, convert these two FeatureCollections to geometry objects as we'll need them later as function parameters for functions we'll build.
+
 ```js
 // Country boundaries filtered to Costa Rica
 var costaRica = Countries.filter(ee.Filter.inList('COUNTRY_NA', ['Costa Rica']));
@@ -61,6 +68,7 @@ var braulio_geo = braulio.geometry();
 ```
 
 Now filter the CHIRPS ImageCollection for rainfall (i.e. `'precipitation'`) and the MODIS MOD13Q1 product for the Enhanced Vegetation Index (EVI) instead of the Normalized Difference Vegetation Index (NDVI) used in the previous practical. At the same time, filter by date range and our AOI to speed up all analyses that follow.
+
 ```js
 // Long-term rainfall data from CHIRPS
 var rainAll = CHIRPS.select('precipitation')
@@ -73,6 +81,7 @@ var eviAll = MOD13Q1.select('EVI')
     .filterDate(startDate, endDate)
     .filterBounds(costaRica_geo);
 ```
+
 ***
 
 **Processing**
@@ -199,6 +208,7 @@ If you get an error message, chances are you haven't accepted the terms and cond
 
 ![](/images/prac4_f5_final.png)
 **Figure 5:** Your first online GEE App / interactive map interface.
+
 ***
 
 **Relationship between annual rainfall and vegetation 'greenness'**
@@ -253,6 +263,7 @@ print(rain_ndvi_chart);
 ***
 
 We could also directly check the correlation between the two variables as follows:
+
 ```js
 // Compute a Pearson's product-moment correlation coefficient 
 // and the 2-sided p-value test for correlation = 0.
@@ -273,8 +284,10 @@ var correl_chart = ui.Chart.image.series({
 }).setOptions(opt_correl);
 print(correl_chart);
 ```
+
 ![](/images/prac4_new_f8.png)
 **Figure 7:** Results of a linear least squares regression with rainfall as the independent variable and EVI as the dependent variable.
+
 ***
 
 **Data Export**
@@ -284,6 +297,7 @@ To export the data shown in the created charts, you can simply `maximise` the ch
 **Figure 8:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 You can also script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
+
 ```js
 var csv_annualPrecip = rainYr.map(function(image){
   var year = image.get('year');
@@ -308,22 +322,26 @@ Export.table.toDrive({
 **Figure 9:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 The last step, as always, is to save the script.
+
 ***
 
 **Practical 4 Exercise**
 Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection. To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script.
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
+
 ***
 
 **References**
 Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, Husak G, Rowland J, Harrison L, Hoell A, Michaelsen J (2015) The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data 2, 150066
 
 MacFadyen S, Zambatis N, Van Teeffelen AJA, Hui C (2018) Long-term rainfall regression surfaces for the Kruger National Park, South Africa: A spatio-temporal review of patterns from 1981-2015. International Journal of Climatology 38(5): 2506-2519
+
 ***
 
 **Bonus Section**
 Similarly, you can calculate monthly rainfall for each year in Braulio Carrillo National Park from 1981 to 2019 by reducing the monthly rainfall records by their sum per year and month as follows:
+
 ```js
 var rainMeanMY_list = years.map(function(y) {
   return months.map(function(m) {
@@ -338,12 +356,14 @@ var rainMeanMY_list = years.map(function(y) {
 ```
 
 Remember to convert the list that is returned, back to an ImageCollection and include a `flatten()` command as follows:
+
 ```js
 // Convert the image List to an ImageCollection.
 var rainMeanMY = ee.ImageCollection.fromImages(rainMeanMY_list.flatten());
 ```
 
 Then make your line chart, the same way you did for the annual rainfall above.
+
 ```js
 // Display a line chart of the annual, monthly rainfall for Braulio Carrillo
 // First setup the chart properties 
@@ -395,4 +415,5 @@ Export.image.toDrive({
   }
 });
 ```
+
 ***
