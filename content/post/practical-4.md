@@ -261,34 +261,8 @@ print(rain_ndvi_chart);
 
 ***
 
-We could also just directly run a linear regression or correlation between the two variables as follows:
-
+We could also directly check the correlation between the two variables as follows:
 ```js
-// REGRESSION
-// Compute a linear least squares regression with 1 independent and 1 dependent variable.
-// First set chart parameters e.g. title
-var opt_regress = {title: "Relationship between annual Rainfall and EVI for Braulio Carrillo", pointSize: 2,
-    legend: {maxLines: 5, position: 'top'},
-    series: { 0: {targetAxisIndex: 0},
-              1: {targetAxisIndex: 1}},
-        vAxes: {// Adds titles to each axis.
-          0: {title: 'Coefficient)'},
-          1: {title: 'Residual'}},};
-// Build the chart and plot it          
-var regress_chart = ui.Chart.image.series({
-  imageCollection: annualRainEVI.select(['evi', 'rain']),
-  region:aoi_clip,
-  reducer: ee.Reducer.linearRegression(1, 1),
-  scale: 5000,
-  xProperty: 'year'
-}).setOptions(opt_regress);
-print(regress_chart);
-```
-![](/images/prac4_new_f7.png)
-**Figure 7:** Results of Pearson's product-moment correlation coefficient and the 2-sided p-value test for correlation = 0, between rainfall and EVI in Braulio Carrillo National Park from 2000 to 2019.
-
-```js
-// CORRELATION
 // Compute a Pearson's product-moment correlation coefficient 
 // and the 2-sided p-value test for correlation = 0.
 var opt_correl = {title: "Correlation between Rainfall and EVI for Braulio Carrillo", pointSize: 2,
@@ -309,14 +283,14 @@ var correl_chart = ui.Chart.image.series({
 print(correl_chart);
 ```
 ![](/images/prac4_new_f8.png)
-**Figure 8:** Results of a linear least squares regression with rainfall as the independent variable and EVI as the dependent variable.
+**Figure 7:** Results of a linear least squares regression with rainfall as the independent variable and EVI as the dependent variable.
 ***
 
 **Data Export**
 To export the data shown in the created charts, you can simply `maximise` the chart and then click `Download` to export to formats `.CSV`, `.SVG` or `.PNG`.
 
 ![](/images/prac4_f5.png)
-**Figure 9:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
+**Figure 8:** The easiest way to export data plotted in a chart is to click the `maximise` button on the chart in your console area (1) and then click `Download CSV` (2) to export a .csv table to your local hard-drive.
 
 You can also script the export. This option will allow you to customise formats for your exported table. For example, a formatted date field using a reducer to get the mean rainfall value for Braulio Carrillo for each year. The exported csv table will then contain a column for both date and mean annual rainfall. Once the task is completed, you will find this csv file in your google drive.
 ```js
@@ -340,7 +314,7 @@ Export.table.toDrive({
 ```
 
 ![](/images/prac4_f8_fix.png)
-**Figure 10:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
+**Figure 9:** Steps followed to complete a CSV export task using a script to initialise a table export to your local hard-drive.
 
 The last step, as always, is to save the script.
 ***
@@ -401,7 +375,7 @@ print(chart_rainMeanMY);
 ```
 
 ![](/images/prac4_f7.png)
-**Figure 11:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 1981 to 2019.
+**Figure 10:** Line chart of annual monthly rainfall in Braulio Carrillo National Park from 1981 to 2019.
 
 In addition, to the export options presented above and in practical 3. You could also export the results as a `rasterStack` with multiple layers representing the sum of monthly rainfall per year for Costa Rica. To do so, first create a list of band names for the `rasterStack` and apply the function `toBands()` to the ImageCollection. This will stack all bands into a single image. Each band will contain a unique name corresponding to, in this example, the year and the month of summed rainfall.
 
