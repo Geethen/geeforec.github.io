@@ -9,7 +9,7 @@ title = "Practical 6"
 +++
 **Practical 6: Fire frequency in the Kruger National Park, South Africa**
 
-Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2FBioGIS%2FbioGEE%3APractical_6%2Ffires_knp)
+Access the completed practical script [here](https://code.earthengine.google.com/63ca391e02cb163916a03a2c45200359?noload=true)
 
 **Learning Objectives**
 By the end of this practical you should be able to:
