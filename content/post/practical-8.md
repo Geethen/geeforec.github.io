@@ -62,25 +62,33 @@ Map.addLayer(presences, {color: 'red'},'Solanum acuale presences', false);
 
 We want to create a polygon that only includes terrestrial sources. We will use our imported polygon together with the countries database to create our area of interest. We use the intersection() function to 'clip' the countries dataset to the polygon. We then combine our new aoi into a single feature using the union() function, which effectively removes the countries borders. Lastly, we add our polygon and aoi to the map.
 
-    var aoi = countries.filterBounds(polygon).map(function(f) {
+```js
+var aoi = countries.filterBounds(polygon).map(function(f) {
       return f.intersection(polygon, 1);//1 refers to the maxError argument
     });
-    var aoi = aoi.union();
-    Map.addLayer(polygon,{}, "Polygon", false);
-    Map.addLayer(aoi, {},"Area of interest", false);
+var aoi = aoi.union();
+Map.addLayer(polygon,{}, "Polygon", false);
+Map.addLayer(aoi, {},"Area of interest", false);
+```
 
 The next step is to do some pre-processing on our environmental covariates. As the TerraClimate data has monthly values over a large period, we want to find a mean value over this full time period. First we select the variables of interest to use and then find their mean value for each band.
 
-     var terraclim = ee.Image(terraclim.select(['aet','def','pdsi','pet','soil']).mean());
+```js
+var terraclim = ee.Image(terraclim.select(['aet','def','pdsi','pet','soil']).mean());
+```
 
 For terrain, we use the elevation data to find both the aspect and slope for each pixel, using the ee.Terrain() group of functions. We add these bands together to make a full terrain dataset. 
 
-    var terrain = elev.addBands(ee.Terrain.aspect(elev)).addBands(ee.Terrain.slope(elev));
+```js
+var terrain = elev.addBands(ee.Terrain.aspect(elev)).addBands(ee.Terrain.slope(elev));
+```
 
 We can now merge our full covariate dataset together, using the addBands() function. At the same time, we can now clip this to our aoi. Using this approach you can add in extra bands from any other dataset to your covariates.
 
-    var vars = worldclim.addBands(terraclim).addBands(terrain).clip(aoi);
-    print('Check all covariates:', vars);
+```js
+var vars = worldclim.addBands(terraclim).addBands(terrain).clip(aoi);
+print('Check all covariates:', vars);
+```
 
 At this point it is valuable to calculate a correlation matrix and select only variables that are uncorrelated below a certain threshold. For GEE script on this, see [https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a](https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a "https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a")
 
@@ -88,8 +96,10 @@ After running this code, you may want to select only a sub-sample of data. Alter
 
 In this example for ease of computation, comment out the full covariate dataset above and go ahead and only use a sub-sample of worldclim covariates below:
 
-    var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17']).clip(aoi);
-    print(vars, "Selected variables");
+```js
+var vars = worldclim.select(['bio01','bio05','bio06','bio07','bio08','bio12','bio16','bio17']).clip(aoi);
+print(vars, "Selected variables");
+```
 
 We now want to create pseudo-absence points, merge this together with our presence points and provide a binary presence property to each observation.  The first step is to make sure all of our presence points are within our region. We then add 1 to all presence localilities. We then need to create our random pseudo-absence points and add 0 to each one. We create the same number of pseudo-absence points as there are presences, but this may depend on which model you are training your data on. Note that the generation of pseudo-absence points has a lot of literature related to it and should be carefully considered before running any SDM. View [this](https://doi.org/10.1111/j.2041-210X.2011.00172.x) this article for more information on pseudo-absences in SDMs.
 
@@ -126,13 +136,15 @@ print('Check the full points dataset:', points);
 
 For later model evaluation, it is important to have a set of data for 'training' the model and another set of data for 'testing' the model. We do this by adding in a random column and filtering the dataset based on these new random numbers, selecting 80% of the data for training and 20% for testing.
 
-    // To do this, we will split the data into 80% for training and 20% for testing
-    // Add a random column by default named 'random'
-    var new_table = points.randomColumn({seed: 42}); 
-    var training = new_table.filter(ee.Filter.lt('random', 0.80));
-    // print("Check training data:", training);
-    var test = new_table.filter(ee.Filter.gte('random', 0.80));
-    // print("Check test data:", test);
+```js
+// To do this, we will split the data into 80% for training and 20% for testing
+// Add a random column by default named 'random'
+var new_table = points.randomColumn({seed: 42}); 
+var training = new_table.filter(ee.Filter.lt('random', 0.80));
+// print("Check training data:", training);
+var test = new_table.filter(ee.Filter.gte('random', 0.80));
+// print("Check test data:", test);
+```
 
 The last step in the data processing is to extract the values of each band of our predictor variables for each point in our dataset. We do this using the sampleRegions() function.
 
