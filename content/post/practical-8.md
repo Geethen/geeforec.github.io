@@ -229,7 +229,7 @@ First we classify the MaxEnt model. We then create a new ImageCollection of the 
 ```js
 var model2 = ee.Classifier.gmoMaxEnt()
                             .setOutputMode('PROBABILITY')
-                            .train(sampleData, label, bands);
+                            .train(trainingData, label, bands);
 
 var prediction2 = vars.classify(model2);
 Map.addLayer(prediction2, {palette: palette},'Probability of occurence (MaxEnt)');
