@@ -286,22 +286,40 @@ A useful extra step is to add a legend to aid our visualisation. This needs to b
         ui.Panel.Layout.flow('vertical'),
         {width: '230px', position: 'bottom-center'})); // change location here to chose where to put legend
 
+We can also export our SDM prediction Image as a PNG. Do to this, we use the getThumbURL() function. To increase the resolution of this image, change the dimensions argument for the width. The height will be automatically calibrated. This produces a url for a PNG thumbnail, which can then be downloaded to your computer. 
+
+    // Specify region by your polygon, define the chosen palette & set width size (height adjusts automatically).
+    var thumbnail = prediction.getThumbURL({
+      palette: palette_mag,
+      dimensions: 1000, // change dimensions here for a higher res image
+      region: polygon,
+      format: 'png'
+    });
+    print('Output image:', thumbnail);
+
 **Model evaluation**
 
-An important last step in all classification modelling is to determine the accuracy of the probability of occurrence or presence/absence map. There are several methods available to produce metrics on model (in)accuracy, which will be discussed in the next practical.
+An important last step in all classification modelling is to determine the accuracy of the probability of occurrence or presence/absence map. There are several methods available to produce metrics on model (in)accuracy. The code for this has been included here, so as to produce the a full workflow for GEE classification. However, the metrics will only be covered in depth in the next practical. 
 
-Save your script.
+To run these model evaluation metrics, you will need to go back to your ee.Classifier.smileRandomForest() function and change the setOutputMode() from 'PROBABILITY' to 'CLASSIFICATION'.
 
-**Practical 8 Exercise**
-
-For this excercise, use an alternative dataset of species localities. This time _Solanum acuale_, a plant species known as Wild potato from South America. Produce a distribution map using the same WorldClim data as in the practical above.
-
-Load in the dataset to a new script using the below asset id:
-
-```js
-ee.FeatureCollection('users/jdmwhite/solanum_acuale')
-```
-
-To share your script, click on Get Link and then copy the script path. Send your completed script to **ots.online.education@gmail.com.**
+    var Accuracy = model.confusionMatrix().accuracy();
+    print('Training Data Accuracy:', Accuracy);
+    // Test accuracy
+    var testData = vars.sampleRegions({
+      collection: test,
+      properties: ['Presence'],
+      // geometries: true,
+      scale: 1000
+    });
+    print('Check test data:',testData);
+    
+    var Test = testData.classify(model);
+    print(Test);
+    print('ConfusionMatrix', Test.errorMatrix('Presence', 'classification'));
+    print('TestAccuracy', Test.errorMatrix('Presence', 'classification').accuracy());
+    print('Kappa Coefficient', Test.errorMatrix('Presence', 'classification').kappa());
+    print('Producers Accuracy', Test.errorMatrix('Presence', 'classification').producersAccuracy());
+    print('Users Accuracy', Test.errorMatrix('Presence', 'classification').consumersAccuracy());
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
