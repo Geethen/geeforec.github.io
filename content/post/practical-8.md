@@ -218,8 +218,6 @@ Map.addLayer(prediction, {palette: palette},'Probability of occurence (RF)');
 
 ![](/images/prac8_rf.png)
 
-**Ensemble methods**
-
 In many cases, you will not rely on a single model and it may be preferable to use many models and find an average over several models. A short example of how to do this, is to produce a new model - this time using MaxEnt - and finding the mean over our two predicted classifications.
 
 First we classify the MaxEnt model. We then create a new ImageCollection of the two SDM models, before finding the mean of the two bands and then adding the ensemble prediction to the map.
@@ -242,6 +240,51 @@ Map.addLayer(ensemble_prediction, {palette: palette},'Probability of occurence (
 ```
 
 ![](/images/prac8_ensemble.png)
+
+A useful extra step is to add a legend to aid our visualisation. This needs to be coded from scratch and can look rather complicated. Be aware that to customise this code for your purpose, there are only a few arguments you may need to change, which have comments next to them. This includes the min and max values, the specific palette of choice, the legend title and lastly the legend position. This legend will work best in an interactive app scenario, as it is not straightforward to export it.
+
+    // Styling for the legend title.
+    var LEGEND_TITLE_STYLE = {
+      fontSize: '16px',
+      // fontWeight: 'bold',
+      stretch: 'horizontal',
+      textAlign: 'left',
+      margin: '4px',
+    };
+    
+    function ColorBar(palette) {
+      return ui.Thumbnail({
+        image: ee.Image.pixelLonLat().select(0),
+        params: {
+          bbox: [0, 0, 1, 0.1],
+          dimensions: '100x10',
+          format: 'png',
+          min: 0, // change min value
+          max: 1, // change max value
+          palette: palette_mag, // chose the correct palette
+        },
+        style: {stretch: 'horizontal', margin: '0px 8px'},
+      });
+    }
+    
+    // Returns our labeled legend, with a color bar and three labels representing
+    // the minimum, middle, and maximum values.
+    function makeLegend() {
+      var labelPanel = ui.Panel(
+          [ui.Label('0', {margin: '4px 8px'}), // change min label here
+          ui.Label('',{margin: '4px 8px', textAlign: 'center', stretch: 'horizontal'}),
+          ui.Label('1', {margin: '4px 8px'})], // change max label here
+          ui.Panel.Layout.flow('horizontal'));
+      return ui.Panel([ColorBar(palette_mag.palette), labelPanel]);
+    }
+    
+    // Assemble the legend panel.
+    Map.add(ui.Panel(
+        [
+          ui.Label('Probability of occurrence', LEGEND_TITLE_STYLE), makeLegend() // change title here
+          ],
+        ui.Panel.Layout.flow('vertical'),
+        {width: '230px', position: 'bottom-center'})); // change location here to chose where to put legend
 
 **Model evaluation**
 
