@@ -7,7 +7,7 @@ timeToRead = 3
 title = "Practical 8"
 
 +++
-**Practical 8: Species distribution modeling**
+**Practical 8: Species distribution modelling**
 
 Authored by: Joseph White
 
