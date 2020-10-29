@@ -9,7 +9,7 @@ title = "Practical 8"
 +++
 **Practical 8: Species distribution modeling (classification)**
 
-Access the completed practical script [here](https://code.earthengine.google.com/?scriptPath=users%2Fjdmwhite%2FOTS-GEE4EC%3APractical_8%2FSpecies_distribution_modeling)
+Access the completed practical script [here](https://code.earthengine.google.com/d8912b87a20af22464a7bb091e543fcb)
 
 **Learning Objectives**
 
