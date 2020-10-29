@@ -160,9 +160,11 @@ print('Check sampled data:', trainingData.limit(5));
 
 At this point, many users may want to export the locality data, together with the covariate data to use it in a different program where there is more support for SDMs. So we will export the data before continuing. You can export it as a shapefile or csv.
 
-    Export.table.toDrive({collection: trainingData, 
+```js
+Export.table.toDrive({collection: trainingData, 
                           description: 'Solanum_acuale_sampled',
                           fileFormat: 'SHP'});
+```
 
 **Analysis: Fit our classifier using Random Forest**
 
@@ -259,6 +261,7 @@ Map.addLayer(ensemble_prediction, {palette: palette},'Probability of occurence (
 
 A useful extra step is to add a legend to aid our visualisation. This needs to be coded from scratch and can look rather complicated. Be aware that to customise this code for your purpose, there are only a few arguments you may need to change, which have comments next to them. This includes the min and max values, the specific palette of choice, the legend title and lastly the legend position. This legend will work best in an interactive app scenario, as it is not straightforward to export it.
 
+```js
     // Styling for the legend title.
     var LEGEND_TITLE_STYLE = {
       fontSize: '16px',
@@ -301,9 +304,11 @@ A useful extra step is to add a legend to aid our visualisation. This needs to b
           ],
         ui.Panel.Layout.flow('vertical'),
         {width: '230px', position: 'bottom-center'})); // change location here to chose where to put legend
+```
 
 We can also export our SDM prediction Image as a PNG. Do to this, we use the getThumbURL() function. To increase the resolution of this image, change the dimensions argument for the width. The height will be automatically calibrated. This produces a url for a PNG thumbnail, which can then be downloaded to your computer. 
 
+```js
     // Specify region by your polygon, define the chosen palette & set width size (height adjusts automatically).
     var thumbnail = prediction.getThumbURL({
       palette: palette_mag,
@@ -312,6 +317,7 @@ We can also export our SDM prediction Image as a PNG. Do to this, we use the get
       format: 'png'
     });
     print('Output image:', thumbnail);
+```
 
 **Model evaluation**
 
@@ -319,6 +325,7 @@ An important last step in all classification modelling is to determine the accur
 
 To run these model evaluation metrics, you will need to go back to your ee.Classifier.smileRandomForest() function and change the setOutputMode() from 'PROBABILITY' to 'CLASSIFICATION'.
 
+```js
     var Accuracy = model.confusionMatrix().accuracy();
     print('Training Data Accuracy:', Accuracy);
     // Test accuracy
@@ -337,5 +344,6 @@ To run these model evaluation metrics, you will need to go back to your ee.Class
     print('Kappa Coefficient', Test.errorMatrix('Presence', 'classification').kappa());
     print('Producers Accuracy', Test.errorMatrix('Presence', 'classification').producersAccuracy());
     print('Users Accuracy', Test.errorMatrix('Presence', 'classification').consumersAccuracy());
+```
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
