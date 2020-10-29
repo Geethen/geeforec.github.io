@@ -7,7 +7,9 @@ timeToRead = 3
 title = "Practical 8"
 
 +++
-**Practical 8: Species distribution modeling (classification)**
+**Practical 8: Species distribution modeling**
+
+Authored by: Joseph White
 
 Access the completed practical script [here](https://code.earthengine.google.com/d8912b87a20af22464a7bb091e543fcb)
 
