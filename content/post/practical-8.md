@@ -32,20 +32,24 @@ For this practical we will need two core datasets. Our geo-referenced species lo
 
 Our first step is to load in the LSIB countries dataset and a polygon of interest:
 
-    var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
-    var polygon = ee.Geometry.Polygon([
+```js
+var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+var polygon = ee.Geometry.Polygon([
     [-87.14743379727207,-34.736435036461145],[-32.12790254727207,-34.736435036461145],[-32.12790254727207,16.642228542503663],
     [-87.14743379727207,16.642228542503663],[-87.14743379727207,-34.736435036461145]
     ]);
+```
 
 We then import the environmental covariates. The first group of covariates is from the WorldClim dataset. The WorldClim data provides average bioclimatic conditions for the entire globe between the period 1960-1991 and is commonly used in SDMs. The second group is from the TerraClimate dataset, which has information related to climatic water balance for global terrestrial surfaces from 1958-present. Lastly, we import SRTM for terrain data.
 
-    // Load in bioclimatic variables from WorldClim 
-    var worldclim = ee.Image("WORLDCLIM/V1/BIO");
-    // Load in terraclim data
-    var terraclim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE");
-    // Load in terrain data
-    var elev = ee.Image("USGS/SRTMGL1_003");
+```js
+// Load in bioclimatic variables from WorldClim 
+var worldclim = ee.Image("WORLDCLIM/V1/BIO");
+// Load in terraclim data
+var terraclim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE");
+// Load in terrain data
+var elev = ee.Image("USGS/SRTMGL1_003");
+```
 
 The last dataset we require is our species locality information. We will use data sourced from GBIF (Global Biodiversity Information Facility), which has a massive online collection of freely available biodiversity data. Our species of interest - _Solanum acuale_ - is a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available. We load this data in as an asset and then add it to our map. 
 
