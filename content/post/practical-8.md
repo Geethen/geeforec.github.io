@@ -148,7 +148,7 @@ At this point, many users may want to export the locality data, together with th
                           description: 'Solanum_acuale_sampled',
                           fileFormat: 'SHP'});
 
-**Fit our classifier using Random Forest**
+**Analysis: Fit our classifier using Random Forest**
 
 There are several different options for classifiers in GEE, which can be viewed in the Docs tab by typing ee.Classifier. We will be using the smileRandomForest() function as it allows for variable importance values to be extracted (which is currently not available for MaxEnt models in GEE). There are several options one can add to fine-tune the model to your own specifications. For this function, the only argument that is required is the number of decision trees to use. We select the output mode of probability. However, for later model evaluation, you will need to select classification. 
 
@@ -165,6 +165,8 @@ var model = ee.Classifier.smileRandomForest({numberOfTrees: 100})
                             .train(trainingData, label, bands);
 print("Check model output:", model);
 ```
+
+**Visualisation**
 
 We will then extract the variable importance data and add it to a chart. To pull the information from the RandomForest model, we use explain() and then get() to pull the specific information we are interested in.
 
@@ -199,17 +201,13 @@ print(chart);
 
 ![](/images/prac8_vi.png)
 
-**Model classification/prediction**
-
-This is a simple step. We classify or predict the output of the model, based on selected predictor variables. In this case, we use the full suite of variables used in the original model classification.
+This is a simple step. We classify or predict the output of the model, based on selected predictor variables to find our probability of species occurrence. In this case, we use the full suite of variables used in the original model classification.
 
 ```js
 var prediction = vars.classify(model);
 ```
 
-**Visualize the predicted distribution**
-
-First we will load in a custom palette for the visualization. Next step is to add it to our map.
+First we will load in a custom palette for the visualization. Next step is to add our predicted species occurrence to our map.
 
 ```js
 var palettes = require('users/gena/packages:palettes');
