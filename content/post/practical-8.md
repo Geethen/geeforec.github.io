@@ -78,6 +78,8 @@ We can now merge our full covariate dataset together, using the addBands() funct
     var vars = worldclim.addBands(terraclim).addBands(terrain).clip(aoi);
     print('Check all covariates:', vars);
 
+At this point it is valuable to calculate a correlation matrix and select only variables that are uncorrelated below a certain threshold. For GEE script on this, see [https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a](https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a "https://code.earthengine.google.com/27557ebe40e549f604ed1005e047b75a")
+
 A crucial step in many classification approaches to make sure that your predictor variables are uncorrelated. Here is a piece of code that provides this by producing a correlation matrix of pearson correlation coefficient, though we will not run it in this practical, as it is rather slow. Can you work out why this code may be slow? (Hint: client vs. server side functions).
 
 ```js
