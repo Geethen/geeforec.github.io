@@ -15,53 +15,68 @@ Access the completed practical script [here](https://code.earthengine.google.com
 
 By the end of this practical you should be able to:
 
-1. Have a basic understanding of classifications and their value to Species Distribution Models (SDMs).
-2. Fit a random forest model on bioclimatic variables.
-3. Predict the distribution of a chosen species.
-4. Consider variable importance & understand need for model evaluation.
+1. Build an Image of selected environmental covariates
+2. Extract covariates.
+3. Model fitting.
+4. Discuss the need for model evaluation.
 
 Species Distribution Models are a valuable tool in ecology and conservation, providing us with insights into global change impacts, allowing us to project potential future range shifts in species. Using geo-referenced species localities and environmental predictors we can determine the important environmental conditions for species at their known sites.
 
 However, they need to be used carefully and with full understanding of the models used and outputs provided. For example, we may not have a full sample of species localities or not have all of the relevant environmental variables. This means we need to have a strong understanding of the species sampling, biogeography and potentially biotic interactions to accurately predict their distributions. Take a look at [this](https://damariszurell.github.io/SDM-Intro/) R tutorial for more information on SDMs.
 
-SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly.
+SDMs are not a feature commonly used in GEE and therefore the documentation does not have full support as other algorithms or processes may have. With further use of this platform this is likely to change. The strong potential of GEE in the SDM space is the ability to process large amounts of data very quickly. Additionally, there is a large value in extracting covariate data to complete SDM analyses in other programs. 
 
 **Importing data**
 
 For this practical we will need two core datasets. Our geo-referenced species localities or presences and our geographic layers of environmental predictor variables. In addition to this we will need a chosen area of interest.
 
-Our first step is to load the presence data for our species of interest - _Bradypus variegatus_ - a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available.
+Our first step is to load in the LSIB countries dataset and a polygon of interest:
+
+    var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+    var polygon = ee.Geometry.Polygon([
+    [-87.14743379727207,-34.736435036461145],[-32.12790254727207,-34.736435036461145],[-32.12790254727207,16.642228542503663],
+    [-87.14743379727207,16.642228542503663],[-87.14743379727207,-34.736435036461145]
+    ]);
+
+We then import the environmental covariates. The first group of covariates is from the WorldClim dataset. The WorldClim data provides average bioclimatic conditions for the entire globe between the period 1960-1991 and is commonly used in SDMs. The second group is from the TerraClimate dataset, which has information related to climatic water balance for global terrestrial surfaces from 1958-present. Lastly, we import SRTM for terrain data.
+
+    // Load in bioclimatic variables from WorldClim 
+    var worldclim = ee.Image("WORLDCLIM/V1/BIO");
+    // Load in terraclim data
+    var terraclim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE");
+    // Load in terrain data
+    var elev = ee.Image("USGS/SRTMGL1_003");
+
+The last dataset we require is our species locality information. We will use data sourced from GBIF (Global Biodiversity Information Facility), which has a massive online collection of freely available biodiversity data. Our species of interest - _Solanum acuale_ - is a species commonly used Species Distribution Modeling tutorials. This data has been extracted from the **R dismo** package. This dataset has already been uploaded as an asset and made publicly available. We load this data in as an asset and then add it to our map. 
 
 ```js
-var presences = ee.FeatureCollection("users/jdmwhite/bradypus");
+var presences = ee.FeatureCollection("users/jdmwhite/solanum_acuale");
+Map.addLayer(presences, {color: 'red'},'Solanum acuale presences', false);
 ```
 
-Next step is load in the countries dataset, as well as a polygon to filter this. We will use filterBounds() to extract only the area we are interested in. We then use union to merge all of the countries into a single feature and then map, together with the presence data.
+**Pre-processing data**
 
-```js
-var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+We want to create a polygon that only includes terrestrial sources. We will use our imported polygon together with the countries database to create our area of interest. We use the intersection() function to 'clip' the countries dataset to the polygon. We then combine our new aoi into a single feature using the union() function, which effectively removes the countries borders. Lastly, we add our polygon and aoi to the map.
 
-// Create a polygon.
-var polygon = ee.Geometry.Polygon([
-[-87.14743379727207,-34.736435036461145],[-32.12790254727207,-34.736435036461145],[-32.12790254727207,16.642228542503663],
-[-87.14743379727207,16.642228542503663],[-87.14743379727207,-34.736435036461145]
-]);
+    var aoi = countries.filterBounds(polygon).map(function(f) {
+      return f.intersection(polygon, 1);//1 refers to the maxError argument
+    });
+    var aoi = aoi.union();
+    Map.addLayer(polygon,{}, "Polygon", false);
+    Map.addLayer(aoi, {},"Area of interest", false);
 
-var countries_clip = countries.filterBounds(polygon).map(function(f) {
-  return f.intersection(polygon, 1);//1 refers to the maxError argument
-});
+The next step is to do some pre-processing on our environmental covariates. As the TerraClimate data has monthly values over a large period, we want to find a mean value over this full time period. First we select the variables of interest to use and then find their mean value for each band.
 
-var countries_clip = countries_clip.union();
-Map.addLayer(countries_clip, {},"Area of interest");
-Map.addLayer(presences, {color: 'red'},'Bradypus variegatus localities');
-```
+     var terraclim = ee.Image(terraclim.select(['aet','def','pdsi','pet','soil']).mean());
 
-We then load in the bioclimatic variables from the WorldClim dataset. The WorldClim data provides average bioclimatic conditions for the entire globe between the period 1960-1991 and is commonly used in SDMs.
+For terrain, we use the elevation data to find both the aspect and slope for each pixel, using the ee.Terrain() group of functions. We add these bands together to make a full terrain dataset. 
 
-```js
-var worldclim = ee.Image("WORLDCLIM/V1/BIO").clip(countries_clip);
-print(worldclim);
-```
+    var terrain = elev.addBands(ee.Terrain.aspect(elev)).addBands(ee.Terrain.slope(elev));
+
+We can now merge our full covariate dataset together, using the addBands() function. At the same time, we can now clip this to our aoi. Using this approach you can add in extra bands from any other dataset to your covariates.
+
+    var vars = worldclim.addBands(terraclim).addBands(terrain).clip(aoi);
+    print('Check all covariates:', vars);
 
 A crucial step in many classification approaches to make sure that your predictor variables are uncorrelated. Here is a piece of code that provides this by producing a correlation matrix of pearson correlation coefficient, though we will not run it in this practical, as it is rather slow. Can you work out why this code may be slow? (Hint: client vs. server side functions).
 
