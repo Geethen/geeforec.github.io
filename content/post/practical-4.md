@@ -326,7 +326,7 @@ The last step, as always, is to save the script.
 ***
 
 **Practical 4 Exercise**
-Repeat this practical but use NDVI instead of EVI and Germany instead of Costa Rica. You can also play around with different dates, keeping in mind the different date limits for each ImageCollection. To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script.
+Repeat this practical but use NDVI instead of EVI and focus on your own study area (* only south of Poland as full dataset has not been uploaded to GEE yet - [global monthly tifs](https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/) are available directly from CHC UCSB). You can also play around with different dates, keeping in mind the different date limits for each ImageCollection. To share your script, click on Get Link and then copy script path. Send your completed script to [ots.online.education@gmail.com](mailto:ots.online.education@gmail.com). If you're feeling adventurous, save the results as a new App and forward the URL link along with your script.
 
 Do you have any feedback for this practical? Please complete this quick (2-5 min) survey [here](https://forms.gle/hT11ReQpvG2oLDxF7).
 
